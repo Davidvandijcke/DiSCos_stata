@@ -44,7 +44,7 @@ real vector disco_quantile(real vector X, real scalar M, real scalar q_min, real
     return(out)
 }
 
-real vector disco_solve_weights(real matrix C, real vector T, real scalar simplex) { // this is not correct, should be a convex minimization
+real vector disco_solve_weights(real matrix C, real vector T, real scalar simplex) { // this is not correct, 
     real vector W
     real scalar s
     W = invsym(C' * C)*C'*T

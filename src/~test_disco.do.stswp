@@ -7,12 +7,11 @@ bysort id_col: gen time_col = _n
 expand 50        // Create 50 observations per ID-time pair
 gen y_col = rnormal()
 
+capture program drop disco
+include disco.ado
 
 
 // Test full CI with corrected syntax
-disco y_col id_col time_col, idtarget(1) T0(2) M(20) G(10) CI boots(10) ///
-    cl(0.90) qmin(0) qmax(1) simplex mixture permutation ///
-    uniform("yes") seed(123)
-
-matrix list r(qdiff_lower)
-
+disco y_col id_col time_col, idtarget(1) t0(2) ci boots(50)
+return list
+matrix list r(weights)
