@@ -413,16 +413,12 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt, r
 			for (m2=1;m2<=M;m2++) {
 				p = (m2-1)/(M-1)
 				gg3=1
-
 				// Use && for short-circuit evaluation
-				while (gg3<=G && C_synth[gg3]<p) {
+				while (gg3<G && C_synth[gg3]<p) {
 					gg3++
 				}
 				if (gg3>G) gg3=G
-				gg3
-				m2
 				Q_synth[m2]=grid[gg3]
-				printf("poo")
 			}
         }
 
