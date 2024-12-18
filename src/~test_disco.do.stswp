@@ -20,7 +20,7 @@ include disco.ado
 
 
 // Test full CI with corrected syntax
-disco y_col id_col time_col, idtarget(1) t0(2) simplex   ci boots(20) // mixture
+disco y_col id_col time_col, idtarget(1) t0(2) simplex    ci boots(20) // mixture
 return list
 matrix list r(weights)
 return list
