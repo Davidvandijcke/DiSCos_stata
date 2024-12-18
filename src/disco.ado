@@ -113,6 +113,8 @@ program define disco, rclass
     // Include the MATA utility file that contains all the functions
     // Make sure disco_utils.mata is accessible in your adopath or same folder
     include disco_utils.mata
+	include quadprog.ado
+	include quadprog.mata
 
     mata {
         M = `m'
