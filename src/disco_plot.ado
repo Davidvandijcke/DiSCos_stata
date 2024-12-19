@@ -1,7 +1,7 @@
 program define disco_plot
     version 18.0
     
-    syntax, AGG(string) M(integer) G(integer) T_max(integer) DOCI(integer)
+    syntax, AGG(string) M(integer) G(integer) T_max(integer) DOCI(integer) CL(real)
     
     preserve
     clear
@@ -9,31 +9,42 @@ program define disco_plot
     if "`agg'" == "quantileDiff" {
         local ytitle "Difference in Quantile Functions"
         local title ""
-        
-        set obs `m'
-        gen tau = (_n-1)/(`m'-1)
-        
-        svmat quantile_diff
-        reshape long quantile_diff, i(tau) j(time)
-        
-        // Add "Time: " prefix to time variable
-        tostring time, gen(time_str)
-        replace time_str = "Time: " + time_str
+		local cl_txt = subinstr("`cl'", ".", "", .)
+
         
         if `doci' {
-            svmat qdiff_lower
-            svmat qdiff_upper
-            reshape long qdiff_lower qdiff_upper, i(tau time) j(temp)
-            drop temp
+			
+			set obs `m'
+			gen tau = (_n-1)/(`m'-1)
+			
+			svmat quantile_diff
+			svmat qdiff_lower
+			svmat qdiff_upper
+			reshape long quantile_diff qdiff_lower qdiff_upper, i(tau) j(time)
+			
+			// Add "Time: " prefix to time variable
+			tostring time, gen(time_str)
+			replace time_str = "Time: " + time_str
+						
             
             twoway (rarea qdiff_lower qdiff_upper tau, color(gs12)) ///
                    (line quantile_diff tau, lcolor(black)), ///
                    by(time_str, note("")) ///
                    title("`title'") ytitle("`ytitle'") ///
                    xtitle("Quantile") legend(off) ///
+				   legend(label(1 "`cl_txt' % confidence intervals") label(2 "Estimates")) ///
                    xlabel(0(.2)1) ylabel(, angle(horizontal))
         }
         else {
+			set obs `m'
+			gen tau = (_n-1)/(`m'-1)
+			
+			svmat quantile_diff
+			reshape long quantile_diff, i(tau) j(time)
+			
+			// Add "Time: " prefix to time variable
+			tostring time, gen(time_str)
+			replace time_str = "Time: " + time_str
             twoway line quantile_diff tau, ///
                    by(time_str, note("")) ///
                    title("`title'") ytitle("`ytitle'") ///
@@ -76,31 +87,42 @@ program define disco_plot
         local gmin = e(amin)
         local gmax = e(amax)
         
-        set obs `g'
-        gen grid_val = `gmin' + (_n-1)*(`gmax' - `gmin')/(`g'-1)
-        
+
         if "`agg'" == "cdfDiff" {
-            svmat cdf_diff
-            reshape long cdf_diff, i(grid_val) j(time)
-            
-            // Add "Time: " prefix to time variable
-            tostring time, gen(time_str)
-            replace time_str = "Time: " + time_str
+
             
             if `doci' {
-                svmat cdiff_lower
-                svmat cdiff_upper
-                reshape long cdiff_lower cdiff_upper, i(grid_val time) j(temp)
-                drop temp
+				set obs `g'
+				gen grid_val = `gmin' + (_n-1)*(`gmax' - `gmin')/(`g'-1)
+        
+ 				svmat cdf_diff 
+				svmat cdiff_lower
+				svmat cdiff_upper
+				reshape long cdf_diff cdiff_lower cdiff_upper, i(grid_val) j(time)
+				
+				// Add "Time: " prefix to time variable
+				tostring time, gen(time_str)
+				replace time_str = "Time: " + time_str
                 
                 twoway (rarea cdiff_lower cdiff_upper grid_val, color(gs12)) ///
                        (line cdf_diff grid_val, lcolor(black)), ///
                        by(time_str, note("")) ///
+					   legend(label(1 "`cl_txt' % confidence intervals") label(2 "Estimates")) ///
                        title("`title'") ytitle("`ytitle'") ///
                        xtitle("Y") legend(off) ///
                        ylabel(, angle(horizontal))
             }
             else {
+				set obs `g'
+				gen grid_val = `gmin' + (_n-1)*(`gmax' - `gmin')/(`g'-1)
+				
+				svmat cdf_diff
+				reshape long cdf_diff, i(grid_val) j(time)
+				
+				// Add "Time: " prefix to time variable
+				tostring time, gen(time_str)
+				replace time_str = "Time: " + time_str
+			
                 twoway line cdf_diff grid_val, ///
                        by(time_str, note("")) ///
                        title("`title'") ytitle("`ytitle'") ///

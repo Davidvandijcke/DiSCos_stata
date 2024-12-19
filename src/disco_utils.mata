@@ -1220,12 +1220,13 @@ Inputs:
 	quantile_diff: estimates of quantile effects
 	cdf_diff: estimates of cdf effects
 	CI: 1-0 whether or not to produce confidence intervals
+	cl: significance level
 Returns:
     0 if successful, error code otherwise
 */
 real scalar compute_summary_stats(string scalar agg, real vector sample_points, 
                                 real scalar T0, real scalar T_max, real matrix quantile_diff,
-                                real matrix cdf_diff, real scalar CI) 
+                                real matrix cdf_diff, real scalar CI, real scalar cl) 
 {
     // Input validation
     if (!anyof(("quantile", "cdf", "quantileDiff", "cdfDiff"), agg)) {
@@ -1312,14 +1313,35 @@ real scalar compute_summary_stats(string scalar agg, real vector sample_points,
                 }
             }
             
-            // Add confidence intervals if requested
-            if (CI) {
-                boot_stats = compute_boot_stats(data_boot, idx[1], idx[2], t, cl)
-                summary_stats[row, 5] = boot_stats[1]  // SE
-                summary_stats[row, 6] = boot_stats[2]  // CI lower
-                summary_stats[row, 7] = boot_stats[3]  // CI upper
-            }
-            
+	 // Add confidence intervals if requested
+		if (CI) {
+			// Get the stored CI bounds from Stata
+			real matrix diff_lower, diff_upper
+			if (is_cdf) {
+				diff_lower = st_matrix("cdiff_lower")
+				diff_upper = st_matrix("cdiff_upper")
+			} else {
+				diff_lower = st_matrix("qdiff_lower")
+				diff_upper = st_matrix("qdiff_upper")
+			}
+			
+			// Compute effect and CIs for each interval
+			if (length(idx) > 0) {
+				if (is_cdf) {
+					summary_stats[row, 4] = mean(cdf_diff[idx, t])
+					summary_stats[row, 6] = mean(diff_lower[idx, t])  // CI lower
+					summary_stats[row, 7] = mean(diff_upper[idx, t])  // CI upper
+					// Compute SE as (upper - lower)/(2*1.96) for 95% CI
+					summary_stats[row, 5] = (summary_stats[row, 7] - summary_stats[row, 6])/(2*1.96)
+				} else {
+					summary_stats[row, 4] = mean(quantile_diff[idx, t])
+					summary_stats[row, 6] = mean(diff_lower[idx, t])  // CI lower
+					summary_stats[row, 7] = mean(diff_upper[idx, t])  // CI upper
+					summary_stats[row, 5] = (summary_stats[row, 7] - summary_stats[row, 6])/(2*1.96)
+				}
+			}
+		}
+				
             row++
         }
     }

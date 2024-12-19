@@ -29,7 +29,7 @@ Options:
     MIXTURE:           Use mixture of distributions approach
     PERMUTATION:       Perform permutation test
     SEED(integer):     Set random seed
-    UNIFORM:           Use uniform confidence bands
+    NOUNIFORM:         Don't use uniform confidence bands
     AGG(string):       Type of aggregation for summary statistics
                        ("quantile", "cdf", "quantileDiff", "cdfDiff")
     SAMPLES(numlist):  Quantile points for summary statistics
@@ -75,7 +75,7 @@ program define disco, eclass
         MIXture ///
         PERMutation ///
         SEED(integer -1) ///
-        UNIForm ///
+        NOUNIForm ///
         AGG(string) ///
         SAMPles(numlist) ///
         GRaph]
@@ -130,7 +130,7 @@ program define disco, eclass
     if "`mixture'" != "" local mixture_flag = 1
     if "`permutation'" != "" local permutation_flag = 1
     if "`ci'" != "" local doci = 1
-    if "`uniform'" != "" local uniform_flag = 1
+    if "`nouniform'" != "" local uniform_flag = 0
     
     // Additional validation checks
     if `m' < 1 {
@@ -210,15 +210,15 @@ program define disco, eclass
 			cdf_diff_mata = st_matrix("cdf_diff")
            
             rc3 = compute_summary_stats("`agg'", sample_points, T0, T_max, quantile_diff_mata,
-			cdf_diff_mata, `doci')
+			cdf_diff_mata, `doci', cl)
         };
     }
 	//************************
-	
+
 	
 	// Generate plots if requested
     if "`graph'" != "" & "`agg'" != "" {
-        disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci')
+        disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl')
     }
     
     // Store results
