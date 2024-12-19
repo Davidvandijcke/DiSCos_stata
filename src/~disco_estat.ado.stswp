@@ -1,4 +1,6 @@
-// disco_estat.ado
+
+
+// Modified disco_estat.ado
 program define disco_estat, rclass
     version 18.0
     
@@ -12,6 +14,15 @@ program define disco_estat, rclass
             exit 198
         }
         
+        if "`e(agg)'" == "quantileDiff" {
+            local agtxt = "quantile"
+            local fmt "%4.2f"  // Format for probabilities [0,1]
+        } 
+        else if "`e(agg)'" == "cdfDiff" {
+            local agtxt = "CDF"
+            local fmt "%9.2f"  // Format for Y values
+        }
+        
         tempname stats
         matrix `stats' = e(summary_stats)
         
@@ -19,9 +30,9 @@ program define disco_estat, rclass
         local nr = rowsof(`stats')
         
         // Display header
-        di _n as txt "Summary of `e(agg)' effects"
+        di _n as txt "Summary of `agtxt' effects"
         di as txt "{hline 80}"
-        di as txt "Time period   Range             Effect     Std. Err.    [`e(cl)'% Conf. Interval]"
+        di as txt "Time period   Range                    Effect     Std. Err.    [`e(cl)'% Conf. Interval]"
         di as txt "{hline 80}"
         
         // Display results
@@ -38,7 +49,7 @@ program define disco_estat, rclass
             local sig = (`ci_l' > 0 | `ci_u' < 0) * "*"
             
             di as txt %9.0g `t' "    " ///
-               as txt %4.2f `qstart' "-" %4.2f `qend' "    " ///
+               as txt `fmt' `qstart' "-" `fmt' `qend' "    " ///
                as res %9.3f `effect' "    " ///
                as res %9.3f `se' "    " ///
                as res %9.3f `ci_l' "  " %9.3f `ci_u' ///
@@ -47,7 +58,6 @@ program define disco_estat, rclass
         
         di as txt "{hline 80}"
         di as txt "* denotes significance at `e(cl)'% confidence level"
-        
     }
     else {
         di as error "unknown subcommand"

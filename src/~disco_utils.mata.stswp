@@ -165,6 +165,7 @@ real vector disco_mixture_weights(real matrix controls, real vector target, real
     for (i=1; i<=J; i++) {
         control_cdf[,i] = cdf_at_points(controls[,i], grid_rand)
     }
+	
     
     // Set up LP problem
     // Variables: [w_1,...,w_J,s_1+,...,s_M+,s_1-,...,s_M-]
@@ -243,16 +244,30 @@ real vector cdf_builder(real vector x, real vector grid) {
     
     // Calculate CDF at each grid point
     for (g=1; g<=G; g++) {
-        pos = sum(select(Xs, Xs:<=grid[g]))
+        pos = sum(Xs:<=grid[g])
         out[g] = pos/N
     }
     return(out)
 }
 
+// Helper to compute CDF at given grid points
+real vector cdf_at_points(real vector x, real vector grid) {
+    real scalar N, G, g, pos
+    real vector xs, out
+    N = length(x)
+    xs = sort(x, 1)
+    G = length(grid)
+    out = J(G, 1, 0)
+    for (g=1; g<=G; g++) {
+        pos = sum(xs :<= grid[g])
+        out[g] = pos / N
+    }
+    return(out)
+}
 
 struct disco_out {
     real matrix weights, quantile_diff, cdf_diff, quantile_synth, cdf_synth,  
-	quantile_t, cdf_t
+	quantile_t, cdf_t, cids
 }
  // Main DISCO (DIStribution COmparison) function implementation
 // Parameters:
@@ -293,6 +308,10 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
     amin = min(y)
     amax = max(y)
     grid = range(amin, amax, (amax - amin) / (G - 1))'
+	
+	// Store grid bounds in e()
+    st_numscalar("amin", amin)
+    st_numscalar("amax", amax)
 
     // Initialize storage matrices
     quantile_diff = J(M,T_max,.)
@@ -383,7 +402,7 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
             // Calculate synthetic CDF from Q_synth
             C_synth = J(G,1,0)
             for (gg2=1; gg2<=G; gg2++) {
-                pos = sum(select(Q_synth_sorted, Q_synth_sorted:<=grid[gg2]))
+                pos = sum(Q_synth_sorted:<=grid[gg2])
                 C_synth[gg2] = pos/M
             }
         } else {
@@ -424,6 +443,7 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
     r.cdf_synth = C_synth_all
     r.quantile_t = Q_target_all
     r.cdf_t = C_target_all
+	r.cids = cids
     
     return(r)
 }
@@ -1057,6 +1077,7 @@ real scalar disco_wrapper(real vector y, id, tt,
     st_matrix("quantile_t", results.quantile_t)
     st_matrix("cdf_synth", results.cdf_synth)
     st_matrix("cdf_t", results.cdf_t)
+	st_matrix("cids", results.cids')
     
     return(0)
 }
@@ -1187,6 +1208,8 @@ real vector compute_boot_stats(real matrix boot_data, real scalar idx_start,
     return((se \ ci_bounds))
 }
 
+
+
 /*
 Main function to compute summary statistics
 Inputs:
@@ -1194,11 +1217,15 @@ Inputs:
     sample_points: vector of quantile points for summary statistics
     T0: first treatment period
     T_max: last period
+	quantile_diff: estimates of quantile effects
+	cdf_diff: estimates of cdf effects
+	CI: 1-0 whether or not to produce confidence intervals
 Returns:
     0 if successful, error code otherwise
 */
 real scalar compute_summary_stats(string scalar agg, real vector sample_points, 
-                                real scalar T0, real scalar T_max) 
+                                real scalar T0, real scalar T_max, real matrix quantile_diff,
+                                real matrix cdf_diff, real scalar CI) 
 {
     // Input validation
     if (!anyof(("quantile", "cdf", "quantileDiff", "cdfDiff"), agg)) {
@@ -1206,74 +1233,87 @@ real scalar compute_summary_stats(string scalar agg, real vector sample_points,
         return(1)
     }
     
-    if (cols(sample_points) < 1) {
-        errprintf("sample_points must contain at least one value\n")
-        return(1)
-    }
+    // Determine if we're doing CDF-based analysis
+    real scalar is_cdf
+    is_cdf = (agg == "cdf" | agg == "cdfDiff")
     
-    // Sort sample points and ensure they include 0 and 1
-    sample_points = sort(sample_points', 1)
-    if (sample_points[1] > 0) {
-        sample_points = 0 \ sample_points
-    }
-    if (sample_points[length(sample_points)] < 1) {
-        sample_points = sample_points \ 1
+    // Process grid points based on type
+    real vector grid_points
+    if (is_cdf) {
+        // Get Y support bounds
+        real scalar amin, amax
+        amin = st_numscalar("e(amin)")
+        amax = st_numscalar("e(amax)")
+        
+        // Convert probability points to Y values if needed
+        if (max(sample_points) <= 1 & min(sample_points) >= 0) {
+            grid_points_temp = amin :+ sample_points :* (amax - amin)
+            // Add endpoints if not included
+			amin 
+			amax
+            if (min(grid_points_temp) > amin) grid_points = amin \ grid_points_temp'
+            if (max(grid_points_temp) < amax) grid_points = grid_points_temp \ amax
+        } else {
+            grid_points = sort(sample_points', 1)
+        }
+    } else {
+        // For quantiles, use probability points directly
+        grid_points = sort(sample_points', 1)
+        // Add endpoints if not included
+        if (min(grid_points) > 0) grid_points = 0 \ grid_points
+        if (max(grid_points) < 1) grid_points = grid_points \ 1
     }
     
     // Number of intervals
     real scalar n_intervals
-    n_intervals = length(sample_points) - 1
+
+    n_intervals = length(grid_points) - 1
     
     // Initialize summary stats matrix
-    // Columns: time period, interval start, interval end, effect, se, ci_lower, ci_upper
     real matrix summary_stats
     summary_stats = J(n_intervals * (T_max - T0 + 1), 7, .)
     
-    // Determine which matrices to use based on aggregation type
-    real matrix data, data_boot
-    real scalar grid_length
-    
-    if (agg == "quantileDiff" | agg == "quantile") {
-        data = quantile_diff
-        data_boot = quantile_diff_boot
-        grid_length = rows(quantile_diff)
-    }
-    else {
-        data = cdf_diff
-        data_boot = cdf_diff_boot
-        grid_length = rows(cdf_diff)
-    }
-    
-    // Row counter for summary stats
-    real scalar row
+    // Row counter
+    real scalar row, G, M
     row = 1
+	real vector grid, idx, prob_grid, boot_stats
     
     // For each post-treatment period
     real scalar t, i
     for(t = T0; t <= T_max; t++) {
         // For each interval
         for(i = 1; i <= n_intervals; i++) {
-            real scalar q_start, q_end
-            q_start = sample_points[i]
-            q_end = sample_points[i + 1]
+            // Store interval bounds and time
+            summary_stats[row, 1] = t
+            summary_stats[row, 2] = grid_points[i]
+            summary_stats[row, 3] = grid_points[i + 1]
             
             // Find indices for this interval
-            real vector idx
-            idx = find_grid_indices(q_start, q_end, grid_length)
+            if (is_cdf) {
+                // For CDF, use actual Y values to find relevant grid points
+                G = rows(cdf_diff)
+                amin = st_numscalar("e(amin)")
+                amax = st_numscalar("e(amax)")
+                grid = range(amin, amax, (amax - amin)/(G-1))'
+                idx = selectindex(grid :>= grid_points[i] :& grid :<= grid_points[i + 1])
+            } else {
+                // For quantiles, use probability points
+                M = rows(quantile_diff)
+                prob_grid = range(0, 1, 1/(M-1))'
+                idx = selectindex(prob_grid :>= grid_points[i] :& prob_grid :<= grid_points[i + 1])
+            }
             
             // Compute effect
-            real scalar effect
-            effect = compute_mean_effect(data, idx[1], idx[2], t)
+            if (length(idx) > 0) {
+                if (is_cdf) {
+                    summary_stats[row, 4] = mean(cdf_diff[idx, t])
+                } else {
+                    summary_stats[row, 4] = mean(quantile_diff[idx, t])
+                }
+            }
             
-            // Store basic results
-            summary_stats[row, 1] = t
-            summary_stats[row, 2] = q_start
-            summary_stats[row, 3] = q_end
-            summary_stats[row, 4] = effect
-            
-            // Compute bootstrap statistics if CI requested
+            // Add confidence intervals if requested
             if (CI) {
-                real vector boot_stats
                 boot_stats = compute_boot_stats(data_boot, idx[1], idx[2], t, cl)
                 summary_stats[row, 5] = boot_stats[1]  // SE
                 summary_stats[row, 6] = boot_stats[2]  // CI lower
@@ -1289,6 +1329,7 @@ real scalar compute_summary_stats(string scalar agg, real vector sample_points,
     
     return(0)
 }
+
 
 /*
 Helper function to compute confidence interval bounds

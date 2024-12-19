@@ -25,7 +25,7 @@ Options:
     CL(real):          Confidence level (default: 0.95)
     QMIN(real):        Minimum quantile for estimation (default: 0)
     QMAX(real):        Maximum quantile for estimation (default: 1)
-    SIMPLEX:           Constrain weights to unit simplex
+    NOSIMPLEX:         Don't constrain weights to unit simplex
     MIXTURE:           Use mixture of distributions approach
     PERMUTATION:       Perform permutation test
     SEED(integer):     Set random seed
@@ -56,7 +56,6 @@ Version: 1.0.0
 Date: December 2024
 */
 
-capture program drop disco
 
 program define disco, eclass
     version 18.0
@@ -72,15 +71,16 @@ program define disco, eclass
         CL(real 0.95) ///
         QMIN(real 0) ///
         QMAX(real 1) ///
-        SIMPLEX ///
-        MIXTURE ///
-        PERMUTATION ///
+        NOSIMPlex ///
+        MIXture ///
+        PERMutation ///
         SEED(integer -1) ///
-        UNIFORM ///
+        UNIForm ///
         AGG(string) ///
-        SAMPLES(numlist) ///
-        GRAPH]
+        SAMPles(numlist) ///
+        GRaph]
     
+	
     // Input validation
     if !inlist("`agg'", "", "quantile", "cdf", "quantileDiff", "cdfDiff") {
         di as error "agg() must be one of: quantile, cdf, quantileDiff, cdfDiff"
@@ -120,13 +120,13 @@ program define disco, eclass
     }
 
     // Set flags based on options
-    local simplex_flag = 0
+    local simplex_flag = 1
     local mixture_flag = 0
     local permutation_flag = 0
     local doci = 0
     local uniform_flag = 0
 
-    if "`simplex'" != "" local simplex_flag = 1
+    if "`nosimplex'" != "" local simplex_flag = 0
     if "`mixture'" != "" local mixture_flag = 1
     if "`permutation'" != "" local permutation_flag = 1
     if "`ci'" != "" local doci = 1
@@ -159,12 +159,7 @@ program define disco, eclass
     preserve
     keep if `touse'
     
-    // Clear Mata and include required files
-    mata: mata clear
-    include disco_utils.mata
-    include quadprog.ado
-    include quadprog.mata
-    
+    //************************
     // Main analysis in Mata
     mata {
         // Store options in Mata variables
@@ -204,41 +199,27 @@ program define disco, eclass
         };
         
         // Summary statistics if requested
-        if ("`agg'" != "") {
-            string scalar samples_str
+		if (anyof(("quantile", "cdf"), "`agg'")) {
+				printf("Levels requested so no summary stats table produced.")
+		}
+        else if ("`agg'" != "") {
+
             samples_str = "`samples'"
-            real vector sample_points
             sample_points = strtoreal(tokens(samples_str))
-            
-            rc3 = compute_summary_stats("`agg'", sample_points, T0, T_max)
+			quantile_diff_mata = st_matrix("quantile_diff")
+			cdf_diff_mata = st_matrix("cdf_diff")
+           
+            rc3 = compute_summary_stats("`agg'", sample_points, T0, T_max, quantile_diff_mata,
+			cdf_diff_mata, `doci')
         };
     }
-    
-    // Generate plots if requested
+	//************************
+	
+	
+	// Generate plots if requested
     if "`graph'" != "" & "`agg'" != "" {
-        if "`agg'" == "quantile" | "`agg'" == "quantileDiff" {
-            local ytitle "Quantile"
-            local title "Quantile Function"
-        }
-        else {
-            local ytitle "CDF"
-            local title "Cumulative Distribution Function"
-        }
-        
-        if `doci' {
-            twoway (rarea qdiff_lower qdiff_upper evgrid if t >= T0, color(gs12)) ///
-                   (line quantile_diff evgrid if t >= T0, lcolor(black)), ///
-                   by(t, note("")) title("`title'") ytitle("`ytitle'") ///
-                   xtitle("Evaluation Points") legend(off)
-        }
-        else {
-            twoway (line quantile_diff evgrid if t >= T0, lcolor(black)), ///
-                   by(t, note("")) title("`title'") ytitle("`ytitle'") ///
-                   xtitle("Evaluation Points") legend(off)
-        }
+        disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci')
     }
-    
-    restore
     
     // Store results
     if `doci' == 1 {
@@ -255,9 +236,14 @@ program define disco, eclass
     ereturn matrix quantile_t = quantile_t
     ereturn matrix cdf_synth = cdf_synth
     ereturn matrix cdf_t = cdf_t
+	ereturn matrix cids = cids // to match weights back to treated units
+	ereturn scalar amin = amin
+	ereturn scalar amax = amax
     
-    if "`agg'" != "" {
+    if "`agg'" != "" & !inlist("`agg'", "quantile", "cdf") {
+		matrix
         ereturn matrix summary_stats = summary_stats
+		disco_estat summary
     }
     
     // Store metadata
@@ -268,11 +254,7 @@ program define disco, eclass
     ereturn local t0 = `t0'
     ereturn scalar N = _N
     
-    // Display immediate results if aggregation was requested
-    if "`agg'" != "" {
-        disco_estat summary
-    }
-    
+
     // Display permutation test results if requested
     if `permutation_flag' {
         di _n as txt "Permutation test p-value: " as res %5.3f `pval'

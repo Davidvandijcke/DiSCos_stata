@@ -1,6 +1,17 @@
 clear
 set seed 123
 
+capture program drop _all
+mata: mata clear
+
+include disco_utils.mata
+include quadprog.ado
+include quadprog.mata
+include disco_estat.ado
+include disco.ado
+include disco_plot.ado
+
+
 * Step 1: Generate IDs and Time Periods
 set obs 20                    // Number of IDs
 gen id_col = _n               // Create unique IDs
@@ -15,11 +26,9 @@ bysort id_col time_col: gen double group_sd   = runiform()*2 + 0.5  // SDs betwe
 * Step 3: Generate the y_col with group-specific means and variances
 gen double y_col = group_mean + group_sd * rnormal()
 
-capture program drop disco
-include disco.ado
 
 // Run disco with aggregation
-disco y_col id_col time_co, idtarget(1) t0(2) agg(quantileDiff)
+disco y_col id_col time_col, idtarget(1) t0(2) agg("cdfDiff") graph mixture
 // Results table displays automatically
 
 // View results again later
