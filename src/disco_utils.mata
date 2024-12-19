@@ -546,6 +546,160 @@ struct boot_out {
               cdf_t          // Target CDFs
 }
 
+/**
+ * Computes confidence interval bounds for quantile and CDF differences
+ * from bootstrap samples. Can compute either pointwise intervals or uniform bands.
+ *
+ * Parameters
+ * ----------
+ * quantile_diff_boot : real matrix
+ *     Matrix of bootstrap quantile differences. Each column is one bootstrap sample.
+ *     Dimensions: (M*T_max) × boots, where M is number of quantile points,
+ *     T_max is number of time periods, boots is number of bootstrap samples
+ * 
+ * cdf_diff_boot : real matrix
+ *     Matrix of bootstrap CDF differences. Each column is one bootstrap sample.
+ *     Dimensions: (G*T_max) × boots, where G is number of grid points
+ * 
+ * M : real scalar
+ *     Number of quantile points
+ * 
+ * G : real scalar
+ *     Number of grid points for CDF
+ * 
+ * T_max : real scalar
+ *     Total number of time periods
+ * 
+ * cl : real scalar
+ *     Confidence level (e.g., 0.95 for 95% confidence intervals)
+ * 
+ * uniform : real scalar
+ *     If 1, computes uniform confidence bands
+ *     If 0, computes pointwise confidence intervals
+ * 
+ * main_run : struct disco_out scalar
+ *     Results from main DISCO analysis, needed for uniform bands
+ * 
+ * Returns
+ * -------
+ * struct CI_out scalar containing:
+ *     qdiff_lower : M × T_max matrix of lower bounds for quantile differences
+ *     qdiff_upper : M × T_max matrix of upper bounds for quantile differences
+ *     cdiff_lower : G × T_max matrix of lower bounds for CDF differences
+ *     cdiff_upper : G × T_max matrix of upper bounds for CDF differences
+ */
+struct CI_out scalar compute_CI_bounds(real matrix quantile_diff_boot, cdf_diff_boot,
+                                     real scalar M, G, T_max, cl, uniform,
+                                     struct disco_out scalar main_run)
+{
+    struct CI_out scalar co
+    
+    // Initialize CI matrices
+    co.qdiff_lower = J(M, T_max, .)
+    co.qdiff_upper = J(M, T_max, .)
+    co.cdiff_lower = J(G, T_max, .)
+    co.cdiff_upper = J(G, T_max, .)
+    
+    if(!uniform) {
+        // Compute pointwise confidence intervals
+        real scalar alpha, lower_idx, upper_idx, idx
+		real vector vals
+
+        
+        // Calculate indices for confidence bounds based on confidence level
+        alpha = (1-cl)/2  // e.g., 0.025 for 95% CI
+        lower_idx = max((1, ceil(alpha*cols(quantile_diff_boot))))
+        upper_idx = min((cols(quantile_diff_boot), ceil((1-alpha)*cols(quantile_diff_boot))))
+        
+        // Process each time period
+        real scalar t
+        for(t=1; t<=T_max; t++) {
+            // Compute quantile difference bounds
+            for(idx=1; idx<=M; idx++) {
+                // Extract and sort bootstrap values for this quantile and time
+                vals = quantile_diff_boot[(t-1)*M + idx,.]'
+                vals = sort(vals, 1)
+                
+                // Get confidence bounds from sorted values
+                co.qdiff_lower[idx,t] = vals[lower_idx]
+                co.qdiff_upper[idx,t] = vals[upper_idx]
+            }
+            
+            // Compute CDF difference bounds
+            for(idx=1; idx<=G; idx++) {
+                // Extract and sort bootstrap values for this grid point and time
+                vals = cdf_diff_boot[(t-1)*G + idx,.]'
+                vals = sort(vals, 1)
+                
+                // Get confidence bounds from sorted values
+                co.cdiff_lower[idx,t] = vals[lower_idx]
+                co.cdiff_upper[idx,t] = vals[upper_idx]
+            }
+        }
+    }
+    else {
+        // Compute uniform confidence bands
+        
+        // Initialize vectors for maximum absolute deviations
+        real vector qmax_abs, cmax_abs
+		real matrix qdiff_mat, cdiff_mat, qdiff_err, cdiff_err
+
+        qmax_abs = J(cols(quantile_diff_boot), 1, .)
+        cmax_abs = J(cols(quantile_diff_boot), 1, .)
+        
+        // Calculate maximum absolute deviations for each bootstrap sample
+        real scalar b
+        for(b=1; b<=cols(quantile_diff_boot); b++) {
+            
+            // Reshape bootstrap sample to original dimensions
+            qdiff_mat = rowshape(quantile_diff_boot[,b], M)
+            cdiff_mat = rowshape(cdf_diff_boot[,b], G)
+            
+            // Compute deviations from main analysis
+            qdiff_err = qdiff_mat :- main_run.quantile_diff
+            cdiff_err = cdiff_mat :- main_run.cdf_diff
+            
+            // Store maximum absolute deviations
+            qmax_abs[b] = max(abs(vec(qdiff_err)))
+            cmax_abs[b] = max(abs(vec(cdiff_err)))
+        }
+        
+        // Compute critical values for uniform bands
+        real scalar q_crit, c_crit, m_i, g_i, base_val
+
+        real vector tmp
+        
+        // Get quantile critical value
+        tmp = sort(qmax_abs, 1)
+        q_crit = tmp[ceil((1-(1-cl)/2)*cols(quantile_diff_boot))]
+        
+        // Get CDF critical value
+        tmp = sort(cmax_abs, 1)
+        c_crit = tmp[ceil((1-(1-cl)/2)*cols(quantile_diff_boot))]
+        
+        // Calculate uniform bands for each time period
+        real scalar t2
+        for(t2=1; t2<=T_max; t2++) {
+            
+            // Compute quantile difference bands
+            for(m_i=1; m_i<=M; m_i++) {
+                base_val = main_run.quantile_diff[m_i,t2]
+                co.qdiff_lower[m_i,t2] = base_val - q_crit
+                co.qdiff_upper[m_i,t2] = base_val + q_crit
+            }
+            
+            // Compute CDF difference bands
+            for(g_i=1; g_i<=G; g_i++) {
+                base_val = main_run.cdf_diff[g_i,t2]
+                co.cdiff_lower[g_i,t2] = base_val - c_crit
+                co.cdiff_upper[g_i,t2] = base_val + c_crit
+            }
+        }
+    }
+    
+    return(co)
+}
+
 // Performs a single bootstrap iteration for confidence interval computation
 // Parameters:
 //   y: real vector - Outcome variable for all units and time periods
@@ -566,20 +720,20 @@ struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
                             real vector grid,
                             real scalar q_min, q_max, simplex, mixture) 
 {
-    // Declare structure and variables
+    // Declare structure and variables at start
     struct iter_out scalar out
-    real scalar t_len, c_len, J, cc
+    real scalar t_len, c_len, J
     real vector yt, idt, target_data, mytar, uid, cids, cd, mycon, indices_t, indices_c
     real matrix mycon_q, mycon_cdf, controls_resampled
     
-    // Extract data for current period
+    // Extract period data once
     yt = select(y, tt:==t)
     idt = select(id, tt:==t)
     target_data = select(yt, idt:==target_id)
     
     // Bootstrap target data
     t_len = length(target_data)
-    indices_t = ceil(runiform(t_len,1)*t_len)
+    indices_t = ceil(runiform(t_len,1):*t_len)
     mytar = target_data[indices_t]
     
     // Compute target distributions
@@ -591,22 +745,25 @@ struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
     cids = select(uid, uid:!=target_id)
     J = length(cids)
     
-    // Initialize control matrices
-    mycon_q = J(M,J,.)
-    mycon_cdf = J(G,J,.)
+    // Initialize control matrices with known dimensions
+    mycon_q = J(M, J, .)
+    mycon_cdf = J(G, J, .)
     
     // Bootstrap and compute distributions for each control
     for (ci=1; ci<=J; ci++) {
         // Extract and bootstrap control data
         cd = select(yt, idt:==cids[ci])
         c_len = length(cd)
-        indices_c = ceil(runiform(c_len,1)*c_len)
+        indices_c = ceil(runiform(c_len,1):*c_len)
         mycon = cd[indices_c]
         
         // Compute control distributions
         mycon_q[,ci] = disco_quantile(mycon, M, q_min, q_max)
         mycon_cdf[,ci] = cdf_builder(mycon, grid)
     }
+    
+    // Initialize weights vector
+    out.weights = J(J, 1, .)
     
     // Compute weights for pre-treatment period
     if (t<=T0) {
@@ -621,7 +778,7 @@ struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
                 for (cc=2; cc<=J; cc++) {
                     cd = select(yt, idt:==cids[cc])
                     c_len = length(cd)
-                    indices_c = ceil(runiform(c_len,1)*c_len)
+                    indices_c = ceil(runiform(c_len,1):*c_len)
                     mycon = cd[indices_c]
                     controls_resampled = controls_resampled, mycon
                 }
@@ -633,10 +790,6 @@ struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
             // CDF-based weights
             out.weights = disco_mixture_weights(mycon_cdf, out.target_cdf, simplex)
         }
-    } 
-    else {
-        // Post-treatment period: no weights needed
-        out.weights = J(J,1,.)
     }
     
     // Store control distributions
@@ -645,9 +798,6 @@ struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
     
     return(out)
 }
-
-
-
 // Generate bootstrap counterfactuals for confidence interval computation
 // Parameters:
 //   iter_results: Vector of iteration results from bootstrap samples
@@ -814,14 +964,6 @@ struct CI_out scalar disco_bootstrap_CI(real vector y, real vector id, real vect
         quantile_t_boot[,b] = vec(bo.quantile_t)
         cdf_t_boot[,b] = vec(bo.cdf_t)
     }
-    
-    // Store bootstrap matrices in Stata
-    st_matrix("qdiff_boot", quantile_diff_boot)
-    st_matrix("cdiff_boot", cdf_diff_boot)
-    st_matrix("q_synth_boot", quantile_synth_boot)
-    st_matrix("c_synth_boot", cdf_synth_boot)
-    st_matrix("q_t_boot", quantile_t_boot)
-    st_matrix("c_t_boot", cdf_t_boot)
     
     // Initialize confidence interval matrices
     qdiff_lower = J(M,T_max,.)

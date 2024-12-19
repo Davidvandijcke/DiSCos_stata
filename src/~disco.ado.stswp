@@ -145,15 +145,6 @@ program define disco, rclass
         return matrix cdiff_lower = cdiff_lower
         return matrix cdiff_upper = cdiff_upper
         
-
-
-        // Also return bootstrap matrices
-        return matrix qdiff_boot = qdiff_boot
-        return matrix cdiff_boot = cdiff_boot
-        return matrix q_synth_boot = q_synth_boot
-        return matrix c_synth_boot = c_synth_boot
-        return matrix q_t_boot = q_t_boot
-        return matrix c_t_boot = c_t_boot
     }
 
     // If no CI requested, just return main results
