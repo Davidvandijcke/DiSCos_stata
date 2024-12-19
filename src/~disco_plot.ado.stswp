@@ -58,7 +58,7 @@ program define disco_plot
 
         twoway (line quantile_t tau, lcolor(blue)) ///
                (line quantile_synth tau, lcolor(red) lpattern(dash)), ///
-               by(time, note("")) ///
+               by(time, note("") title("`title'") ) ///
                ytitle("`ytitle'") ///
                xtitle("Quantile") ///
                legend(order(1 "Observed" 2 "Synthetic") ring(0) pos(1)) ///

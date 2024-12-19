@@ -1,6 +1,8 @@
 clear all
 set seed 12345
 
+net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
+
 //------------------------------------------------------
 // Create a small artificial dataset
 // Suppose we have 5 units (id=1,...,5), 4 periods (time=1,...,4)
@@ -19,7 +21,7 @@ tsset id time
 //------------------------------------------------------
 // Test the disco command without mixture, with simplex
 //------------------------------------------------------
-disco y id time, idtarget(1) t0(3) m(50) g(100) simplex
+disco y id time, idtarget(1) t0(3) m(50) g(100) 
 
 // Check that weights sum to one
 matrix w = e(weights)
@@ -41,7 +43,7 @@ display "Check weights are nonnegative: minimum weight = " min_w
 //------------------------------------------------------
 // Test with mixture approach and simplex
 //------------------------------------------------------
-disco y id time, idtarget(1) t0(3) mixture m(50) g(100) simplex
+disco y id time, idtarget(1) t0(3) mixture m(50) g(100) 
 
 matrix w_mix = e(weights)
 scalar sum_w_mix = 0
