@@ -4,12 +4,8 @@ set seed 123
 capture program drop _all
 mata: mata clear
 
-include disco_utils.mata
-include quadprog.ado
-include quadprog.mata
-include disco_estat.ado
-include disco.ado
-include disco_plot.ado
+
+net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
 
 
 * Step 1: Generate IDs and Time Periods
