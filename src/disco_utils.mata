@@ -1250,8 +1250,6 @@ real scalar compute_summary_stats(string scalar agg, real vector sample_points,
         if (max(sample_points) <= 1 & min(sample_points) >= 0) {
             grid_points_temp = amin :+ sample_points :* (amax - amin)
             // Add endpoints if not included
-			amin 
-			amax
             if (min(grid_points_temp) > amin) grid_points = amin \ grid_points_temp'
             if (max(grid_points_temp) < amax) grid_points = grid_points \ amax
         } else {

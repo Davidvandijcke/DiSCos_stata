@@ -1104,7 +1104,6 @@ real scalar disco_ci_wrapper(real vector y, id, tt,
                                q_min, q_max, simplex, mixture,
                                boots, cl, uniform)
     
-	results
     // Store difference confidence intervals
     st_matrix("qdiff_lower", results.qdiff_lower)
     st_matrix("qdiff_upper", results.qdiff_upper)
@@ -1251,8 +1250,6 @@ real scalar compute_summary_stats(string scalar agg, real vector sample_points,
         if (max(sample_points) <= 1 & min(sample_points) >= 0) {
             grid_points_temp = amin :+ sample_points :* (amax - amin)
             // Add endpoints if not included
-			amin 
-			amax
             if (min(grid_points_temp) > amin) grid_points = amin \ grid_points_temp'
             if (max(grid_points_temp) < amax) grid_points = grid_points \ amax
         } else {

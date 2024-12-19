@@ -18,10 +18,10 @@ Required input:
     t0:         First treatment period
 
 Options:
-    M(integer):         Number of quantile points (default: 1000)
-    G(integer):         Number of grid points (default: 1000)
+    M(integer):         Number of quantile points (default: 100)
+    G(integer):         Number of grid points (default: 100)
     CI:                 Compute confidence intervals
-    BOOTS(integer):     Number of bootstrap replications (default: 500)
+    BOOTS(integer):     Number of bootstrap replications (default: 300)
     CL(real):          Confidence level (default: 0.95)
     QMIN(real):        Minimum quantile for estimation (default: 0)
     QMAX(real):        Maximum quantile for estimation (default: 1)
@@ -64,10 +64,10 @@ program define disco, eclass
     syntax varlist(min=3 max=3) [if] [in], ///
         idtarget(integer) ///
         T0(integer) ///
-        [M(integer 1000) ///
-        G(integer 1000) ///
+        [M(integer 100) ///
+        G(integer 100) ///
         CI ///
-        BOOTS(integer 500) ///
+        BOOTS(integer 300) ///
         CL(real 0.95) ///
         QMIN(real 0) ///
         QMAX(real 1) ///
@@ -100,9 +100,9 @@ program define disco, eclass
     markout `touse' `id_col', strok
     
     // Initialize optional arguments
-    if ("`m'"=="") local m = 1000
-    if ("`g'"=="") local g = 1000
-    if ("`boots'"=="") local boots = 500
+    if ("`m'"=="") local m = 100
+    if ("`g'"=="") local g = 100
+    if ("`boots'"=="") local boots = 300
     if ("`cl'"=="") local cl = 0.95
     if ("`qmin'"=="") local qmin = 0
     if ("`qmax'"=="") local qmax = 1
@@ -157,7 +157,7 @@ program define disco, eclass
     // Preserve dataset before Mata operations
     tempname base
     preserve
-    keep if `touse'
+    quietly: keep if `touse'
     
     //************************
     // Main analysis in Mata
@@ -218,7 +218,7 @@ program define disco, eclass
 	
 	// Generate plots if requested
     if "`graph'" != "" & "`agg'" != "" {
-        disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl')
+        quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl')
     }
     
     // Store results

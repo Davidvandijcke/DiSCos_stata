@@ -28,4 +28,4 @@ gen double y_col = group_mean + group_sd * rnormal()
 
 
 // Run disco with aggregation
-disco y_col id_col time_col, idtarget(1) t0(2) agg("quantileDiff") graph ci boots(10) nouniform m(100) g(100)
+disco y_col id_col time_col, idtarget(1) t0(2) agg("quantile") graph peru m(100) g(100)
