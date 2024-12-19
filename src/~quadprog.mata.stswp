@@ -2,11 +2,6 @@
 version 14.0
 mata:
 
-struct quadprog_result {
-    real vector x
-    real scalar cost
-}
-
 matrix solve_quadprog(real matrix G, 
                                     real vector g0, 
                                     real matrix CE, 
