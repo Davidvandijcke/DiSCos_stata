@@ -1,0 +1,13 @@
+v 1.0.0
+d 'DISCO': Distributional Synthetic Controls
+d 
+d Author: David Van Dijcke
+d University of Michigan, Ann Arbor
+d dvdijcke@umich.edu
+d
+d DiSCo implements the Distributional Synthetic Controls method,
+d extending synthetic controls to entire outcome distributions.
+d
+p disco Estimate distributional synthetic controls
+p disco_estat Post-estimation statistics for DiSCo
+p disco_plot Visualization tools for DiSCo results

@@ -48,7 +48,7 @@ matrix solve_quadprog(real matrix G,
           "matrix(" + tmpres + ")"
     
     // Print command for debugging
-    printf("Executing command: %s\n", cmd)
+    // printf("Executing command: %s\n", cmd)
     
     // Call Stata command
     stata(cmd)
