@@ -105,20 +105,22 @@ real vector disco_solve_weights(real matrix controls,
 
     // Setup QP problem matrices
     C_in = Cq  // No scaling applied
-    G = 2*(C_in' * C_in)
-    g0 = -2*(C_in' * target_s)
+    G = 2*(C_in' * C_in)    // J × J matrix
+    g0 = -2*(C_in' * target_s)  // J × 1 vector
     
     // Equality constraint: sum of weights = 1
-    CE = J(J,1,1)
-    ce0 = (-1)
-
-    // Inequality constraints for simplex case
+    CE = J(J,1,1)     // J × 1 matrix
+    ce0 = (-1)        // 1 × 1 vector
+    
+    // Inequality constraints
     if (simplex==1) {
-        CI = I(J)
-        ci0 = J(J,1,0)
+        CI = I(J)         // J × J matrix for non-negativity constraints
+        ci0 = J(J,1,0)    // J × 1 vector of zeros
     } else {
-        CI = J(J,0,0)   // No inequalities
-        ci0 = J(0,1,0)
+        // Single non-binding constraint: sum of weights >= -inf -- because of how I've set up the quadprog plugin
+        // This effectively imposes no constraint since we already have sum of weights = 1
+        CI = J(J,1,1)     // J × 1 matrix of ones (for sum of weights)
+        ci0 = (-1e20)     // 1 × 1 vector with large negative number
     }
 
     // Solve QP and extract weights
@@ -127,23 +129,6 @@ real vector disco_solve_weights(real matrix controls,
 
     return(w)
 }
-
-// Helper to compute CDF at given grid points
-real vector cdf_at_points(real vector x, real vector grid) {
-    real scalar N, G, g, pos
-    real vector xs, out
-    N = length(x)
-    xs = sort(x, 1)
-    G = length(grid)
-    out = J(G, 1, 0)
-    for (g=1; g<=G; g++) {
-        pos = sum(xs :<= grid[g])
-        out[g] = pos / N
-    }
-    return(out)
-}
-
-
 // Compute mixture weights using linear programming
 // Parameters:
 //   controls: Matrix of control variables
@@ -665,7 +650,7 @@ struct CI_out scalar compute_CI_bounds(real matrix quantile_diff_boot, cdf_diff_
         }
         
         // Compute critical values for uniform bands
-        real scalar q_crit, c_crit m_i, g_i, base_val
+        real scalar q_crit, c_crit, m_i, g_i, base_val
 
         real vector tmp
         
@@ -1108,5 +1093,231 @@ real scalar disco_ci_wrapper(real vector y, id, tt,
     return(0)
 }
 
+
+
+
+/*
+Helper function to identify indices in grid corresponding to quantile range
+Inputs:
+    q_start: starting quantile value
+    q_end: ending quantile value
+    grid_length: length of evaluation grid
+Returns:
+    2x1 vector containing [start_idx, end_idx]
+*/
+real vector find_grid_indices(real scalar q_start, real scalar q_end, 
+                            real scalar grid_length) 
+{
+    real scalar idx_start, idx_end
+    
+    // Ensure values are within bounds
+    if (q_start < 0 | q_end > 1) {
+        _error("Quantile values must be between 0 and 1")
+    }
+    
+    // Convert quantiles to indices
+    idx_start = max((1, ceil(q_start * grid_length)))
+    idx_end = min((grid_length, floor(q_end * grid_length)))
+    
+    return((idx_start \ idx_end))
+}
+
+/*
+Helper function to compute mean effect over a range
+Inputs:
+    data: matrix containing effects
+    idx_start: starting index
+    idx_end: ending index
+    t: time period column
+Returns:
+    Mean effect over specified range
+*/
+real scalar compute_mean_effect(real matrix data, real scalar idx_start, 
+                              real scalar idx_end, real scalar t) 
+{
+    real vector range
+    range = data[|idx_start, t \ idx_end, t|]
+    
+    // Check for missing values
+    if (anyof(range, .)) {
+        return(.)
+    }
+    
+    return(mean(range))
+}
+
+/*
+Helper function to compute bootstrap statistics
+Inputs:
+    boot_data: 3D array of bootstrap samples
+    idx_start: starting index
+    idx_end: ending index
+    t: time period
+    cl: confidence level
+Returns:
+    3x1 vector containing [se, ci_lower, ci_upper]
+*/
+real vector compute_boot_stats(real matrix boot_data, real scalar idx_start, 
+                             real scalar idx_end, real scalar t, 
+                             real scalar cl) 
+{
+    real vector boot_means, stats
+    
+    // Compute mean effect for each bootstrap sample
+    boot_means = J(cols(boot_data), 1, .)
+    for(b=1; b<=cols(boot_data); b++) {
+        boot_means[b] = mean(boot_data[|idx_start, t, b \ idx_end, t, b|])
+    }
+    
+    // Remove missing values
+    boot_means = select(boot_means, !missing(boot_means))
+    
+    if (length(boot_means) == 0) {
+        return(J(3, 1, .))
+    }
+    
+    // Compute standard error
+    real scalar se
+    se = sqrt(variance(boot_means))
+    
+    // Compute confidence interval bounds
+    real vector ci_bounds
+    ci_bounds = get_ci_bounds(boot_means, cl)
+    
+    return((se \ ci_bounds))
+}
+
+/*
+Main function to compute summary statistics
+Inputs:
+    agg: string indicating type of aggregation ("quantile", "cdf", "quantileDiff", "cdfDiff")
+    sample_points: vector of quantile points for summary statistics
+    T0: first treatment period
+    T_max: last period
+Returns:
+    0 if successful, error code otherwise
+*/
+real scalar compute_summary_stats(string scalar agg, real vector sample_points, 
+                                real scalar T0, real scalar T_max) 
+{
+    // Input validation
+    if (!anyof(("quantile", "cdf", "quantileDiff", "cdfDiff"), agg)) {
+        errprintf("Invalid aggregation type\n")
+        return(1)
+    }
+    
+    if (cols(sample_points) < 1) {
+        errprintf("sample_points must contain at least one value\n")
+        return(1)
+    }
+    
+    // Sort sample points and ensure they include 0 and 1
+    sample_points = sort(sample_points', 1)
+    if (sample_points[1] > 0) {
+        sample_points = 0 \ sample_points
+    }
+    if (sample_points[length(sample_points)] < 1) {
+        sample_points = sample_points \ 1
+    }
+    
+    // Number of intervals
+    real scalar n_intervals
+    n_intervals = length(sample_points) - 1
+    
+    // Initialize summary stats matrix
+    // Columns: time period, interval start, interval end, effect, se, ci_lower, ci_upper
+    real matrix summary_stats
+    summary_stats = J(n_intervals * (T_max - T0 + 1), 7, .)
+    
+    // Determine which matrices to use based on aggregation type
+    real matrix data, data_boot
+    real scalar grid_length
+    
+    if (agg == "quantileDiff" | agg == "quantile") {
+        data = quantile_diff
+        data_boot = quantile_diff_boot
+        grid_length = rows(quantile_diff)
+    }
+    else {
+        data = cdf_diff
+        data_boot = cdf_diff_boot
+        grid_length = rows(cdf_diff)
+    }
+    
+    // Row counter for summary stats
+    real scalar row
+    row = 1
+    
+    // For each post-treatment period
+    real scalar t, i
+    for(t = T0; t <= T_max; t++) {
+        // For each interval
+        for(i = 1; i <= n_intervals; i++) {
+            real scalar q_start, q_end
+            q_start = sample_points[i]
+            q_end = sample_points[i + 1]
+            
+            // Find indices for this interval
+            real vector idx
+            idx = find_grid_indices(q_start, q_end, grid_length)
+            
+            // Compute effect
+            real scalar effect
+            effect = compute_mean_effect(data, idx[1], idx[2], t)
+            
+            // Store basic results
+            summary_stats[row, 1] = t
+            summary_stats[row, 2] = q_start
+            summary_stats[row, 3] = q_end
+            summary_stats[row, 4] = effect
+            
+            // Compute bootstrap statistics if CI requested
+            if (CI) {
+                real vector boot_stats
+                boot_stats = compute_boot_stats(data_boot, idx[1], idx[2], t, cl)
+                summary_stats[row, 5] = boot_stats[1]  // SE
+                summary_stats[row, 6] = boot_stats[2]  // CI lower
+                summary_stats[row, 7] = boot_stats[3]  // CI upper
+            }
+            
+            row++
+        }
+    }
+    
+    // Store results in Stata
+    st_matrix("summary_stats", summary_stats)
+    
+    return(0)
+}
+
+/*
+Helper function to compute confidence interval bounds
+Inputs:
+    boot_samples: vector of bootstrap samples
+    cl: confidence level
+Returns:
+    2x1 vector containing [lower_bound, upper_bound]
+*/
+real vector get_ci_bounds(real vector boot_samples, real scalar cl) 
+{
+    real vector sorted, bounds
+    real scalar n, lower_idx, upper_idx
+    
+    // Sort bootstrap samples
+    sorted = sort(boot_samples, 1)
+    n = length(sorted)
+    
+    // Calculate indices for confidence bounds
+    lower_idx = ceil((1-cl)/2 * n)
+    upper_idx = ceil((1-(1-cl)/2) * n)
+    
+    // Handle edge cases
+    if (lower_idx < 1) lower_idx = 1
+    if (upper_idx > n) upper_idx = n
+    
+    bounds = sorted[lower_idx] \ sorted[upper_idx]
+    
+    return(bounds)
+}
 
 end

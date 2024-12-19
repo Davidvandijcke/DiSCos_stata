@@ -18,10 +18,9 @@ gen double y_col = group_mean + group_sd * rnormal()
 capture program drop disco
 include disco.ado
 
+// Run disco with aggregation
+disco y_col id_col time_col, idtarget(1) t0(2) agg(quantileDiff) 
+// Results table displays automatically
 
-// Test full CI with corrected syntax
-disco y_col id_col time_col, idtarget(1) t0(2) simplex   ci boots(20) // mixture
-return list
-matrix list r(weights)
-return list
-matrix list r(quantile_synth)
+// View results again later
+disco_estat summary
