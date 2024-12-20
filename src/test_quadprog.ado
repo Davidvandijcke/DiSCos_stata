@@ -35,18 +35,18 @@ matrix results = J(1, 3, 0)  // 1 row, 3 columns for x1, x2, cost
 // Create a dummy variable to ensure the plugin call knows there's data
 gen y = 1
 
-// Run the quadprog interface defined in quadprog.ado and quadprog.mata
-mata:
-G_m = st_matrix("G")
-g0_m = st_matrix("g0")
-CE_m = st_matrix("CE")
-ce0_m = st_matrix("ce0")
-CI_m = st_matrix("CI")
-ci0_m = st_matrix("ci0")
-
-res = solve_quadprog(G_m, g0_m, CE_m, ce0_m, CI_m, ci0_m)
-res
-end
+// // Run the quadprog interface defined in quadprog.ado and quadprog.mata
+// mata:
+// G_m = st_matrix("G")
+// g0_m = st_matrix("g0")
+// CE_m = st_matrix("CE")
+// ce0_m = st_matrix("ce0")
+// CI_m = st_matrix("CI")
+// ci0_m = st_matrix("ci0")
+//
+// res = solve_quadprog(G_m, g0_m, CE_m, ce0_m, CI_m, ci0_m)
+// res
+// end
 
 // The above 'res' should contain a row vector: [x1, x2, cost] = [0.5, 0.5, 0.25]
 

@@ -1,5 +1,5 @@
 // quadprog.mata
-version 14.0
+version 18.0
 mata:
 
 matrix solve_quadprog(real matrix G, 

@@ -45,4 +45,4 @@ else if "`os'" == "Unix" {
 	local plugin "quadprog_mata_linux"
 }
 
-program `plugin', plugin
+program quadprog_mata_mac, plugin

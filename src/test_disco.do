@@ -6,6 +6,11 @@ mata: mata clear
 
 
 net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
+// do disco.ado 
+// do disco_plot.ado
+// do disco_utils.mata
+// do quadprog.ado
+// do quadprog.mata
 
 
 * Step 1: Generate IDs and Time Periods
