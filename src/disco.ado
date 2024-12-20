@@ -59,6 +59,8 @@ Date: December 2024
 
 program define disco, eclass
     version 18.0
+	
+
     
     // Syntax parsing
     syntax varlist(min=3 max=3) [if] [in], ///
@@ -86,6 +88,9 @@ program define disco, eclass
         di as error "agg() must be one of: quantile, cdf, quantileDiff, cdfDiff"
         exit 198
     }
+	
+// 	// load mata objects
+// 	mata mata mlib index
     
     // Mark the estimation sample
     marksample touse, novarlist

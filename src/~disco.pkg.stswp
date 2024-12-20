@@ -11,9 +11,7 @@ f disco.ado
 f disco.sthlp
 f disco_estat.ado
 f disco_plot.ado
-f quadprog.ado
+f
 f ldisco.mlib
 f quadprog_mata_mac.plugin
 f quadprog_mata_linux.so
-f quadprog_mata_linux.plugin
-

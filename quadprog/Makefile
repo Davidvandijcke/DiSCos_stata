@@ -7,13 +7,13 @@ LDFLAGS = -fms-extensions -shared
 
 # Stata directory (adjust for each platform)
 ifeq ($(OS),Windows_NT)  # Windows
-    STATA_DIR = C:/Program Files/Stata17
+    STATA_DIR ?= C:/Program Files/Stata17
 else
-    STATA_DIR = /Applications/Stata
+    STATA_DIR ?= /Applications/Stata
 endif
 
 # QuadProg++ directory (adjust for each platform)
-QUADPROG_DIR = /Users/davidvandijcke/University\ of\ Michigan\ \
+QUADPROG_DIR ?= /Users/davidvandijcke/University\ of\ Michigan\ \
 Dropbox/David\ Van\ Dijcke/Flo_GSRA/stata_repo/quadprog
 
 # Platform-specific settings

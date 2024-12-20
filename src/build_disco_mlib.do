@@ -2,7 +2,7 @@ clear all
 
 mata:
 mata clear
-mata set matastrict on
+mata set matastrict off
 end
 
 // Load all Mata functions into memory
