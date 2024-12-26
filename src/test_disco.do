@@ -4,8 +4,8 @@ set seed 123
 capture program drop _all
 mata: mata clear
 
-
-net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
+net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/main/src/") replace
+//net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
 // do disco.ado 
 // do disco_plot.ado
 // do disco_utils.mata

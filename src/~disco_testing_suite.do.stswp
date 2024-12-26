@@ -180,7 +180,7 @@ mata {
 }
 
 
-quietly: disco y id time, idtarget(1) t0(10) agg("cdf") graph
+quietly: disco y id time, idtarget(1) t0(10) agg("quantile") graph
 
 //------------------------------------------------------
 // Test disco_plot

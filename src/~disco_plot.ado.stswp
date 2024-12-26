@@ -96,7 +96,7 @@ program define disco_plot
         }
         if "`xtitle'" == "" local xtitle "Y"
         
-        local gmin = `min'  // You'll need to pass these from disco.ado TODO: this is a bug
+        local gmin = `min'  // You'll need to pass these from disco.ado TODO: th
         local gmax = `max'
         
         if "`agg'" == "cdfDiff" {

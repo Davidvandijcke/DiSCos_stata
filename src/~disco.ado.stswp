@@ -264,7 +264,12 @@ program define disco, eclass
 	ereturn scalar amin = amin
 	ereturn scalar amax = amax
 	
-
+	di
+    
+    if "`agg'" != "" & !inlist("`agg'", "quantile", "cdf") {
+        ereturn matrix summary_stats = summary_stats
+		disco_estat summary
+    }
     
     // Store metadata
     ereturn local cmd "disco"
