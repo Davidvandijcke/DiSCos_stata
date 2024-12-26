@@ -1,0 +1,5728 @@
+=== Content of __000000.dta ===
+<stata_dta><header><release>118</release><byteorder>LSF</byteorder><K>
+</K><N> N
+</N><label>
+</label><timestamp>
+17 Dec 2024 15:12</timestamp></header><map>
+</map><variable_types>
+</variable_types><varnames>id_col
+time_col
+y_col
+t_col
+</varnames><sortlist>
+</sortlist><formats>%9.0g
+%9.0g
+%9.0g
+%9.0g
+</formats><value_label_names>
+</value_label_names><variable_labels>
+</variable_labels><characteristics></characteristics><data>
+@ q7?
+@A!z~?
+`AB/-
+pA#@f?
+@@&I^>
+0Ah]
+@@Im
+A?^x?
+0AF'
+A<2w
+@r?H?
+@@',
+ A&,
+0AQ+C>
+`AnT
+`Al{9>
+pAr$
+`Ak$
+AST:?
+@tSr
+@A0z
+@gLO?
+A*s1
+0Ae[
+`AHc
+0AL56=
+Ao*,
+ AKC
+PApK
+A~-2?
+?e&2
+?/*`?
+?td[
+@K#Y
+@^~M
+@rLN
+@<S;
+@uI}>
+@m|c=
+@@bR
+@@iJ
+@@Jw
+@@s=
+@@:N
+@@6)
+@i:\
+@3:M
+@t=:
+@QJh?
+A/"?
+A*GW
+AP~+
+Ahou?
+AU!
+AeH|?
+AZk&<
+AO&;?
+AamK
+ A\O
+ A+>
+ A)Kv?
+ A\i
+ AV;;
+ A\5
+ Ak\
+0A[7
+0AIe
+0AMiO?
+0APl
+0A%6
+0AM#
+0Avx
+0Aor$
+@A:>
+@A:l
+@Ad${
+@AwT
+@Ame
+@A@5
+@AsC
+PAIN
+PA^x
+PA8Jh
+PAeS`
+PA)%
+PA!$
+PAbs
+`A]Oc>
+`ACd
+`Asb
+`A{j
+`A_N
+`A)H
+`A!M
+`AMj)
+pA#@
+pA'-
+pATs
+pABRn
+pACK+?
+pA~b
+pAW
+A\R_>
+A_w:=
+Af`W>
+Acz??
+Atsq?
+AYvS
+AR*6=
+A:A!?
+AOTW
+A|'(@
+ASp/
+AaA]
+?djB
+@OiO
+@@dvQ?
+@@T_?
+@@ib
+@@8i
+@@"C
+@@+t
+@KM9
+@cs 
+@""}>
+@@x3?
+@v2]
+@6D+
+@]l(?
+@o%k
+@rL
+@a(e?
+@hG)
+A=-^
+A9||=
+AMa%?
+ A#IM
+ A.'
+ A1I
+ AL:b?
+0As:
+0AYC
+0AgK
+0A |
+0A0h
+0AJkq
+0ARD
+0As|w
+0Avt
+0Adn
+0A0x>?
+0At6
+0A/\
+0A5s&@
+0Am|
+@AX{
+@AlK
+@A;Y
+@AdO
+@Auy
+PA:C
+PAH'
+PAl|
+PA12D
+PAaku
+PA.`b?
+`A)j
+`Al`
+`AW\
+`AC<
+pAi\s?
+pAxb
+pA|`
+pAR1q
+pA%\
+pAYG'
+pAgx
+pAN)
+pA7d
+AoUu?
+A`.?
+A{ <
+A4gY?
+A(^\
+AQaH?
+As[p
+ATx2?
+Aw}/
+A:6L
+?~8i?
+@}-W
+@4aW
+@@on
+@@$~@
+@@'y'?
+@@>$
+@@i5
+@@8s
+@@xO
+@@%yx>
+@D)P@
+@v8`?
+@Dfx
+@pDP>
+@dzi?
+@4X&?
+@a*h
+@%y^?
+@rlr?
+A{tw?
+AdzL?
+AioU?
+A4t{>
+Ao|Z
+AMr;?
+AAkz?
+ A*`
+ A7&
+ AI9I
+ AhE
+ A`V
+ AH+
+ AeN
+ A17
+ A#7??
+0A%``?
+0AG)
+0ALr
+0A9Nr?
+0AXh
+0AJS
+0A?.
+0Au&
+0AG,
+0A<S
+@AWRx?
+@AQr
+@ADz
+@A|-@
+@Ax,
+@A\(l
+@A`{
+@A5\%>
+@AMZ
+@ARj
+@AjN
+PAoA\
+PA4P
+PAy3
+PAm,
+PAyr9
+PA(z
+PA""
+PA!cd>
+`AY38
+`A}@
+`AFY8
+`ASd
+pApC
+pAO'
+pA4(
+pA%>
+pA6y
+pAxd2
+pA$9g?
+pAmp
+pAaj)?
+A7CA?
+A}OL
+AdHW
+ANJD?
+A%?b>
+A@<T@
+ACy??
+Aja
+A1{!
+A\\2
+Ab!s?
+AFsM?
+?--8
+@d0L>
+@24]
+@@;V
+@@fH
+@@Z 
+@@`H
+@@)2k
+@s=h?
+@oX:
+@%[M
+@M6i
+@J}m
+@%/L?
+AdWh
+ AW<
+ A~>
+ Ayj
+ A9F
+ A_7
+ AD0e
+ A@4O
+ A5G
+ AmF>
+0AHe
+0Aq,
+0AMle?
+0Aa_
+0An1
+0A/v&
+0A!;
+@A_]$
+@Ad$
+@A9Q
+@A3:
+@Akr
+@Ax#
+PAcU<?
+PA/E
+PAv]
+PA]o
+PAW&
+`ACq
+`AeC*>
+`A!@
+`A#ud?
+`AV?
+pAosC?
+pA$"
+pA|d
+pApj-?
+pAwA
+pA!<=>
+pA6uW?
+A)Hz?
+A~c#
+AU=M?
+A~]7?
+AS3U?
+AON[?
+A*kl
+A%zf
+AtK%?
+A&+x
+A<Y,
+AKIL
+A?CR>
+?X*%
+?Ok 
+?}>->
+?!r=
+@@vR
+@@X
+@@(&
+@@V&2@
+@@/y
+@@lW
+@@ 8
+@R2P
+@7I
+@t(`
+@Kl@?
+@uK7?
+@Zpe?
+@9*f?
+@zr|
+@2B1
+A|n~
+ Afq
+ A&B
+ A'W
+ AF=
+ AX/
+ Ay4
+ Afw;=
+ A8G5?
+0A5s!
+0AGb
+0AXA
+0AK+
+0A?=
+0A-h*
+0A "
+0AQS
+@AKC
+@A"}
+@A:
+@A:S
+@AvUV?
+@AGM
+PAQeo>
+PApN
+PA*x
+PASmt
+PA$3
+`A66W
+`AE%
+`AUe
+`A=H?>
+`Aw.
+`Az$
+`Arz
+`AN"
+`A7Y
+`Asf
+`A5F
+`A$~
+pAI%
+pA3=
+pA4V
+pA<g
+pAkZ5?
+pAVF
+pA3w
+pAGp
+pAWE
+pAgC
+A;!G?
+Ac>;?
+A`%:
+AK|Z
+A*!#
+A9_$
+AL9\?
+A2XV
+A;q7
+A7 *
+AhI0?
+A.#i
+?-)!
+?%.k
+?Ka7
+?wK1
+@sTV
+@Q(T>
+@>PX?
+@@nr
+@@z.
+@@'Z
+@@$(
+@@Pg
+@@I+
+@@=2`
+@@Xx%
+@@6D
+@@m@
+@@6<%?
+@Q%i>
+@mK,?
+@`wF?
+@aZH
+@4^>
+@eSY
+Aw*q
+ANYf
+A|0^
+ AS\
+ AO~S
+ AE6
+ AV2?
+0AL0
+0ArCV>
+0A'_
+0AXP9?
+0Amb>
+0Aux @
+0AHS
+0An4
+0A^;_
+@AcaX?
+@Azp
+@A+n
+PAs3
+PA/>
+PA9\
+PABg
+PA`7
+PA(l
+PA8mQ
+PAA 
+PA9[
+PA44|?
+`AMg
+`A.F
+`A&6
+`A,K
+`A&^
+pA.J
+pAY2[>
+pA-,#
+pARuF?
+pAfpk
+pA<zF?
+pArh
+pAW7@
+pABq
+Ar3<?
+AlX
+A:JH?
+Aw@$
+A=
+AAb`?
+Au@e?
+A-W=
+AiwR>
+AJxx
+Ak_?
+AS<Y?
+A PU
+Afoo>
+AB.j
+A1|3>
+A\f$
+ADw1>
+?g|J?
+?VSU?
+@"h%?
+@1D?
+@@C,!>
+@@Qe
+@@Ugh
+@@Yn
+@@>W
+@@88^?
+@@H:V
+@@w1
+@@Ki
+@@|*
+@l{V
+@b1p
+@0PA
+@8aA?
+@%$p?
+@x'j
+@oH*
+@c`r
+@>1r
+AOxY>
+AK<6>
+Aneb?
+ A('
+ A>r
+ A0(
+ A#b
+ A=,a?
+ AJ2/
+ AT|
+ APE:?
+ A0H
+0As\*
+0A=pN>
+0AGG
+0AM2
+0A[4#
+0A7"
+@A2F
+@ANp
+@AF
+@A0Y
+@AG,
+@AgIC>
+@AwR
+@A%ex
+@AQ.
+@ATY
+@APmF?
+PA:[
+PAH57
+PA"a
+PA'W
+PAE!
+`Ao8
+`A>0
+`AJB
+`ADn]?
+`AB"
+`Arm
+`A&-
+`AxXZ?
+`ATz
+pA3w
+pA!@s
+pAC{
+pA81
+pAe;0
+pAx7
+pAPqy
+pAU(N>
+AW21>
+AV21?
+AW|2?
+A0^t
+A7O|
+A{U:?
+A$zO
+A5Er
+A=h,?
+A<Db?
+AlQ2?
+?4U`
+?/Zr
+?qC~
+?nhW?
+?2@G?
+@U$9
+@@1n
+@@;l
+@@7Z
+@@2U
+@@*H
+@@H~
+@@M(
+@@u*
+@!{,?
+@4XQ
+@-?,>
+@{yx?
+@Fdf?
+@zj1@
+@NH[?
+@f4/
+@V-t>
+A'GV
+A5ko?
+A 0 ?
+ A!)8?
+ A\~
+ Afg,
+ A)c
+ Aa)q=
+ AQ^
+ AqIj?
+ AdV
+ Ael#?
+0A [
+0Ar6
+0A>kx
+0ACp
+0A0d
+0A>)
+0Ag$(?
+@A7l
+@Avhl
+@AMh
+@A,I
+PAL3
+PAc;N>
+PAXr
+PAR"
+PAZ9W
+PAeY
+PAUv1=
+PA,L5?
+PA~O0?
+PA4`
+`AVg
+`Az+U?
+`A_]
+pARfL?
+pAp5
+pAK6
+pAG)Q?
+pA#8
+pAX81
+pAtu
+AHNc?
+A)F)
+AG#
+A[(o?
+A~PN
+A^UR?
+AYu(
+A$!`
+AP1)
+AXP.
+AvhS?
+A?B}
+?S[B
+?^@:
+?[VE
+@Z\??
+@h!x
+@-lO
+@@'M
+@@<F
+@@c(E
+@@])
+@@`Y>>
+@e!V=
+@dPP
+@t a
+ANd%?
+AAr_?
+A_/M?
+A}G<
+ Aq]^=
+ A:]
+ ABu
+ A%`
+ A!}G
+0A=k
+0AU
+0A/S@>
+0AQ2
+0A]n
+0A7M
+@A%'
+@A(i
+@Az:
+@A+)g?
+@AWb
+@AS*
+PA7.
+PAC|?
+PAk5
+PA&M
+PA\W
+`Ak+l>
+`A1K
+`AWG
+`A/?
+`AA[
+`A&w
+`ARZ
+pA9ou
+pAsR
+pA0j
+pA!S
+pAhh*
+pA-M
+pAhgI
+pAl%K?
+AC@Y
+A@U?
+A\- @
+AJGu?
+AjcV
+Amu|>
+A"<
+AXA7
+A2e_
+AXuu
+A[76
+AppD
+A2af
+A0y\?
+A&vS
+ASFm?
+?H|1@
+@@n<
+@@9V
+@@k@
+@@,G\?
+@@9#
+@@m>
+@@ET}?
+@"!x>
+@6b^
+@0F;
+@/:L
+@Qj>
+@XNE?
+@8qG?
+@A.L
+@%DG?
+@v}G
+@g!?
+@fW3@
+@EYK?
+AxE1
+AqXd?
+AlT,?
+A3Ps
+AE-:>
+A?vl
+Af4]
+AFU
+AH$E>
+ArnZ
+ A9,
+ AF"
+ A{-
+ A+@<
+ ATs/
+ AM,
+ A@%b
+0AVd
+0A{*
+0A{F
+0A|
+0A79
+0AyN
+0AYNL
+0A}e
+@AVI
+@A0f
+@Ahu
+@A&>
+PAb?
+PAd 
+PA:k
+PA0aO?
+PA$@
+PA[~
+PAju
+PA[N
+PABc
+PA.r
+`A@Z
+`ABgP
+`A,8
+`AD
+`A|e
+`A'r
+`A7~N
+`ADf
+pA'2A
+pA6j
+pA!&
+pA>;
+A|pX?
+A!\O
+A0X4?
+ATZh=
+Aj_[
+AXPf
+AfAv
+A Cq
+A2EL?
+A|k"?
+Au8e
+Ak4x
+A`m1
+A^4)
+AGi
+A<zM?
+?uE8?
+?cqI?
+?<9Y?
+@t&B>
+@W'E
+@@_yZ=
+@@yw
+@|6V
+@<:O>
+@H</
+@R+&?
+@lI$?
+@VO9
+@t:@
+@FtM
+@{6>
+@#A-
+@Ucl>
+@^17?
+@lq`
+AURB
+A;MD
+Ad9G?
+ Ak&
+ A]w
+ AVQ1
+ AK%u>
+ AO<
+ AOS
+ AgNv?
+ AW"
+ AL8
+0AjgI
+0AU^c
+0AdD
+0Arf
+0A^6
+0Ale
+0Al-
+@AZrZ?
+@Az5
+@ADh
+@A`)P
+@An8
+PA.>
+PA=JT
+PA$b?
+PAz_,?
+PAGV
+PA{}
+`A;"3?
+`A2M/
+`AM-
+`AY2
+`A;!
+pA;C
+pAD)
+pA y
+pAn.=
+pA,r
+pAA9
+pAWa
+pANUk?
+pAYJ
+A`5C
+AFN}?
+AGR;
+A;<)
+AHZ[
+AI!F?
+A!<W>
+?`WF
+@_f9
+@@X"
+@@tkW
+@@Bq{?
+@@hq
+@@$IM
+@@1<1?
+@@n+
+@@R5$>
+@@P,:
+@ACT?
+@SAb?
+@c8v
+@H?g
+@7u7?
+@=d/
+@Lg2
+@Jm|
+@rRy?
+@/xH?
+@tUm
+A4@G>
+A6>m?
+A0;[
+AH$
+A0E#
+ A!v
+ A`J
+ Aqz
+ Am
+ Aor
+ A+m
+ Av:
+0AF[
+0A{{
+0AZ])?
+0Aa9
+0A06
+0Ak"
+0A7!
+0AJ+
+0A8S
+@Ag"
+@A"~
+@A"\
+@Am^?
+@A1x->
+@AWJ
+@A#h
+@Anh
+@Ax6
+@AG$
+PAf4
+PAsR
+PAsr
+PAzN*
+PATg
+PAkp
+`A-_p
+`AAp:
+`A39
+`A@*
+`AAvk>
+`A^2[>
+`AG5D>
+pA[M
+pAux
+pAim 
+pAcQ
+pABc
+pAdk
+pA2i
+pAjL
+pA;|
+pAQS0
+AfCl?
+Ar1v
+Ak>i
+As;1>
+AagH
+AFdi
+Acyj
+A_I"
+Ak%[
+AR#B
+?~EP
+?H8C>
+@Kr8
+@$]o
+@Z{ 
+@@jMY
+@@;H
+@@[M
+@@x5
+@@(W
+@@k u
+@M&<
+@`o|
+@(@I
+@gk8?
+@r="
+@KYo?
+@<wS?
+@gev?
+@!I!
+A\O.?
+A5:R
+A|R{
+AHo 
+A;d'?
+ AN=
+ A9c&
+ A4F
+ A`/
+0A.,O>
+0A'#
+0A\kT>
+0A3N
+0A}F
+0AY:
+0AU1
+0AM3
+@A{9
+@A w6
+@Akn
+@A^d
+@A;R
+@A+b\?
+PAbh
+PAL0
+PApn
+PA[F
+PABc
+PAs88
+PAeUp
+PAAG
+`ATj
+`A!c
+`A<Z)?
+`Al/
+`A;=O?
+`AyAp
+`A9V
+pA;`
+pA~Q
+pAA`M?
+pA*D
+pAW*2
+pAB
+Ao>o
+AzSp=
+A9AW
+A;xl
+A@Qp
+AKN*
+A.=Z
+A<q1
+AO-P
+A'Lv?
+AM>R?
+Au!I
+?"Hf
+?8+I?
+?F]t?
+@&}u=
+@$Y6>
+@/6 >
+@@y}
+@@c1
+@@|.
+@@AV
+@@jd\>
+@@J5P
+@@(
+@QhV
+@G@d
+@\4!@
+@{ug
+@F/^?
+@{{5
+@F^0
+@(TU?
+@<1(=
+A+^n>
+AE6:
+Az(#
+AtRa?
+Ah]x?
+Ab)K?
+As%I
+A`7*
+ An!
+ A6E
+ A`l
+0AY/
+0ACF\
+0ABw
+0A/dp>
+@A>6h?
+@A/AA
+@AcW
+@A'P
+@A&y
+PAu#
+PA@P
+PARuw?
+PARD
+PA7[?>
+`Abj
+`AIPW>
+`A*%
+`Av]
+`AVq
+pA9oP?
+pA.m
+pArs
+pAp\
+pAa
+pAAz
+pA>W
+pALr
+pA%a
+pAT#
+AdMu
+AY7C
+Aul]
+AHsx?
+Auy1>
+A/'z>
+A),(?
+A#0o?
+A*]A?
+A=?}
+A!2p
+AZLi
+A&Vu?
+?*@B?
+@v$8>
+@@&:
+@@L7+
+@@R]
+@@,4
+@@-\
+@@Cw
+@@OE
+@@\%9=
+@+)U?
+@P~u
+@ugj?
+@o(&
+@J<A<
+@Q($
+A"#V<
+Appi
+AQO6
+Az:i?
+AJ:c
+A2!
+ A/!
+ APuf
+ AdzK
+ Agp5?
+0AMu.
+0ApRc
+0Ac1
+0Atg:
+0A@W
+0ADJ
+@AVs`?
+@A}/
+@Ac$
+@A7F
+@Avp
+@A3W?
+@Aea
+@AcT
+PAp3(>
+PANG
+PA]Ws?
+PA]`?
+PA_,
+`AVw#
+`AD4
+`Ad@F
+`A,X
+`A{h
+`AfG
+`Ab6
+`AWb
+`A ]
+pAMI
+pA0T
+pA%s
+pANU
+pAa
+pA:I
+pAo3!>
+pA@h
+pAiSd
+AyeQ
+A-8C>
+A1x^
+A0m.
+Ag>3
+Ajn
+?4Bw?
+?Mw_?
+? $??
+?gD"?
+?,Z,
+? 5F
+??e2>
+@O T
+@\yM
+@)5 =
+@@}e
+@@Xh6>
+@@m=(
+@@z|s
+@@Y?
+@@{-
+@@Gk
+@@(S
+@@PZ
+@;zD
+@J\8>
+@<1W?
+@G%Y
+@XG!?
+@8`t?
+@LGW>
+@X?.
+@(6}?
+@fEn
+@cA4?
+@tc
+A2q`
+AYc(
+AlT,
+A?2_?
+A7-_
+AN.N?
+AqAC
+ AfKX
+ AvP
+ A =
+ A0y
+ Ab8
+ Az?
+ Al62?
+0ACT
+0ADu
+0Azq
+0A;f
+0Ak5:?
+0Adc
+0AP(
+@A227?
+@Ae4
+@AF6|
+@A2a
+@AwB
+@AD3
+PA`x"?
+PA;l
+PA^a
+PAAf
+`Ark
+`A<3Q?
+`A8G
+`Ao>&?
+`AkET
+`ASu
+`AQ3
+pA{<n>
+AmI*?
+A@Q\?
+A$Jy
+Atn{=
+AN#0?
+A&^.
+A,* ?
+AeY6?
+A=D#?
+?DS_>
+@U!_
+@@e6
+@@1lG
+@@7t
+@@TN
+@@jtS>
+@@e B>
+@g=9?
+@n-l?
+@Y@j
+@,Tj
+@3Ht
+@p?O>
+A)/8
+A{J]
+A6{=?
+A=#~
+A<_E?
+AM+7?
+ Alu
+ ANE
+ A@J
+ Aq`
+ A\c
+ A.x
+ AFu
+ A<w-
+ Awz
+0A$H
+0AzX
+0AGM
+0A%~
+0A a
+0A?]
+0A3{$>
+@Al=(
+@Ax{
+@AG8
+@Adt
+@AzZ
+@AC-
+PAXT
+PAK}v
+PA^>
+PA}U
+PAR[]
+PA;+
+PA9.
+`Af&Y
+`A32_?
+`AsJ
+`A'^*
+`AP0
+`A==]
+`Adz
+pA}D
+pA"F
+AL96
+A`$)
+Ack#?
+A&r4>
+A3NB
+A<DG?
+AU9'
+A`0k
+A0#0?
+?sb+>
+?,]>
+@#-h
+@@DI
+@@CK
+@@*4
+@@H2
+@@?1
+@@#:u
+@@5
+@@1<
+@2R~
+@v2,?
+@=aZ?
+@uk7?
+@*@g?
+@ekN
+@2]x
+A[-B
+A(-z
+Ag{o
+AP]K>
+ A&)
+ A?&
+ A=c
+ A!@
+0A&r
+0AC*M?
+0A]v
+0AIv
+0A{(v?
+0A\G
+0A6
+0A]n
+@A<8
+@Ayw1
+@A0o
+@Ar/
+@ASg
+@AiL
+@AB>
+@A!m
+@A.e
+PA@O
+PA_;J
+`Ab0
+`Aqr
+`Al}b?
+`A7k
+`A)p
+`A28
+`Ar1g?
+`A(?
+pAvU/?
+pAd@
+pA&k
+pA+`
+pAI2
+pAZA
+pAqd
+ANY5?
+AgI>
+AV,h?
+Axch>
+A#qb
+Ap(/
+Ai:a?
+AzYj?
+AC9`?
+Ax<u:
+AMl;
+A)/x?
+APhY
+?:)C
+?8+_
+@wb*?
+@d&4>
+@6*)?
+@@Jl 
+@@mR
+@@({
+@@g,&
+@@)m
+@@o*
+@@qJ
+@B6?
+@N%z
+@o=<
+@ku)@
+@:Q=
+@F':>
+@j{"?
+@Y6=
+A"7A
+ABg"
+Afo>?
+AKLZ=
+Asb)?
+A(It?
+AXD/
+Am,@=
+A8k,
+AyW)>
+A]\n>
+ A-|
+ A\w
+ AK9
+ AZ/
+ AJSA?
+ A_P 
+ A**S>
+0APl
+0A,{
+0A-K
+0ATJ
+0AF=;
+0AQz
+0AG`j>
+@AVY
+@AQ!U
+@Aos
+@A([
+@A&p
+@An)
+@Am9V
+@ArZ
+PAl!6?
+PA1b
+PAA|
+PATW
+PAI+
+PAm`
+PA&q
+`A./
+`A>gM?
+`A'j'?
+`AD.5
+pACk
+pA# 
+pA/4
+pAb/
+pA|^
+pAU?
+pA;'u?
+pA:$^?
+pARSV
+AVA+>
+Ac/z>
+A3ah
+A006
+AYkt
+AKAg
+A@(
+AlaX>
+A~(}>
+A^i^
+Am97
+AEW2>
+?\B\
+?`s8?
+?>*e
+@q0l?
+@@m=
+@@w=e?
+@@GL
+@@,2
+@@#u
+@@@-
+@+>:?
+@>t0?
+@3dX?
+@^Sc
+@'6'
+@O^b
+@|J@
+@rg~
+@cld=
+@=Pe>
+@&8u>
+@}|5
+@Io)?
+AG)X
+ADuO
+A"5B
+ AUr
+ As^
+ A3r
+ Aod
+ AL%
+ A_X
+ AlU
+0A&W
+0ATK>=
+0Av5
+0A]$
+0A~|
+@A+4
+@A1o!@
+@AK9
+@Aq'7?
+@Amm
+@A0W
+PAZ9%?
+PAp6L?
+PA^f
+PAKw
+PA'U
+PA;r
+PA=X
+PAz1
+PATU
+PA+~,>
+PAv"
+`AU($
+`A/3
+`A=3&=
+`Agfk
+`AQ4S
+`A]i
+pA0B
+pA+v
+pAq-
+A^su
+AX{w?
+A=>O
+Ae|w>
+ATT?
+ApfJ?
+A;^@
+APZ9?
+A</data><strls></strls><value_labels></value_labels></stata_dta>
+
+
+
+=== Content of build_disco_mlib.do ===
+clear all
+
+mata:
+mata clear
+mata set matastrict off
+end
+
+// Load all Mata functions into memory
+do disco_utils.mata
+do quadprog.mata
+
+// Now create and populate the Mata library
+mata:
+mata mlib create ldisco, replace
+
+// Add each function you defined in disco_utils.mata
+mata mlib add ldisco CI_out()
+mata mlib add ldisco iter_out()
+mata mlib add ldisco boot_out()
+mata mlib add ldisco disco_out()
+mata mlib add ldisco get_unique()
+mata mlib add ldisco disco_quantile_points()
+mata mlib add ldisco disco_quantile()
+mata mlib add ldisco disco_solve_weights()
+mata mlib add ldisco disco_mixture_weights()
+mata mlib add ldisco cdf_builder()
+mata mlib add ldisco cdf_at_points()
+mata mlib add ldisco disco_full_run()
+mata mlib add ldisco disco_compute_ratio()
+mata mlib add ldisco disco_permutation_test()
+mata mlib add ldisco compute_CI_bounds()
+mata mlib add ldisco disco_CI_iter()
+mata mlib add ldisco bootCounterfactuals()
+mata mlib add ldisco disco_bootstrap_CI()
+mata mlib add ldisco disco_wrapper()
+mata mlib add ldisco disco_permutation_wrapper()
+mata mlib add ldisco disco_ci_wrapper()
+mata mlib add ldisco find_grid_indices()
+mata mlib add ldisco compute_mean_effect()
+mata mlib add ldisco compute_boot_stats()
+mata mlib add ldisco compute_summary_stats()
+mata mlib add ldisco get_ci_bounds()
+mata mlib add ldisco solve_quadprog()
+end
+//
+// // Done. The library ldisco.mlib is now created with all functions.
+//
+//
+// // Output structure for confidence intervals
+// struct CI_out {
+//     real matrix qdiff_lower,    // Lower bound for quantile differences
+//               qdiff_upper,      // Upper bound for quantile differences
+//               cdiff_lower,      // Lower bound for CDF differences
+//               cdiff_upper       // Upper bound for CDF differences
+// }
+//
+// // Output structure for bootstrap iteration
+// struct iter_out {
+//     real vector target_q,       // Target quantiles
+//               target_cdf,       // Target CDF
+//               weights          // Optimal weights
+//     real matrix controls_q,     // Control unit quantiles
+//               controls_cdf      // Control unit CDFs
+// }
+//
+// // Output structure for bootstrap results
+// struct boot_out {
+//     real matrix quantile_diff,  // Quantile differences
+//               cdf_diff,         // CDF differences
+//               quantile_synth,   // Synthetic quantiles
+//               cdf_synth,        // Synthetic CDFs
+//               quantile_t,       // Target quantiles
+//               cdf_t             // Target CDFs
+// }
+//
+// struct disco_out {
+//     real matrix weights, quantile_diff, cdf_diff, quantile_synth, cdf_synth,  
+//     quantile_t, cdf_t, cids
+// }
+
+
+
+=== Content of disco.ado ===
+/*
+Distributional Synthetic Controls (DiSCo)
+Implementation based on Gunsilius (2023) and Van Dijcke, Gunsilius, and Wright (2024)
+
+This command implements the DiSCo method for estimating counterfactual distributions
+using synthetic controls. It allows for both quantile-based and mixture-based approaches,
+with options for confidence intervals, permutation tests, and summary statistics.
+
+Syntax:
+    disco varlist(3) [if] [in], idtarget(integer) t0(integer) [options]
+
+Required input:
+    varlist:    Three variables in order:
+                1. Outcome variable (numeric)
+                2. Unit ID variable (numeric)
+                3. Time period variable (integer)
+    idtarget:   ID of the treated unit
+    t0:         First treatment period
+
+Options:
+    M(integer):         Number of quantile points (default: 100)
+    G(integer):         Number of grid points (default: 100)
+    CI:                 Compute confidence intervals
+    BOOTS(integer):     Number of bootstrap replications (default: 300)
+    CL(real):          Confidence level (default: 0.95)
+    QMIN(real):        Minimum quantile for estimation (default: 0)
+    QMAX(real):        Maximum quantile for estimation (default: 1)
+    NOSIMPLEX:         Don't constrain weights to unit simplex
+    MIXTURE:           Use mixture of distributions approach
+    PERMUTATION:       Perform permutation test
+    SEED(integer):     Set random seed
+    NOUNIFORM:         Don't use uniform confidence bands
+    AGG(string):       Type of aggregation for summary statistics
+                       ("quantile", "cdf", "quantileDiff", "cdfDiff")
+    SAMPLES(numlist):  Quantile points for summary statistics
+    GRAPH:             Generate plots of results
+
+Stored results:
+    e(weights):        Synthetic control weights
+    e(quantile_diff):  Quantile differences
+    e(cdf_diff):       CDF differences
+    e(quantile_synth): Synthetic control quantiles
+    e(quantile_t):     Target unit quantiles
+    e(cdf_synth):      Synthetic control CDFs
+    e(cdf_t):          Target unit CDFs
+    e(summary_stats):  Summary statistics (if agg specified)
+    
+    If CI specified:
+    e(qdiff_lower):    Lower bound for quantile differences
+    e(qdiff_upper):    Upper bound for quantile differences
+    e(cdiff_lower):    Lower bound for CDF differences
+    e(cdiff_upper):    Upper bound for CDF differences
+
+Author: David Van Dijcke
+Version: 1.0.0
+Date: December 2024
+*/
+
+
+program define disco, eclass
+    version 18.0
+	
+
+    
+    // Syntax parsing
+    syntax varlist(min=3 max=3) [if] [in], ///
+        idtarget(integer) ///
+        T0(integer) ///
+        [M(integer 100) ///
+        G(integer 100) ///
+        CI ///
+        BOOTS(integer 300) ///
+        CL(real 0.95) ///
+        QMIN(real 0) ///
+        QMAX(real 1) ///
+        NOSIMPlex ///
+        MIXture ///
+        PERMutation ///
+        SEED(integer -1) ///
+        NOUNIForm ///
+        AGG(string) ///
+        SAMPles(numlist) ///
+        GRaph]
+    
+	
+    // Input validation
+    if !inlist("`agg'", "", "quantile", "cdf", "quantileDiff", "cdfDiff") {
+        di as error "agg() must be one of: quantile, cdf, quantileDiff, cdfDiff"
+        exit 198
+    }
+	
+// 	// load mata objects
+// 	mata mata mlib index
+    
+    // Mark the estimation sample
+    marksample touse, novarlist
+    
+    // Extract variable names from varlist
+    local y_col : word 1 of `varlist'
+    local id_col : word 2 of `varlist'
+    local time_col : word 3 of `varlist'
+    
+    // Check for missing values
+    markout `touse' `y_col' `time_col'
+    markout `touse' `id_col', strok
+    
+    // Initialize optional arguments
+    if ("`m'"=="") local m = 100
+    if ("`g'"=="") local g = 100
+    if ("`boots'"=="") local boots = 300
+    if ("`cl'"=="") local cl = 0.95
+    if ("`qmin'"=="") local qmin = 0
+    if ("`qmax'"=="") local qmax = 1
+    if ("`seed'"=="") local seed = -1
+    if ("`samples'"=="") local samples "0.25 0.5 0.75"
+    
+    // Check required numeric options
+    if missing(`t0') {
+        di as err "t0() is required"
+        exit 198
+    }
+    if missing(`idtarget') {
+        di as err "idtarget() is required"
+        exit 198
+    }
+
+    // Set flags based on options
+    local simplex_flag = 1
+    local mixture_flag = 0
+    local permutation_flag = 0
+    local doci = 0
+    local uniform_flag = 0
+
+    if "`nosimplex'" != "" local simplex_flag = 0
+    if "`mixture'" != "" local mixture_flag = 1
+    if "`permutation'" != "" local permutation_flag = 1
+    if "`ci'" != "" local doci = 1
+    if "`nouniform'" != "" local uniform_flag = 0
+    
+    // Additional validation checks
+    if `m' < 1 {
+        di as err "M must be >=1"
+        exit 198
+    }
+    if `g' < 2 {
+        di as err "G must be >=2"
+        exit 198
+    }
+    if `qmin' < 0 | `qmax' > 1 {
+        di as err "q_min must be >=0 and q_max <=1"
+        exit 198
+    }
+    
+    // Identify time range in data
+    quietly levelsof `time_col', local(times)
+    local min_time : word 1 of `times'
+    local max_time : word `=wordcount("`times'")' of `times'
+    gen t_col = `time_col' - `min_time' + 1
+    local t_max = `max_time' - `min_time' + 1
+    local t0_col = `t0' - `min_time' + 1
+    
+    // Preserve dataset before Mata operations
+    tempname base
+    preserve
+    quietly: keep if `touse'
+    
+    //************************
+    // Main analysis in Mata
+    mata {
+        // Store options in Mata variables
+        M = `m'
+        G = `g'
+        T0 = `t0_col'
+        T_max = `t_max'
+        q_min = `qmin'
+        q_max = `qmax'
+        cl = `cl'
+        nboots = `boots'
+        simplex = `simplex_flag'
+        mixture = `mixture_flag'
+        uniform = `uniform_flag'
+        
+        // Load data into Mata
+        y = st_data(.,"`y_col'")
+        id = st_data(.,"`id_col'")
+        tt = st_data(.,"t_col")
+        target_id = `idtarget'
+        
+        // Run main DiSCo analysis
+        rc = disco_wrapper(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+        
+        // Permutation test if requested
+        if (`permutation_flag'==1) {
+            pval = disco_permutation_test(y,id,tt,target_id,T0,T_max,M,G,q_min,q_max,simplex,mixture)
+            st_local("pval", strofreal(pval))
+        };
+        
+        // Confidence intervals if requested
+        if (`doci'==1) {
+            rc2 = disco_ci_wrapper(y, id, tt, target_id, T0, T_max, M, G,
+                                q_min, q_max, simplex, mixture,
+                                nboots, cl, uniform)
+            st_local("rc2", strofreal(rc2))
+        };
+        
+        // Summary statistics if requested
+		if (anyof(("quantile", "cdf"), "`agg'")) {
+				printf("Levels requested so no summary stats table produced.")
+		}
+        else if ("`agg'" != "") {
+
+            samples_str = "`samples'"
+            sample_points = strtoreal(tokens(samples_str))
+			quantile_diff_mata = st_matrix("quantile_diff")
+			cdf_diff_mata = st_matrix("cdf_diff")
+           
+            rc3 = compute_summary_stats("`agg'", sample_points, T0, T_max, quantile_diff_mata,
+			cdf_diff_mata, `doci', cl)
+        };
+    }
+	//************************
+
+	
+	// Generate plots if requested
+    if "`graph'" != "" & "`agg'" != "" {
+        tempname qd qt qs cd cs qdl qdu cdl cdu
+        matrix `qd' = e(quantile_diff)
+        matrix `qt' = e(quantile_t)
+        matrix `qs' = e(quantile_synth)
+        matrix `cd' = e(cdf_diff)
+        matrix `cs' = e(cdf_synth)
+        
+        if `doci' == 1 {
+            matrix `qdl' = e(qdiff_lower)
+            matrix `qdu' = e(qdiff_upper)
+            matrix `cdl' = e(cdiff_lower)
+            matrix `cdu' = e(cdiff_upper)
+        }
+        
+        quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl') ///
+            quantile_diff(`qd') quantile_t(`qt') quantile_synth(`qs') ///
+            cdf_diff(`cd') cdf_synth(`cs') cdf_t(cdf_t) ///
+            qdiff_lower(`qdl') qdiff_upper(`qdu') cdiff_lower(`cdl') cdiff_upper(`cdu') ///
+            `options'
+    }
+	
+    // Store results
+    if `doci' == 1 {
+        ereturn matrix qdiff_lower = qdiff_lower
+        ereturn matrix qdiff_upper = qdiff_upper
+        ereturn matrix cdiff_lower = cdiff_lower
+        ereturn matrix cdiff_upper = cdiff_upper
+    }
+    
+    ereturn matrix weights = weights
+    ereturn matrix quantile_diff = quantile_diff
+    ereturn matrix cdf_diff = cdf_diff
+    ereturn matrix quantile_synth = quantile_synth
+    ereturn matrix quantile_t = quantile_t
+    ereturn matrix cdf_synth = cdf_synth
+    ereturn matrix cdf_t = cdf_t
+	ereturn matrix cids = cids // to match weights back to treated units
+	ereturn scalar amin = amin
+	ereturn scalar amax = amax
+    
+    if "`agg'" != "" & !inlist("`agg'", "quantile", "cdf") {
+        ereturn matrix summary_stats = summary_stats
+		disco_estat summary
+    }
+    
+    // Store metadata
+    ereturn local cmd "disco"
+    ereturn local cmdline `"disco `0'"'
+    ereturn local agg "`agg'"
+    ereturn local cl = `cl'
+    ereturn local t0 = `t0'
+    ereturn scalar N = _N
+    
+
+    // Display permutation test results if requested
+    if `permutation_flag' {
+        di _n as txt "Permutation test p-value: " as res %5.3f `pval'
+    }
+end
+
+
+
+=== Content of disco.pkg ===
+v 1.0.0
+d 'DISCO': Distributional Synthetic Controls
+d
+d Author: David Van Dijcke
+d University of Michigan, Ann Arbor
+d dvdijcke@umich.edu
+d Distribution-Date: 19dec2024
+
+Main command files
+f disco.ado
+f disco.sthlp
+f disco_estat.ado
+f disco_plot.ado
+f quadprog.ado
+f ldisco.mlib
+f quadprog_mata_mac.plugin
+f quadprog_mata_linux.so
+f quadprog_mata_linux.plugin
+
+
+
+
+=== Content of disco.sthlp ===
+{smcl}
+{* *! version 1.0.0 19dec2024}{...}
+{vieweralsosee "[ST] synth_runner" "help synth_runner"}{...}
+{viewerjumpto "Syntax" "disco##syntax"}{...}
+{viewerjumpto "Description" "disco##description"}{...}
+{viewerjumpto "Options" "disco##options"}{...}
+{viewerjumpto "Examples" "disco##examples"}{...}
+{viewerjumpto "Method" "disco##method"}{...}
+{viewerjumpto "Stored results" "disco##results"}{...}
+{viewerjumpto "References" "disco##references"}{...}
+{viewerjumpto "Author" "disco##author"}{...}
+
+{title:Title}
+
+{phang}
+{bf:disco} {hline 2} Distributional Synthetic Controls.
+
+{marker description}
+{title:Description}
+
+{pstd}
+{cmd:disco} implements the Distributional Synthetic Controls (DiSCo) method based on 
+Gunsilius (2023), extending the synthetic 
+control methodology of Abadie and Gardeazabal (2003) and Abadie, Diamond, and Hainmueller (2010) 
+to distributions. Instead of focusing solely on aggregate mean outcomes, DiSCo constructs 
+synthetic control weights that replicate an entire outcome distribution of a treated unit 
+from a set of control units.
+
+{pstd}
+By reproducing the quantile function (or, optionally, mixture of distributions) of the 
+treated unit before treatment, DiSCo identifies a set of weights that can be used to 
+form a synthetic control distribution in all time periods. This synthetic distribution 
+then serves as an estimate of the counterfactual distribution of the treated unit 
+in the absence of treatment. By comparing the observed treated distribution with 
+this synthetic counterpart, DiSCo estimates distributional treatment effects such as 
+differences in quantiles, CDFs, and other distributional functionals.
+
+{pstd}
+This approach is suitable for settings where one aims to identify heterogeneous treatment 
+effects along the entire distribution of outcomes, rather than focusing solely on averages. 
+The method is particularly useful when richer micro-level data are available at the unit level 
+(e.g., states, firms) but individuals within those units cannot be tracked over time.
+
+{pstd}
+{cmd:disco} also supports bootstrap inference for confidence intervals, permutation tests 
+analogous to the classical synthetic control permutation inference, and graphical summaries 
+of results.
+
+{pstd}
+Please cite Gunsilius (2023) and Van Dijcke, Gunsilius, and Wright (2024) when using this package.
+
+{marker syntax}
+{title:Syntax}
+
+{p 8 17 2}
+{cmd:disco} {it:varlist(3)} [{it:if}] [{it:in}], {opt idtarget(#)} {opt t0(#)} [{it:options}]
+
+{pstd}
+{it:varlist} must contain exactly three variables in the following order:
+
+{phang2}1. Outcome variable (numeric){p_end}
+{phang2}2. Unit ID variable (numeric){p_end}
+{phang2}3. Time period variable (integer){p_end}
+
+{pstd}
+{cmd:idtarget()} and {cmd:t0()} are required.
+
+{marker options}
+{title:Options}
+
+{dlgtab:Required}
+
+{phang}
+{opt idtarget(#)} specify the id of the treated unit.
+
+{phang}
+{opt t0(#)} specify the first treatment period.
+
+{dlgtab:Optional}
+
+{phang}
+{opt m(integer)} number of quantile points used for quantile-based estimation. default is 100.
+
+{phang}
+{opt g(integer)} number of grid points for cdf estimation. default is 100.
+
+{phang}
+{opt ci} compute bootstrap confidence intervals for distributional effects.
+
+{phang}
+{opt boots(integer)} number of bootstrap replications for confidence intervals. default is 300.
+
+{phang}
+{opt cl(real)} confidence level for intervals. default is 0.95.
+
+{phang}
+{opt qmin(real)} minimum quantile for estimation range. default is 0.
+
+{phang}
+{opt qmax(real)} maximum quantile for estimation range. default is 1.
+
+{phang}
+{opt nosimplex} do not constrain weights to lie in a unit simplex. by default, weights are nonnegative 
+and sum to one. specifying {cmd:nosimplex} allows weights to take any values that sum to one.
+
+{phang}
+{opt mixture} use the mixture (cdf-based) approach instead of the quantile-based approach.
+
+{phang}
+{opt permutation} perform a permutation test by treating each control unit as a "placebo" treated unit 
+and computing test statistics. returns a p-value.
+
+{phang}
+{opt seed(integer)} set the random seed for reproducibility. default is -1 (no seed set).
+
+{phang}
+{opt nouniform} when computing confidence intervals, do not compute uniform confidence bands; 
+only pointwise intervals are computed.
+
+{phang}
+{opt agg(string)} specify the type of aggregation for summary statistics. one of:
+{p_end}
+{phang2}- {cmd:"quantile"}: summarize estimated quantile functions{p_end}
+{phang2}- {cmd:"cdf"}: summarize estimated cdfs{p_end}
+{phang2}- {cmd:"quantilediff"}: summarize differences in quantiles between treated and synthetic{p_end}
+{phang2}- {cmd:"cdfdiff"}: summarize differences in cdfs between treated and synthetic{p_end}
+
+{phang}
+{opt samples(numlist)} specify quantile or cdf points for summary statistics. for quantiles, these are in [0,1]. 
+for cdfs, these are values of the outcome variable.
+
+{phang}
+{opt graph} produce graphical output of the results by time period.
+
+{marker examples}
+{title:Examples}
+
+{pstd}Basic usage with confidence intervals:{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(3) m(50) g(100) ci boots(200) cl(0.90)}{p_end}
+
+{pstd}Using mixture approach:{p_end}
+{phang2}{cmd:. disco outcome unit t, idtarget(2) t0(10) mixture ci}{p_end}
+
+{pstd}With permutation test and graphing:{p_end}
+{phang2}{cmd:. disco wage county year, idtarget(10) t0(2005) permutation seed(12345) graph}{p_end}
+
+{marker method}
+{title:Method and Formulation}
+
+{pstd}
+Distributional synthetic controls extend the idea of synthetic controls to the entire 
+outcome distribution. Instead of matching average outcomes, we match entire quantile 
+functions or CDFs of control units to replicate the pre-treatment distribution of a 
+treated unit. Post-treatment differences then yield distributional treatment effects.
+
+{dlgtab:Quantile-based (2-Wasserstein) approach}
+
+{pstd}
+Consider a treated unit indexed by 1 and control units indexed by j=2,...,J+1 observed 
+over periods t=1,...,T, with T0 < T as the last pre-treatment period. Let Y_{j t} be 
+outcomes for unit j in period t. We want to estimate the counterfactual distribution 
+Y_{1 t, N} that would have prevailed for the treated unit in the absence of treatment.
+
+{pstd}
+The key object is the quantile function of Y_{j t}, denoted F_{Y_{j t}}^{-1}(q). By 
+forming a weighted average of these quantile functions for the control units:
+
+{phang}F_{Y_{1 t, N}}^{-1}(q) = ∑_{j=2}^{J+1} λ_j^* F_{Y_{j t}}^{-1}(q){p_end}
+
+{pstd}
+we obtain a synthetic control distribution for the treated unit. The optimal weights 
+λ_j^* are chosen to minimize the 2-Wasserstein distance between the treated 
+unit's pre-treatment quantile functions and a weighted combination of the controls' 
+pre-treatment quantile functions:
+
+{phang}λ_{t}^* = arg min_{λ ∈ Δ^{J}} ∫_{0}^{1} |F_{Y_{1 t}}^{-1}(q) - ∑_{j=2}^{J+1}λ_j F_{Y_{j t}}^{-1}(q)|^2 dq.{p_end}
+
+{dlgtab:CDF-based (1-Wasserstein) approach}
+
+{pstd}
+In some cases, it may be more natural to replicate the treated unit's distribution function 
+F_{Y_{1 t}}(y) itself rather than its quantile function. Instead of solving for weights 
+that match quantiles, one can find weights to match cumulative distribution functions (CDFs):
+
+{phang}λ_{t}^* = arg min_{λ ∈ Δ^{J}} ∫_{ℝ} |F_{Y_{1 t}}(y) - ∑_{j=2}^{J+1} λ_j F_{Y_{j t}}(y)| dy.{p_end}
+
+{pstd}
+This corresponds to using the 1-Wasserstein distance (or equivalently L^1-distance between 
+distributions). The 1-Wasserstein approach mixes entire distributions directly.
+
+{marker results}
+{title:Stored results}
+
+{pstd}
+{cmd:disco} stores the following in {cmd:e()}:
+
+{synoptset 20 tabbed}{...}
+{p2col 5 20 24 2: Scalars}{p_end}
+{synopt:{cmd:e(N)}}number of observations{p_end}
+{synopt:{cmd:e(t0)}}first treatment period{p_end}
+{synopt:{cmd:e(cl)}}confidence level used{p_end}
+
+{p2col 5 20 24 2: Macros}{p_end}
+{synopt:{cmd:e(cmd)}}"disco"{p_end}
+{synopt:{cmd:e(cmdline)}}command as typed{p_end}
+{synopt:{cmd:e(agg)}}aggregation type, if specified{p_end}
+
+{p2col 5 20 24 2: Matrices}{p_end}
+{synopt:{cmd:e(weights)}}estimated synthetic control weights{p_end}
+{synopt:{cmd:e(quantile_diff)}}differences in quantiles by time{p_end}
+{synopt:{cmd:e(cdf_diff)}}differences in cdfs by time{p_end}
+{synopt:{cmd:e(quantile_synth)}}synthetic quantiles{p_end}
+{synopt:{cmd:e(quantile_t)}}treated unit quantiles{p_end}
+{synopt:{cmd:e(cdf_synth)}}synthetic cdfs{p_end}
+{synopt:{cmd:e(cdf_t)}}treated unit cdfs{p_end}
+{synopt:{cmd:e(summary_stats)}}summary statistics if agg option specified{p_end}
+
+{pstd}If {cmd:ci} specified:{p_end}
+{synopt:{cmd:e(qdiff_lower)}}lower ci bounds for quantile differences{p_end}
+{synopt:{cmd:e(qdiff_upper)}}upper ci bounds for quantile differences{p_end}
+{synopt:{cmd:e(cdiff_lower)}}lower ci bounds for cdf differences{p_end}
+{synopt:{cmd:e(cdiff_upper)}}upper ci bounds for cdf differences{p_end}
+
+{marker related}
+{title:Additional Commands}
+
+{phang}{cmd:disco_estat}: summarize aggregated statistics if specified with agg() option.{p_end}
+
+{phang}{cmd:disco_plot}: generate plots for quantiles or cdfs across time.{p_end}
+
+{marker references}
+{title:References}
+
+{phang}
+Abadie, Alberto, and Javier Gardeazabal. 2003. "The Economic Costs of Conflict: A Case Study of the Basque Country."
+{browse "http://dx.doi.org/10.1257/000282803321455188":American Economic Review 93(1): 113–132.}
+{p_end}
+
+{phang}
+Abadie, A. 2021. "Using Synthetic Controls: Feasibility, Data Requirements, and Methodological Aspects."
+{browse "http://dx.doi.org/10.1257/jel.20191450":Journal of Economic Literature 59(2): 391-425.}
+{p_end}
+
+{phang}
+Abadie, A., Diamond, A., & Hainmueller, J. 2010. "Synthetic Control Methods for Comparative Case Studies: Estimating the Effect of California's Tobacco Control Program."
+{browse "http://dx.doi.org/10.1198/jasa.2009.ap08746":Journal of the American Statistical Association 105(490): 493-505.}
+{p_end}
+
+{phang}
+Gunsilius, F. 2023. "Distributional Synthetic Controls."
+{browse "http://dx.doi.org/10.3982/ECTA18260":Econometrica 91(3): 1105-1117.}
+{p_end}
+
+{phang}
+Van Dijcke, D., Gunsilius, F., & Wright, A. L. 2024. "Return to Office and the Tenure Distribution."
+{browse "https://bfi.uchicago.edu/working-paper/2024-56/":University of Chicago, Becker Friedman Institute for Economics Working Paper, (2024-56).}
+{p_end}
+
+{marker author}
+{title:Author}
+
+{pstd}
+David Van Dijcke{break}
+University of Michigan, Ann Arbor{break}
+{browse "mailto:dvdijcke@umich.edu":dvdijcke@umich.edu}
+{p_end}
+
+{title:Version}
+
+{pstd}
+1.0.0 (December 2024)
+{p_end}
+
+
+
+=== Content of disco_estat.ado ===
+
+
+// Modified disco_estat.ado
+program define disco_estat, rclass
+    version 18.0
+    
+    if "`e(cmd)'" != "disco" {
+        error 301
+    }
+    
+    if "`0'" == "summary" {
+        if "`e(agg)'" == "" {
+            di as error "No aggregation statistics were computed. Rerun disco with agg() option."
+            exit 198
+        }
+        
+        if "`e(agg)'" == "quantileDiff" {
+            local agtxt = "quantile"
+            local fmt "%4.2f"  // Format for probabilities [0,1]
+        } 
+        else if "`e(agg)'" == "cdfDiff" {
+            local agtxt = "CDF"
+            local fmt "%9.2f"  // Format for Y values
+        }
+        
+        tempname stats
+        matrix `stats' = e(summary_stats)
+        
+        // Get number of rows
+        local nr = rowsof(`stats')
+        
+        // Display header
+        di _n as txt "Summary of `agtxt' effects"
+        di as txt "{hline 80}"
+        di as txt "Time period   Range                    Effect     Std. Err.    [`e(cl)'% Conf. Interval]"
+        di as txt "{hline 80}"
+        
+        // Display results
+        forvalues i = 1/`nr' {
+            local t = `stats'[`i',1]
+            local qstart = `stats'[`i',2]
+            local qend = `stats'[`i',3]
+            local effect = `stats'[`i',4]
+            local se = `stats'[`i',5]
+            local ci_l = `stats'[`i',6]
+            local ci_u = `stats'[`i',7]
+            
+            // Check if significant (CI doesn't include 0)
+            local sig = (`ci_l' > 0 | `ci_u' < 0) * "*"
+            
+            di as txt %9.0g `t' "    " ///
+               as txt `fmt' `qstart' "-" `fmt' `qend' "    " ///
+               as res %9.3f `effect' "    " ///
+               as res %9.3f `se' "    " ///
+               as res %9.3f `ci_l' "  " %9.3f `ci_u' ///
+               as txt "`sig'"
+        }
+        
+        di as txt "{hline 80}"
+        di as txt "* denotes significance at `e(cl)'% confidence level"
+    }
+    else {
+        di as error "unknown subcommand"
+        exit 198
+    }
+end
+
+
+
+=== Content of disco_estat.sthlp ===
+{smcl}
+{* *! version 1.0.0 19dec2024}{...}
+{vieweralsosee "[ST] disco" "help disco"}{...}
+{vieweralsosee "[ST] disco_plot" "help disco_plot"}{...}
+{viewerjumpto "Syntax" "disco_estat##syntax"}{...}
+{viewerjumpto "Description" "disco_estat##description"}{...}
+{viewerjumpto "Examples" "disco_estat##examples"}{...}
+{viewerjumpto "Stored results" "disco_estat##results"}{...}
+
+{title:Title}
+
+{phang}
+{bf:disco_estat} {hline 2} Post-estimation statistics for DiSCo (Distributional Synthetic Controls)
+
+{marker description}
+{title:Description}
+
+{pstd}
+{cmd:disco_estat} displays summary statistics after {cmd:disco} estimation. It provides a detailed 
+summary of distributional treatment effects, including point estimates, standard errors, and 
+confidence intervals across different time periods.
+
+{marker syntax}
+{title:Syntax}
+
+{p 8 17 2}
+{cmdab:disco_estat} {cmd:summary}
+
+{pstd}
+{cmd:disco_estat} requires that {cmd:disco} has been run previously with the {cmd:agg()} option.
+
+{marker examples}
+{title:Examples}
+
+{pstd}Display summary statistics after running disco with quantile differences:{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(3) agg(quantileDiff)}{p_end}
+{phang2}{cmd:. disco_estat summary}{p_end}
+
+{pstd}Display summary statistics for CDF differences:{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(3) agg(cdfDiff)}{p_end}
+{phang2}{cmd:. disco_estat summary}{p_end}
+
+{marker results}
+{title:Stored results}
+
+{pstd}
+{cmd:disco_estat} requires the following to be stored in {cmd:e()} from a previous {cmd:disco} estimation:
+
+{synoptset 20 tabbed}{...}
+{p2col 5 20 24 2: Macros}{p_end}
+{synopt:{cmd:e(cmd)}}"disco"{p_end}
+{synopt:{cmd:e(agg)}}type of aggregation ("quantileDiff" or "cdfDiff"){p_end}
+{synopt:{cmd:e(cl)}}confidence level{p_end}
+
+{p2col 5 20 24 2: Matrices}{p_end}
+{synopt:{cmd:e(summary_stats)}}matrix containing time period, range, effect, std. err., and confidence intervals{p_end}
+
+{marker author}
+{title:Author}
+
+{pstd}
+David Van Dijcke{break}
+University of Michigan, Ann Arbor{break}
+{browse "mailto:dvdijcke@umich.edu":dvdijcke@umich.edu}
+
+
+=== Content of disco_plot.ado ===
+
+program define disco_plot
+    version 18.0
+    
+    syntax, AGG(string) M(integer) G(integer) T_max(integer) DOCI(integer) CL(real) ///
+        quantile_diff(name) quantile_t(name) quantile_synth(name) ///
+        cdf_diff(name) cdf_synth(name) cdf_t(name) ///
+        [qdiff_lower(name) qdiff_upper(name) cdiff_lower(name) cdiff_upper(name) ///
+        TITLE(string) YTITLE(string) XTITLE(string) ///
+        BYOPTS(string) PLOTREGION(string) GRAPHREGION(string) ///
+        SCHEME(string) LEGEND(string) COLOR1(string) COLOR2(string) ///
+        CIcolor(string) LWIDTH(string) LPATTERN(string)]
+    
+    preserve
+    clear
+    
+    // Set default colors and styles if not specified
+    if "`color1'" == "" local color1 "blue"
+    if "`color2'" == "" local color2 "red" 
+    if "`cicolor'" == "" local cicolor "gs12"
+    if "`lwidth'" == "" local lwidth "medium"
+    if "`lpattern'" == "" local lpattern "dash"
+    
+    local cl_txt = subinstr("`cl'", ".", "", .)
+
+    if "`agg'" == "quantileDiff" {
+        // Set default titles if not specified
+        if "`title'" == "" local title "Distributional Effects by Time Period"
+        if "`ytitle'" == "" local ytitle "Difference in Quantile Functions"
+        if "`xtitle'" == "" local xtitle "Quantile"
+
+        if `doci' {
+            set obs `m'
+            gen tau = (_n-1)/(`m'-1)
+            
+            svmat `quantile_diff'
+            svmat `qdiff_lower'
+            svmat `qdiff_upper'
+            reshape long `quantile_diff' `qdiff_lower' `qdiff_upper', i(tau) j(time)
+            
+            twoway (rarea `qdiff_lower' `qdiff_upper' tau, color(`cicolor')) ///
+                   (line `quantile_diff' tau, lcolor(`color1') lwidth(`lwidth')), ///
+                   by(time, note("") title(`"`title'"') `byopts') ///
+                   ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+                   xlabel(0(.2)1) ylabel(, angle(horizontal)) ///
+                   legend(label(1 "`cl_txt'% confidence intervals") ///
+                          label(2 "Estimates") `legend') ///
+                   `plotregion' `graphregion' `scheme'
+        }
+        else {
+            set obs `m'
+            gen tau = (_n-1)/(`m'-1)
+            
+            svmat `quantile_diff'
+            reshape long `quantile_diff', i(tau) j(time)
+            
+            twoway line `quantile_diff' tau, ///
+                   lcolor(`color1') lwidth(`lwidth') ///
+                   by(time, note("") title(`"`title'"') `byopts') ///
+                   ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+                   xlabel(0(.2)1) ylabel(, angle(horizontal)) ///
+                   legend(off) ///
+                   `plotregion' `graphregion' `scheme'
+        }
+    }
+    else if "`agg'" == "quantile" {
+        // Set default titles
+        if "`title'" == "" local title "Synthetic vs. Treated Quantiles by Time Period"
+        if "`ytitle'" == "" local ytitle "Quantile Function (Synthetic vs. Target)"
+        if "`xtitle'" == "" local xtitle "Quantile"
+        
+        set obs `m'
+        gen tau = (_n-1)/(`m'-1)
+        
+        svmat `quantile_t'
+        svmat `quantile_synth'
+        reshape long `quantile_t' `quantile_synth', i(tau) j(time)
+        
+        twoway (line `quantile_t' tau, lcolor(`color1') lwidth(`lwidth')) ///
+               (line `quantile_synth' tau, lcolor(`color2') lwidth(`lwidth') lpattern(`lpattern')), ///
+               by(time, note("") title(`"`title'"') `byopts') ///
+               ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+               legend(order(1 "Observed" 2 "Synthetic") ring(0) pos(1) `legend') ///
+               xlabel(0(.2)1) ylabel(, angle(horizontal)) ///
+               `plotregion' `graphregion' `scheme'
+    }
+    else if inlist("`agg'", "cdf", "cdfDiff") {
+        // Set default titles
+        if "`agg'" == "cdfDiff" {
+            if "`ytitle'" == "" local ytitle "Difference in CDFs"
+            if "`title'" == "" local title "Distributional Effects by Time Period"
+        }
+        else {
+            if "`ytitle'" == "" local ytitle "CDF (Synthetic vs. Target)"
+            if "`title'" == "" local title "Synthetic vs. Treated CDFs by Time Period"
+        }
+        if "`xtitle'" == "" local xtitle "Y"
+        
+        local gmin = `min'  // You'll need to pass these from disco.ado
+        local gmax = `max'
+        
+        if "`agg'" == "cdfDiff" {
+            if `doci' {
+                set obs `g'
+                gen grid_val = `gmin' + (_n-1)*(`gmax' - `gmin')/(`g'-1)
+        
+                svmat `cdf_diff'
+                svmat `cdiff_lower'
+                svmat `cdiff_upper'
+                reshape long `cdf_diff' `cdiff_lower' `cdiff_upper', i(grid_val) j(time)
+                
+                twoway (rarea `cdiff_lower' `cdiff_upper' grid_val, color(`cicolor')) ///
+                       (line `cdf_diff' grid_val, lcolor(`color1') lwidth(`lwidth')), ///
+                       by(time, note("") title(`"`title'"') `byopts') ///
+                       ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+                       legend(label(1 "`cl_txt'% confidence intervals") ///
+                              label(2 "Estimates") `legend') ///
+                       ylabel(, angle(horizontal)) ///
+                       `plotregion' `graphregion' `scheme'
+            }
+            else {
+                set obs `g'
+                gen grid_val = `gmin' + (_n-1)*(`gmax' - `gmin')/(`g'-1)
+                
+                svmat `cdf_diff'
+                reshape long `cdf_diff', i(grid_val) j(time)
+                
+                twoway line `cdf_diff' grid_val, ///
+                       lcolor(`color1') lwidth(`lwidth') ///
+                       by(time, note("") title(`"`title'"') `byopts') ///
+                       ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+                       legend(off) ylabel(, angle(horizontal)) ///
+                       `plotregion' `graphregion' `scheme'
+            }
+        }
+        else {
+            set obs `g'
+            gen grid_val = `gmin' + (_n-1)*(`gmax' - `gmin')/(`g'-1)
+            
+            svmat `cdf_t'
+            svmat `cdf_synth'
+            reshape long `cdf_t' `cdf_synth', i(grid_val) j(time)
+            
+            twoway (line `cdf_t' grid_val, lcolor(`color1') lwidth(`lwidth')) ///
+                   (line `cdf_synth' grid_val, lcolor(`color2') lwidth(`lwidth') lpattern(`lpattern')), ///
+                   by(time, note("") title(`"`title'"') `byopts') ///
+                   ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+                   legend(order(1 "Observed" 2 "Synthetic") ring(0) pos(1) `legend') ///
+                   ylabel(0(.2)1, angle(horizontal)) ///
+                   `plotregion' `graphregion' `scheme'
+        }
+    }
+    
+    restore
+end
+
+
+
+=== Content of disco_plot.sthlp ===
+{smcl}
+{* *! version 1.0.0 19dec2024}{...}
+{vieweralsosee "[ST] disco" "help disco"}{...}
+{vieweralsosee "[ST] disco_estat" "help disco_estat"}{...}
+{viewerjumpto "Syntax" "disco_plot##syntax"}{...}
+{viewerjumpto "Description" "disco_plot##description"}{...}
+{viewerjumpto "Options" "disco_plot##options"}{...}
+{viewerjumpto "Examples" "disco_plot##examples"}{...}
+
+{title:Title}
+
+{phang}
+{bf:disco_plot} {hline 2} Generate plots after DiSCo (Distributional Synthetic Controls)
+
+{marker description}
+{title:Description}
+
+{pstd}
+{cmd:disco_plot} creates visualizations of distributional treatment effects after {cmd:disco} 
+estimation. It can display quantile functions, CDFs, and their differences over time, with 
+optional confidence intervals.
+
+{marker syntax}
+{title:Syntax}
+
+{p 8 17 2}
+{cmdab:disco_plot}{cmd:,} {opt agg(string)} {opt m(integer)} {opt g(integer)} {opt t_max(integer)} {opt doci(integer)} {opt cl(real)}
+
+{synoptset 20 tabbed}{...}
+{synopthdr}
+{synoptline}
+{syntab:Required}
+{synopt:{opt agg(string)}}type of plot ("quantile", "quantileDiff", "cdf", or "cdfDiff"){p_end}
+{synopt:{opt m(integer)}}number of quantile points{p_end}
+{synopt:{opt g(integer)}}number of grid points for CDF{p_end}
+{synopt:{opt t_max(integer)}}maximum time period{p_end}
+{synopt:{opt doci(integer)}}whether to display confidence intervals (0/1){p_end}
+{synopt:{opt cl(real)}}confidence level (e.g., 95){p_end}
+{synoptline}
+{p2colreset}{...}
+
+{marker options}
+{title:Options}
+
+{dlgtab:Main}
+
+{phang}
+{opt agg(string)} specifies the type of plot to generate. Options are:
+
+{p2colset 9 28 30 2}
+{p2col:"quantile"}plot treated vs synthetic quantile functions{p_end}
+{p2col:"quantileDiff"}plot differences in quantiles{p_end}
+{p2col:"cdf"}plot treated vs synthetic CDFs{p_end}
+{p2col:"cdfDiff"}plot differences in CDFs{p_end}
+
+{phang}
+{opt m(integer)} specifies the number of quantile points to use in the plot.
+
+{phang}
+{opt g(integer)} specifies the number of grid points to use for CDF plots.
+
+{phang}
+{opt t_max(integer)} specifies the maximum time period to plot.
+
+{phang}
+{opt doci(integer)} specifies whether to display confidence intervals (1) or not (0).
+
+{phang}
+{opt cl(real)} specifies the confidence level as a percentage (e.g., 95 for 95% confidence intervals).
+
+{marker examples}
+{title:Examples}
+
+{pstd}Plot quantile differences with confidence intervals:{p_end}
+{phang2}{cmd:. disco_plot, agg(quantileDiff) m(100) g(100) t_max(10) doci(1) cl(95)}{p_end}
+
+{pstd}Plot CDFs without confidence intervals:{p_end}
+{phang2}{cmd:. disco_plot, agg(cdf) m(100) g(100) t_max(10) doci(0) cl(95)}{p_end}
+
+{pstd}Plot quantile functions:{p_end}
+{phang2}{cmd:. disco_plot, agg(quantile) m(100) g(100) t_max(10) doci(0) cl(95)}{p_end}
+
+{marker author}
+{title:Author}
+
+{pstd}
+David Van Dijcke{break}
+University of Michigan, Ann Arbor{break}
+{browse "mailto:dvdijcke@umich.edu":dvdijcke@umich.edu}
+
+
+=== Content of disco_testing_suite.do ===
+clear all
+set seed 12345
+
+net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
+
+//------------------------------------------------------
+// Create a small artificial dataset
+// Suppose we have 5 units (id=1,...,5), 4 periods (time=1,...,4)
+// Unit 1 is treated starting period 3 (t0=3)
+// Outcome is linear in id and time, with a shift for the treated unit
+//------------------------------------------------------
+set obs 20
+gen id = ceil(_n/4)
+gen time = _n - 4*(id-1)
+gen y = id*0.5 + time*0.2
+// Introduce a "treatment effect" after period t0 on treated unit id=1
+replace y = y + 1 if id==1 & time>=3
+
+tsset id time
+
+//------------------------------------------------------
+// Test the disco command without mixture, with simplex
+//------------------------------------------------------
+disco y id time, idtarget(1) t0(3) m(50) g(100) 
+
+// Check that weights sum to one
+matrix w = e(weights)
+scalar sum_w = 0
+quietly {
+    forvalues i=1/`=colsof(w)' {
+        scalar sum_w = sum_w + w[1,i]
+    }
+}
+display "Check weights sum to one (quantile-based, simplex): " sum_w
+
+// Check that weights are nonnegative
+scalar min_w = w[1,1]
+forvalues i=1/`=colsof(w)' {
+    if (w[1,i]<min_w) scalar min_w = w[1,i]
+}
+display "Check weights are nonnegative: minimum weight = " min_w
+
+//------------------------------------------------------
+// Test with mixture approach and simplex
+//------------------------------------------------------
+disco y id time, idtarget(1) t0(3) mixture m(50) g(100) 
+
+matrix w_mix = e(weights)
+scalar sum_w_mix = 0
+quietly {
+    forvalues i=1/`=colsof(w_mix)' {
+        scalar sum_w_mix = sum_w_mix + w_mix[1,i]
+    }
+}
+display "Check weights sum to one (mixture, simplex): " sum_w_mix
+
+// Check nonnegativity in mixture case
+scalar min_w_mix = w_mix[1,1]
+forvalues i=1/`=colsof(w_mix)' {
+    if (w_mix[1,i]<min_w_mix) scalar min_w_mix = w_mix[1,i]
+}
+display "Check weights are nonnegative (mixture): minimum weight = " min_w_mix
+
+//------------------------------------------------------
+// Check monotonicity of quantile and CDF estimates
+//------------------------------------------------------
+matrix qt = e(quantile_t)        
+matrix qs = e(quantile_synth)
+matrix ct = e(cdf_t)
+matrix cs = e(cdf_synth)
+
+local M = rowsof(qt)
+local T = colsof(qt)
+
+// Check monotonicity of quantile_t
+local monotone_quantile_t = 1
+forvalues t=1/`T' {
+    forvalues m=2/`M' {
+        scalar diff = qt[`m',`t'] - qt[`=m-1',`t']
+        if diff < -1e-10 {
+            local monotone_quantile_t = 0
+            break
+        }
+    }
+}
+display "quantile_t is monotone nondecreasing: " `monotone_quantile_t'
+
+// Check monotonicity of quantile_synth
+local monotone_quantile_synth = 1
+forvalues t=1/`T' {
+    forvalues m=2/`M' {
+        scalar diff = qs[`m',`t'] - qs[`=m-1',`t']
+        if diff < -1e-10 {
+            local monotone_quantile_synth = 0
+            break
+        }
+    }
+}
+display "quantile_synth is monotone nondecreasing: " `monotone_quantile_synth'
+
+local G = rowsof(ct)
+local monotone_cdf_t = 1
+forvalues t=1/`T' {
+    forvalues g=2/`G' {
+        scalar diff = ct[`g',`t'] - ct[`=g-1',`t']
+        if diff < -1e-10 {
+            local monotone_cdf_t = 0
+            break
+        }
+    }
+}
+display "cdf_t is monotone nondecreasing: " `monotone_cdf_t'
+
+local monotone_cdf_synth = 1
+forvalues t=1/`T' {
+    forvalues g=2/`G' {
+        scalar diff = cs[`g',`t'] - cs[`=g-1',`t']
+        if diff < -1e-10 {
+            local monotone_cdf_synth = 0
+            break
+        }
+    }
+}
+display "cdf_synth is monotone nondecreasing: " `monotone_cdf_synth'
+
+display "All tests completed."
+
+
+
+=== Content of disco_utils.mata ===
+mata:
+
+// Output structure for confidence intervals
+struct CI_out {
+    real matrix qdiff_lower,    // Lower bound for quantile differences
+              qdiff_upper,      // Upper bound for quantile differences
+              cdiff_lower,      // Lower bound for CDF differences
+              cdiff_upper       // Upper bound for CDF differences
+}
+
+// Output structure for bootstrap iteration
+struct iter_out {
+    real vector target_q,       // Target quantiles
+              target_cdf,       // Target CDF
+              weights          // Optimal weights
+    real matrix controls_q,     // Control unit quantiles
+              controls_cdf      // Control unit CDFs
+}
+
+// Output structure for bootstrap results
+struct boot_out {
+    real matrix quantile_diff,  // Quantile differences
+              cdf_diff,         // CDF differences
+              quantile_synth,   // Synthetic quantiles
+              cdf_synth,        // Synthetic CDFs
+              quantile_t,       // Target quantiles
+              cdf_t             // Target CDFs
+}
+
+struct disco_out {
+    real matrix weights, quantile_diff, cdf_diff, quantile_synth, cdf_synth,  
+    quantile_t, cdf_t, cids
+}
+
+// Returns get_unique values from a vector
+real vector get_unique(real vector x) {
+    real vector y
+    y = uniqrows(sort(x,1))
+    return(y)
+}
+
+// Compute quantiles at arbitrary probabilities p using type=7 interpolation
+// Parameters:
+//   X: Input vector of values
+//   p: Vector of probability points at which to compute quantiles
+real vector disco_quantile_points(real vector X, real vector p) {
+    real vector Xs, out
+    real scalar N, prob, alpha, floor_alpha, gamma, idx
+    
+    N = length(X)
+    if (N==0) {
+        out = J(length(p),1,.)
+        return(out)
+    }
+
+    Xs = sort(X,1)
+    out = J(length(p),1,.)
+
+    real scalar i
+    for (i=1; i<=length(p); i++) {
+        prob = p[i]
+        if (prob<=0) {
+            out[i] = Xs[1]
+        }
+        else if (prob>=1) {
+            out[i] = Xs[N]
+        } else {
+            alpha = (N-1)*prob + 1
+            floor_alpha = floor(alpha)
+            gamma = alpha - floor_alpha
+
+            if (floor_alpha<1) {
+                out[i] = Xs[1]
+            } else if (floor_alpha>=N) {
+                out[i] = Xs[N]
+            } else {
+                idx = floor_alpha
+                out[i] = Xs[idx]*(1-gamma) + Xs[idx+1]*gamma
+            }
+        }
+    }
+    return(out)
+}
+
+// Compute quantiles at M evenly spaced points between q_min and q_max
+// Parameters:
+//   X: Input vector
+//   M: Number of quantile points
+//   q_min, q_max: Range for quantile computation
+real vector disco_quantile(real vector X, real scalar M, real scalar q_min, real scalar q_max) {
+    real vector p
+    real scalar j, p_j
+    
+    p = J(M,1,.)
+    real scalar j2
+    for (j2=1; j2<=M; j2++) {
+        p_j = q_min + (q_max - q_min)*(j2-1)/(M-1)
+        p[j2] = p_j
+    }
+    
+    return(disco_quantile_points(X,p))
+}
+
+// Solve for optimal weights using quadratic programming
+// Parameters:
+//   controls: Matrix of control variables
+//   target: Target vector to match
+//   M: Number of quantile points
+//   q_min, q_max: Range for quantile computation
+//   simplex: Whether to constrain weights to be non-negative
+real vector disco_solve_weights(real matrix controls,
+                              real vector target,
+                              real scalar M, q_min, q_max,
+                              string scalar qmethod,
+                              real scalar qtype, simplex)
+{
+    real scalar J, i, sc
+    real matrix controls_s, C_in, G, CE, CI
+    real vector target_s, p, g0, ce0, ci0, w, res
+    
+    J = cols(controls)
+    
+    p = J(M,1,.)
+    real scalar i2
+    for (i2=1; i2<=M; i2++) {
+        p[i2] = q_min + (q_max - q_min)*(i2-1)/(M-1)
+    }
+
+    real matrix Cq
+    Cq = J(M,J,.)
+    real scalar i3
+    for (i3=1; i3<=J; i3++) {
+        Cq[,i3] = disco_quantile_points(controls[,i3], p)
+    }
+    target_s = disco_quantile_points(target, p)
+
+    C_in = Cq
+    G = 2*(C_in' * C_in)
+    g0 = -2*(C_in' * target_s)
+
+    CE = J(J,1,1)
+    ce0 = (-1)
+
+    if (simplex==1) {
+        CI = I(J)
+        ci0 = J(J,1,0)
+    } else {
+        CI = J(J,1,1)
+        ci0 = (-1e20)
+    }
+
+    res = solve_quadprog(G, g0, CE, ce0, CI, ci0)
+    w = res[1..J]
+
+    return(w)
+}
+
+// Compute mixture weights using linear programming
+// Parameters:
+//   controls: Matrix of control variables
+//   target: Target vector to match
+//   M: Number of mixture points
+//   simplex: Whether to constrain weights to be non-negative
+real vector disco_mixture_weights(real matrix controls, real vector target, real scalar M, simplex) {
+    real scalar i, J, n, grid_min, grid_max, ss, val, g, total_vars
+    
+    real vector alldata, grid_rand, target_cdf, w, sol
+    real matrix control_cdf, c, ecmat, lowerbd, upperbd
+    real vector bec
+
+    n = length(target)
+    J = cols(controls)
+
+    alldata = target
+    real scalar i4
+    for (i4=1; i4<=J; i4++) {
+        alldata = alldata \ controls[,i4]
+    }
+
+    grid_min = min(alldata)
+    grid_max = max(alldata)
+    grid_rand = runiform(M,1)*(grid_max - grid_min) + J(M,1, grid_min)
+
+    target_cdf = cdf_at_points(target, grid_rand)
+    control_cdf = J(M,J,.)
+    real scalar i5
+    for (i5=1; i5<=J; i5++) {
+        control_cdf[,i5] = cdf_at_points(controls[,i5], grid_rand)
+    }
+
+    total_vars = J + 2*M
+
+    c = J(1, total_vars, 0)
+    c[1,(J+1)..(J+M)] = J(1,M,1)
+    c[1,(J+M+1)..(J+2*M)] = J(1,M,1)
+
+    ecmat = J(M+1, total_vars, 0)
+    bec = J(M+1,1,0)
+
+    ecmat[1,1..J] = J(1,J,1)
+    bec[1] = 1
+
+    real scalar g2
+    for (g2=1; g2<=M; g2++) {
+        ecmat[1+g2,1..J] = control_cdf[g2,.]
+        ecmat[1+g2,J+g2] = -1
+        ecmat[1+g2,J+M+g2] = 1
+        bec[1+g2] = target_cdf[g2]
+    }
+
+    lowerbd = J(1,total_vars,.)
+    upperbd = J(1,total_vars,.)
+
+    if (simplex==1) {
+        lowerbd[1,1..J] = J(1,J,0)
+    }
+    lowerbd[1,(J+1)..(J+M)] = J(1,M,0)
+    lowerbd[1,(J+M+1)..(J+2*M)] = J(1,M,0)
+
+    class LinearProgram scalar q
+    q = LinearProgram()
+    q.setCoefficients(c)
+    q.setMaxOrMin("min")
+    q.setEquality(ecmat,bec)
+    q.setBounds(lowerbd,upperbd)
+
+    val = q.optimize()
+    if (q.errorcode()!=0) {
+        w = J(J,1,1/J)
+        return(w)
+    }
+
+    sol = q.parameters()
+    w = sol[1..J]'
+    ss = sum(w)
+    if (abs(ss-1)>1e-8) w = w/ss
+
+    return(w)
+}
+
+// Compute CDF values at specified grid points
+real vector cdf_builder(real vector x, real vector grid) {
+    real vector Xs, out
+    real scalar N, G, g, pos
+
+    Xs = sort(x, 1)
+    N = length(Xs)
+    G = length(grid)
+    out = J(G,1,0)
+
+    real scalar g3
+    for (g3=1; g3<=G; g3++) {
+        pos = sum(Xs:<=grid[g3])
+        out[g3] = pos/N
+    }
+    return(out)
+}
+
+// Helper to compute CDF at given grid points
+real vector cdf_at_points(real vector x, real vector grid) {
+    real scalar N, G, g, pos
+    real vector xs, out
+    N = length(x)
+    xs = sort(x, 1)
+    G = length(grid)
+    out = J(G, 1, 0)
+
+    real scalar g4
+    for (g4=1; g4<=G; g4++) {
+        pos = sum(xs :<= grid[g4])
+        out[g4] = pos / N
+    }
+    return(out)
+}
+
+
+// Main DISCO function
+struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
+                              real scalar target_id, real scalar T0, real scalar T_max, 
+                              real scalar M, real scalar G, real scalar q_min, real scalar q_max,
+                              real scalar simplex, real scalar mixture) 
+{
+    real vector uid, cids, yt, idt, target_data, cd, w, w_temp, W_avg, 
+             Q_synth, Q_synth_sorted, cids_t, grid, Tq, Tc, C_synth
+    
+    real matrix controls_data, Cq, Cc, quantile_diff, cdf_diff, weights_store, 
+             period_weights, Q_target_all, Q_synth_all, C_target_all, C_synth_all
+
+    real scalar J_sc, amin, amax, gg, pos, t, ci, m, p, ci2, gg2, gg3, m2, J_t, ci5, ci6, ci7, t2
+
+    uid = get_unique(id)
+    cids = select(uid, uid:!=target_id)
+    J_sc = length(cids)
+
+    amin = min(y)
+    amax = max(y)
+    grid = range(amin, amax, (amax - amin) / (G - 1))'
+
+    st_numscalar("amin", amin)
+    st_numscalar("amax", amax)
+
+    quantile_diff = J(M,T_max,.)
+    cdf_diff = J(G,T_max,.)
+    weights_store = J(T0-1,J_sc,.)
+    period_weights = J(T_max,J_sc,.)
+    Q_target_all = J(M,T_max,.)
+    Q_synth_all = J(M,T_max,.)
+    C_target_all = J(G,T_max,.)
+    C_synth_all = J(G,T_max,.)
+
+    real scalar t_loop
+    for (t_loop=1; t_loop<=T_max; t_loop++) {
+        yt = select(y, tt:==t_loop)
+        idt = select(id, tt:==t_loop)
+        target_data = select(yt, idt:==target_id)
+        controls_data = .
+
+        real scalar ci2_loop
+        for (ci2_loop=1; ci2_loop<=J_sc; ci2_loop++) {
+            cd = select(yt, idt:==cids[ci2_loop])
+            if (ci2_loop==1) {
+                controls_data = cd
+            }
+            else {
+                controls_data = controls_data, cd
+            }
+        }
+
+        Tq = disco_quantile(target_data,M,q_min,q_max)
+        Tc = cdf_builder(target_data,grid)
+
+        if (t_loop<=T0-1) {
+            if (mixture==0) {
+                w = disco_solve_weights(controls_data, target_data, M, q_min, q_max, "", 7, simplex)
+            } else {
+                w_temp = disco_mixture_weights(controls_data, target_data, M, simplex)
+                w = w_temp'
+            }
+            weights_store[t_loop,.] = w
+            period_weights[t_loop,.] = w
+        } else {
+            period_weights[t_loop,.] = J(J_sc,1,.)'
+        }
+
+        Q_target_all[,t_loop] = Tq
+        C_target_all[,t_loop] = Tc
+    }
+
+    W_avg = (colsum(weights_store)/((T0-1)))'
+    real scalar t2_loop
+    for (t2_loop=T0; t2_loop<=T_max; t2_loop++) {
+        period_weights[t2_loop,.] = W_avg'
+    }
+
+    real scalar t_loop2
+    for (t_loop2=1; t_loop2<=T_max; t_loop2++) {
+        yt = select(y, tt:==t_loop2)
+        idt = select(id, tt:==t_loop2)
+        target_data = select(yt, idt:==target_id)
+        cids_t = select(get_unique(idt), get_unique(idt):!=target_id)
+
+        J_t = length(cids_t)
+        controls_data = .
+        real scalar ci5_loop
+        for (ci5_loop=1; ci5_loop<=J_t; ci5_loop++) {
+            cd = select(yt, idt:==cids_t[ci5_loop])
+            if (ci5_loop==1) controls_data = cd
+            else controls_data = controls_data, cd
+        }
+
+        w = period_weights[t_loop2,.]'
+
+        if (mixture==0) {
+            real matrix Cq2
+            Cq2 = J(M,J_t,.)
+            real scalar ci6_loop
+            for (ci6_loop=1; ci6_loop<=J_t; ci6_loop++) {
+                Cq2[,ci6_loop] = disco_quantile(controls_data[,ci6_loop],M,q_min,q_max)
+            }
+            Q_synth = Cq2*w
+            Q_synth_sorted = sort(Q_synth, 1)
+
+            C_synth = J(G,1,0)
+            real scalar gg2_loop
+            for (gg2_loop=1; gg2_loop<=G; gg2_loop++) {
+                pos = sum(Q_synth_sorted:<=grid[gg2_loop])
+                C_synth[gg2_loop] = pos/M
+            }
+        } else {
+            real matrix Cc2
+            Cc2 = J(G,J_t,.)
+            real scalar ci7_loop
+            for (ci7_loop=1; ci7_loop<=J_t; ci7_loop++) {
+                Cc2[,ci7_loop] = cdf_builder(controls_data[,ci7_loop],grid)
+            }
+            C_synth = Cc2*w
+            Q_synth = J(M,1,.)
+
+            real scalar m2_loop
+            for (m2_loop=1; m2_loop<=M; m2_loop++) {
+                p = (m2_loop-1)/(M-1)
+                gg3 = 1
+                while (gg3<G && C_synth[gg3]<p) {
+                    gg3++
+                }
+                if (gg3>G) gg3=G
+                Q_synth[m2_loop] = grid[gg3]
+            }
+        }
+
+        Q_synth_all[,t_loop2] = Q_synth
+        C_synth_all[,t_loop2] = C_synth
+        quantile_diff[,t_loop2] = Q_target_all[,t_loop2] - Q_synth
+        cdf_diff[,t_loop2] = C_target_all[,t_loop2] - C_synth
+    }
+
+    struct disco_out scalar r
+    r.weights = W_avg
+    r.quantile_diff = quantile_diff
+    r.cdf_diff = cdf_diff
+    r.quantile_synth = Q_synth_all
+    r.cdf_synth = C_synth_all
+    r.quantile_t = Q_target_all
+    r.cdf_t = C_target_all
+    r.cids = cids
+
+    return(r)
+}
+
+// Compute ratio
+real scalar disco_compute_ratio(real vector y, id, tt, 
+                              real scalar target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture) 
+{
+    struct disco_out scalar rr
+    rr = disco_full_run(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+    
+    real scalar pre_dist, pre_count, post_dist, post_count, dist_t, ratio, t
+    pre_dist = pre_count = post_dist = post_count = 0
+
+    real scalar t_loop
+    for (t_loop=1; t_loop<=T_max; t_loop++) {
+        dist_t = mean((rr.quantile_diff[,t_loop]:^2))
+        if (t_loop<T0) {
+            pre_dist = pre_dist + dist_t
+            pre_count = pre_count + 1
+        } else {
+            post_dist = post_dist + dist_t
+            post_count = post_count + 1
+        }
+    }
+
+    if (pre_count==0 | post_count==0) return(.)
+
+    ratio = sqrt((post_dist/post_count))/sqrt((pre_dist/pre_count))
+    return(ratio)
+}
+
+// Permutation test
+real scalar disco_permutation_test(real vector y, id, tt,
+                                 real scalar target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture) 
+{
+    real scalar actual_ratio, pval, rj, J, count, j
+    actual_ratio = disco_compute_ratio(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+    
+    real vector uid, cids
+    uid = get_unique(id)
+    cids = select(uid, uid:!=target_id)
+    J = length(cids)
+
+    count = 0
+    real scalar j_loop
+    for (j_loop=1; j_loop<=J; j_loop++) {
+        rj = disco_compute_ratio(y, id, tt, cids[j_loop], T0, T_max, M, G, q_min, q_max, simplex, mixture)
+        if (rj>=actual_ratio) count = count + 1
+    }
+
+    pval = (count+1)/(J+1)
+    return(pval)
+}
+
+// Compute CI bounds
+struct CI_out scalar compute_CI_bounds(real matrix quantile_diff_boot, cdf_diff_boot,
+                                     real scalar M, G, T_max, cl, uniform,
+                                     struct disco_out scalar main_run)
+{
+    struct CI_out scalar co
+    co.qdiff_lower = J(M, T_max, .)
+    co.qdiff_upper = J(M, T_max, .)
+    co.cdiff_lower = J(G, T_max, .)
+    co.cdiff_upper = J(G, T_max, .)
+
+    if(!uniform) {
+        real scalar alpha, lower_idx, upper_idx, idx
+        real vector vals
+
+        alpha = (1-cl)/2
+        lower_idx = max((1, ceil(alpha*cols(quantile_diff_boot))))
+        upper_idx = min((cols(quantile_diff_boot), ceil((1-alpha)*cols(quantile_diff_boot))))
+
+        real scalar t, idx_loop
+        for(t=1; t<=T_max; t++) {
+            for(idx_loop=1; idx_loop<=M; idx_loop++) {
+                vals = quantile_diff_boot[(t-1)*M + idx_loop,.]'
+                vals = sort(vals, 1)
+                co.qdiff_lower[idx_loop,t] = vals[lower_idx]
+                co.qdiff_upper[idx_loop,t] = vals[upper_idx]
+            }
+
+            real scalar idx_loop2
+            for(idx_loop2=1; idx_loop2<=G; idx_loop2++) {
+                vals = cdf_diff_boot[(t-1)*G + idx_loop2,.]'
+                vals = sort(vals, 1)
+                co.cdiff_lower[idx_loop2,t] = vals[lower_idx]
+                co.cdiff_upper[idx_loop2,t] = vals[upper_idx]
+            }
+        }
+    }
+    else {
+        real scalar q_crit, c_crit, m_i, g_i, base_val
+        // Need loop variables declared here
+        real scalar b, t2
+
+        real vector qmax_abs, cmax_abs
+        real matrix qdiff_mat, cdiff_mat, qdiff_err, cdiff_err
+
+        qmax_abs = J(cols(quantile_diff_boot), 1, .)
+        cmax_abs = J(cols(quantile_diff_boot), 1, .)
+
+        for(b=1; b<=cols(quantile_diff_boot); b++) {
+            qdiff_mat = rowshape(quantile_diff_boot[,b], M)
+            cdiff_mat = rowshape(cdf_diff_boot[,b], G)
+            
+            qdiff_err = qdiff_mat :- main_run.quantile_diff
+            cdiff_err = cdiff_mat :- main_run.cdf_diff
+
+            qmax_abs[b] = max(abs(vec(qdiff_err)))
+            cmax_abs[b] = max(abs(vec(cdiff_err)))
+        }
+
+        real vector tmp
+        tmp = sort(qmax_abs, 1)
+        q_crit = tmp[ceil((1-(1-cl)/2)*cols(quantile_diff_boot))]
+        tmp = sort(cmax_abs, 1)
+        c_crit = tmp[ceil((1-(1-cl)/2)*cols(quantile_diff_boot))]
+
+        for(t2=1; t2<=T_max; t2++) {
+            for(m_i=1; m_i<=M; m_i++) {
+                base_val = main_run.quantile_diff[m_i,t2]
+                co.qdiff_lower[m_i,t2] = base_val - q_crit
+                co.qdiff_upper[m_i,t2] = base_val + q_crit
+            }
+
+            for(g_i=1; g_i<=G; g_i++) {
+                base_val = main_run.cdf_diff[g_i,t2]
+                co.cdiff_lower[g_i,t2] = base_val - c_crit
+                co.cdiff_upper[g_i,t2] = base_val + c_crit
+            }
+        }
+    }
+
+    return(co)
+}
+
+// Bootstrap iteration
+struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
+                            real scalar target_id, t, T0, M, G,
+                            real vector grid,
+                            real scalar q_min, q_max, simplex, mixture) 
+{
+    struct iter_out scalar out
+    real scalar t_len, c_len, J
+    real scalar ci, cc
+    real vector yt, idt, target_data, mytar, uid, cids, cd, mycon, indices_t, indices_c
+    real matrix mycon_q, mycon_cdf, controls_resampled
+
+    yt = select(y, tt:==t)
+    idt = select(id, tt:==t)
+    target_data = select(yt, idt:==target_id)
+
+    t_len = length(target_data)
+    indices_t = ceil(runiform(t_len,1):*t_len)
+    mytar = target_data[indices_t]
+
+    out.target_q = disco_quantile(mytar, M, q_min, q_max)
+    out.target_cdf = cdf_builder(mytar, grid)
+
+    uid = get_unique(idt)
+    cids = select(uid, uid:!=target_id)
+    J = length(cids)
+
+    mycon_q = J(M, J, .)
+    mycon_cdf = J(G, J, .)
+
+    for (ci=1; ci<=J; ci++) {
+        cd = select(yt, idt:==cids[ci])
+        c_len = length(cd)
+        indices_c = ceil(runiform(c_len,1):*c_len)
+        mycon = cd[indices_c]
+
+        mycon_q[,ci] = disco_quantile(mycon, M, q_min, q_max)
+        mycon_cdf[,ci] = cdf_builder(mycon, grid)
+    }
+
+    out.weights = J(J, 1, .)
+
+    if (t<=T0) {
+        if (mixture==0) {
+            out.weights = disco_solve_weights(mycon, mytar, M, q_min, q_max, "", 7, simplex)
+
+            controls_resampled = mycon
+            if (J>1) {
+                for (cc=2; cc<=J; cc++) {
+                    cd = select(yt, idt:==cids[cc])
+                    c_len = length(cd)
+                    indices_c = ceil(runiform(c_len,1):*c_len)
+                    mycon = cd[indices_c]
+                    controls_resampled = controls_resampled, mycon
+                }
+            }
+            out.weights = disco_solve_weights(controls_resampled, mytar, M, q_min, q_max, "", 7, simplex)
+        } 
+        else {
+            out.weights = disco_mixture_weights(mycon_cdf, out.target_cdf, M, simplex)
+        }
+    }
+
+    out.controls_q = mycon_q
+    out.controls_cdf = mycon_cdf
+
+    return(out)
+}
+
+// Compute bootstrap counterfactuals
+struct boot_out bootCounterfactuals(struct iter_out vector iter_results,
+                                  real scalar T0, T_max, M, G,
+                                  real vector grid,
+                                  real scalar mixture) 
+{
+    struct boot_out scalar bo
+    real scalar J, t, gg, m2, gg3, p
+    real vector W_avg, target_q, target_cdf, Q_synth, C_synth, Q_synth_sorted
+    real matrix weights_all, quantile_diff, cdf_diff, mycon_q, mycon_cdf
+
+    J = cols(iter_results[1].controls_q)
+
+    quantile_diff = J(M,T_max,.)
+    cdf_diff = J(G,T_max,.)
+    real matrix quantile_synth, cdf_synth, quantile_t, cdf_t
+    quantile_synth = J(M,T_max,.)
+    cdf_synth = J(G,T_max,.)
+    quantile_t = J(M,T_max,.)
+    cdf_t = J(G,T_max,.)
+
+    weights_all = J(T0-1,J,.)
+    real scalar t_loop
+    for (t_loop=1; t_loop<=T0-1; t_loop++) {
+        weights_all[t_loop,.] = (iter_results[t_loop].weights)
+    }
+    W_avg = (colsum(weights_all)/(T0-1))'
+
+    real scalar t_loop2
+    for (t_loop2=1; t_loop2<=T_max; t_loop2++) {
+        target_q = iter_results[t_loop2].target_q
+        target_cdf = iter_results[t_loop2].target_cdf
+        mycon_q = iter_results[t_loop2].controls_q
+        mycon_cdf = iter_results[t_loop2].controls_cdf
+
+        quantile_t[,t_loop2] = target_q
+        cdf_t[,t_loop2] = target_cdf
+
+        if (mixture==0) {
+            Q_synth = mycon_q*W_avg
+            Q_synth_sorted = sort(Q_synth,1)
+            C_synth = J(G,1,0)
+            real scalar gg_loop
+            for (gg_loop=1; gg_loop<=G; gg_loop++) {
+                C_synth[gg_loop] = sum(Q_synth_sorted:<=grid[gg_loop])/M
+            }
+        } else {
+            C_synth = mycon_cdf*W_avg
+            Q_synth = J(M,1,.)
+            real scalar m2_loop
+            for (m2_loop=1; m2_loop<=M; m2_loop++) {
+                p = (m2_loop-1)/(M-1)
+                gg3 = 1
+                while (gg3<=G & C_synth[gg3]<p) gg3++
+                Q_synth[m2_loop] = grid[gg3>G ? G : gg3]
+            }
+        }
+
+        quantile_synth[,t_loop2] = Q_synth
+        cdf_synth[,t_loop2] = C_synth
+        quantile_diff[,t_loop2] = target_q - Q_synth
+        cdf_diff[,t_loop2] = target_cdf - C_synth
+    }
+
+    bo.quantile_diff = quantile_diff
+    bo.cdf_diff = cdf_diff
+    bo.quantile_synth = quantile_synth
+    bo.cdf_synth = cdf_synth
+    bo.quantile_t = quantile_t
+    bo.cdf_t = cdf_t
+    return(bo)
+}
+
+// Bootstrap CI
+struct CI_out scalar disco_bootstrap_CI(real vector y, real vector id, real vector tt,
+                                      real scalar target_id, T0, T_max, M, G,
+                                      real scalar q_min, q_max, simplex, mixture, boots, cl, uniform) 
+{
+    struct CI_out scalar co
+    struct boot_out scalar bo
+    struct disco_out scalar main_run
+    struct iter_out vector iter_results
+    real scalar amin, amax, N, b, t, alpha, lower_idx, upper_idx, idx, b2, q_crit, c_crit
+    real vector grid, vals, tmp, qmax_abs, cmax_abs
+    real matrix quantile_diff_boot, cdf_diff_boot, qdiff_lower, qdiff_upper, cdiff_lower, cdiff_upper
+    real matrix quantile_synth_boot, cdf_synth_boot, quantile_t_boot, cdf_t_boot
+
+    iter_results = iter_out(T_max)
+    amin = min(y)
+    amax = max(y)
+    grid = range(amin, amax, (amax - amin)/(G-1))'
+
+    main_run = disco_full_run(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+
+    N = length(y)
+    quantile_diff_boot = J(M*T_max, boots, .)
+    cdf_diff_boot = J(G*T_max, boots, .)
+    quantile_synth_boot = J(M*T_max, boots, .)
+    cdf_synth_boot = J(G*T_max, boots, .)
+    quantile_t_boot = J(M*T_max, boots, .)
+    cdf_t_boot = J(G*T_max, boots, .)
+
+    real scalar b_loop
+    for (b_loop=1; b_loop<=boots; b_loop++) {
+        real scalar t_loop
+        for (t_loop=1; t_loop<=T_max; t_loop++) {
+            struct iter_out scalar out
+            out = disco_CI_iter(y, id, tt, target_id, t_loop, T0, M, G, grid, q_min, q_max, simplex, mixture)
+            iter_results[t_loop] = out
+        }
+
+        bo = bootCounterfactuals(iter_results, T0, T_max, M, G, grid, mixture)
+
+        quantile_diff_boot[,b_loop] = vec(bo.quantile_diff)
+        cdf_diff_boot[,b_loop] = vec(bo.cdf_diff)
+        quantile_synth_boot[,b_loop] = vec(bo.quantile_synth)
+        cdf_synth_boot[,b_loop] = vec(bo.cdf_synth)
+        quantile_t_boot[,b_loop] = vec(bo.quantile_t)
+        cdf_t_boot[,b_loop] = vec(bo.cdf_t)
+    }
+
+    qdiff_lower = J(M,T_max,.)
+    qdiff_upper = J(M,T_max,.)
+    cdiff_lower = J(G,T_max,.)
+    cdiff_upper = J(G,T_max,.)
+
+    if (uniform==0) {
+        real scalar t_loop2, idx_loop3
+        for (t_loop2=1; t_loop2<=T_max; t_loop2++) {
+            for (idx_loop3=1; idx_loop3<=M; idx_loop3++) {
+                vals = quantile_diff_boot[(t_loop2-1)*M + idx_loop3,.]'
+                tmp = sort(vals, 1)
+
+                alpha = (1-cl)/2
+                lower_idx = max((ceil(alpha*boots), 1))
+                upper_idx = min((ceil((1-alpha)*boots), boots))
+
+                qdiff_lower[idx_loop3,t_loop2] = tmp[lower_idx]
+                qdiff_upper[idx_loop3,t_loop2] = tmp[upper_idx]
+            }
+
+            real scalar idx_loop4
+            for (idx_loop4=1; idx_loop4<=G; idx_loop4++) {
+                vals = cdf_diff_boot[(t_loop2-1)*G + idx_loop4,.]'
+                tmp = sort(vals, 1)
+
+                alpha = (1-cl)/2
+                lower_idx = max((ceil(alpha*boots), 1))
+                upper_idx = min((ceil((1-alpha)*boots), boots))
+
+                cdiff_lower[idx_loop4,t_loop2] = tmp[lower_idx]
+                cdiff_upper[idx_loop4,t_loop2] = tmp[upper_idx]
+            }
+        }
+    } 
+    else {
+        qmax_abs = J(boots,1,.)
+        cmax_abs = J(boots,1,.)
+
+        real scalar b2_loop
+        for (b2_loop=1; b2_loop<=boots; b2_loop++) {
+            real matrix qdiff_mat, cdiff_mat, qdiff_err, cdiff_err
+
+            qdiff_mat = rowshape(quantile_diff_boot[,b2_loop], M)
+            cdiff_mat = rowshape(cdf_diff_boot[,b2_loop], G)
+
+            qdiff_err = qdiff_mat - main_run.quantile_diff
+            cdiff_err = cdiff_mat - main_run.cdf_diff
+
+            qmax_abs[b2_loop] = max(abs(vec(qdiff_err)))
+            cmax_abs[b2_loop] = max(abs(vec(cdiff_err)))
+        }
+
+        tmp = sort(qmax_abs, 1)
+        q_crit = tmp[ceil((1-(1-cl)/2)*boots)]
+        tmp = sort(cmax_abs, 1)
+        c_crit = tmp[ceil((1-(1-cl)/2)*boots)]
+
+        real scalar t_loop3, m_i2, g_i2, base_val2
+        for (t_loop3=1; t_loop3<=T_max; t_loop3++) {
+            for (m_i2=1; m_i2<=M; m_i2++) {
+                base_val2 = main_run.quantile_diff[m_i2,t_loop3]
+                qdiff_lower[m_i2,t_loop3] = base_val2 - q_crit
+                qdiff_upper[m_i2,t_loop3] = base_val2 + q_crit
+            }
+            for (g_i2=1; g_i2<=G; g_i2++) {
+                base_val2 = main_run.cdf_diff[g_i2,t_loop3]
+                cdiff_lower[g_i2,t_loop3] = base_val2 - c_crit
+                cdiff_upper[g_i2,t_loop3] = base_val2 + c_crit
+            }
+        }
+    }
+
+    co.qdiff_lower = qdiff_lower
+    co.qdiff_upper = qdiff_upper
+    co.cdiff_lower = cdiff_lower
+    co.cdiff_upper = cdiff_upper
+
+    return(co)
+}
+
+// Wrapper for main DISCO
+real scalar disco_wrapper(real vector y, id, tt,
+                         real scalar target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture) 
+{
+    struct disco_out scalar results
+    results = disco_full_run(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+
+    st_matrix("weights", results.weights')
+    st_matrix("quantile_diff", results.quantile_diff)
+    st_matrix("cdf_diff", results.cdf_diff)
+    st_matrix("quantile_synth", results.quantile_synth)
+    st_matrix("quantile_t", results.quantile_t)
+    st_matrix("cdf_synth", results.cdf_synth)
+    st_matrix("cdf_t", results.cdf_t)
+    st_matrix("cids", results.cids')
+
+    return(0)
+}
+
+// Wrapper for permutation test
+real scalar disco_permutation_wrapper(string scalar y_name, id_name, tt_name,
+                                    real scalar target_id, T0, T_max, M, G,
+                                    real scalar q_min, q_max, simplex, mixture)
+{
+    return(0)
+}
+
+// Wrapper for CI
+real scalar disco_ci_wrapper(real vector y, id, tt,
+                           real scalar target_id, T0, T_max, M, G,
+                           real scalar q_min, q_max, simplex, mixture, boots, cl, uniform)
+{
+    struct CI_out scalar results
+    results = disco_bootstrap_CI(y, id, tt, target_id, T0, T_max, M, G,
+                               q_min, q_max, simplex, mixture,
+                               boots, cl, uniform)
+
+    st_matrix("qdiff_lower", results.qdiff_lower)
+    st_matrix("qdiff_upper", results.qdiff_upper)
+    st_matrix("cdiff_lower", results.cdiff_lower)
+    st_matrix("cdiff_upper", results.cdiff_upper)
+
+    return(0)
+}
+
+// Helper function
+real vector find_grid_indices(real scalar q_start, real scalar q_end, 
+                            real scalar grid_length) 
+{
+    real scalar idx_start, idx_end
+    if (q_start < 0 | q_end > 1) {
+        _error("Quantile values must be between 0 and 1")
+    }
+
+    idx_start = max((1, ceil(q_start * grid_length)))
+    idx_end = min((grid_length, floor(q_end * grid_length)))
+
+    return((idx_start \ idx_end))
+}
+
+// Compute mean effect
+real scalar compute_mean_effect(real matrix data, real scalar idx_start, 
+                              real scalar idx_end, real scalar t) 
+{
+    real vector range
+    range = data[|idx_start, t \ idx_end, t|]
+    if (anyof(range, .)) {
+        return(.)
+    }
+    return(mean(range))
+}
+
+// Compute bootstrap statistics
+real vector compute_boot_stats(real matrix boot_data, real scalar idx_start, 
+                             real scalar idx_end, real scalar t, 
+                             real scalar cl) 
+{
+    real vector boot_means, stats
+    real scalar b
+    boot_means = J(cols(boot_data), 1, .)
+    for(b=1; b<=cols(boot_data); b++) {
+        boot_means[b] = mean(boot_data[|idx_start, t, b \ idx_end, t, b|])
+    }
+
+    boot_means = select(boot_means, !missing(boot_means))
+    if (length(boot_means) == 0) {
+        return(J(3, 1, .))
+    }
+
+    real scalar se
+    se = sqrt(variance(boot_means))
+
+    real vector ci_bounds
+    ci_bounds = get_ci_bounds(boot_means, cl)
+
+    return((se \ ci_bounds))
+}
+
+// Compute summary stats
+real scalar compute_summary_stats(string scalar agg, real vector sample_points, 
+                                real scalar T0, real scalar T_max, real matrix quantile_diff,
+                                real matrix cdf_diff, real scalar CI, real scalar cl) 
+{
+    if (!anyof(("quantile", "cdf", "quantileDiff", "cdfDiff"), agg)) {
+        errprintf("Invalid aggregation type\n")
+        return(1)
+    }
+
+    real scalar is_cdf
+    is_cdf = (agg == "cdf" | agg == "cdfDiff")
+
+    real vector grid_points
+    if (is_cdf) {
+        real scalar amin, amax
+        amin = st_numscalar("amin")
+        amax = st_numscalar("amax")
+
+        real vector grid_points_temp
+        if (max(sample_points) <= 1 & min(sample_points) >= 0) {
+            grid_points_temp = amin :+ sample_points :* (amax - amin)
+            if (min(grid_points_temp) > amin) grid_points = amin \ grid_points_temp'
+            else grid_points = grid_points_temp'
+            if (max(grid_points_temp) < amax) grid_points = grid_points \ amax
+        } else {
+            grid_points = sort(sample_points', 1)
+        }
+    } else {
+        grid_points = sort(sample_points', 1)
+        if (min(grid_points) > 0) grid_points = 0 \ grid_points
+        if (max(grid_points) < 1) grid_points = grid_points \ 1
+    }
+
+    real scalar n_intervals
+    n_intervals = length(grid_points) - 1
+
+    real matrix summary_stats
+    summary_stats = J(n_intervals * (T_max - T0 + 1), 7, .)
+
+    real scalar row, G, M, t, i
+    row = 1
+
+    real vector grid, idx, prob_grid
+
+    for(t = T0; t <= T_max; t++) {
+        for(i = 1; i <= n_intervals; i++) {
+            summary_stats[row, 1] = t
+            summary_stats[row, 2] = grid_points[i]
+            summary_stats[row, 3] = grid_points[i + 1]
+
+            if (is_cdf) {
+                amin = st_numscalar("e(amin)")
+                amax = st_numscalar("e(amax)")
+                G = rows(cdf_diff)
+                grid = range(amin, amax, (amax - amin)/(G-1))'
+                idx = selectindex(grid :>= grid_points[i] :& grid :<= grid_points[i + 1])
+            } else {
+                M = rows(quantile_diff)
+                prob_grid = range(0, 1, 1/(M-1))'
+                idx = selectindex(prob_grid :>= grid_points[i] :& prob_grid :<= grid_points[i + 1])
+            }
+
+            if (length(idx) > 0) {
+                if (is_cdf) {
+                    summary_stats[row, 4] = mean(cdf_diff[idx, t])
+                } else {
+                    summary_stats[row, 4] = mean(quantile_diff[idx, t])
+                }
+            }
+
+            if (CI) {
+                real matrix diff_lower, diff_upper
+                if (is_cdf) {
+                    diff_lower = st_matrix("cdiff_lower")
+                    diff_upper = st_matrix("cdiff_upper")
+                } else {
+                    diff_lower = st_matrix("qdiff_lower")
+                    diff_upper = st_matrix("qdiff_upper")
+                }
+
+                if (length(idx) > 0) {
+                    if (is_cdf) {
+                        summary_stats[row, 4] = mean(cdf_diff[idx, t])
+                        summary_stats[row, 6] = mean(diff_lower[idx, t])
+                        summary_stats[row, 7] = mean(diff_upper[idx, t])
+                        summary_stats[row, 5] = (summary_stats[row, 7] - summary_stats[row, 6])/(2*1.96)
+                    } else {
+                        summary_stats[row, 4] = mean(quantile_diff[idx, t])
+                        summary_stats[row, 6] = mean(diff_lower[idx, t])
+                        summary_stats[row, 7] = mean(diff_upper[idx, t])
+                        summary_stats[row, 5] = (summary_stats[row, 7] - summary_stats[row, 6])/(2*1.96)
+                    }
+                }
+            }
+
+            row++
+        }
+    }
+
+    st_matrix("summary_stats", summary_stats)
+
+    return(0)
+}
+
+// Compute CI bounds
+real vector get_ci_bounds(real vector boot_samples, real scalar cl) 
+{
+    real vector sorted, bounds
+    real scalar n, lower_idx, upper_idx
+
+    sorted = sort(boot_samples, 1)
+    n = length(sorted)
+
+    lower_idx = ceil((1-cl)/2 * n)
+    upper_idx = ceil((1-(1-cl)/2) * n)
+
+    if (lower_idx < 1) lower_idx = 1
+    if (upper_idx > n) upper_idx = n
+
+    bounds = sorted[lower_idx] \ sorted[upper_idx]
+
+    return(bounds)
+}
+
+end
+
+
+
+=== Content of extract_text.sh ===
+#!/bin/bash
+
+# Create or overwrite the output file
+output_file="combined_output.txt"
+touch "$output_file"
+
+# Loop through all files in the current directory
+for file in *; do
+    # Skip the output file itself if it exists
+    if [ "$file" != "$output_file" ]; then
+        echo "=== Content of $file ===" >> "$output_file"
+        
+        # Check if file is binary using 'file' command
+        if file "$file" | grep -q "text"; then
+            # If it's a text file, directly cat it
+            cat "$file" >> "$output_file"
+        else
+            # For binary files, try to extract text using strings
+            strings "$file" >> "$output_file"
+        fi
+        
+        echo -e "\n\n" >> "$output_file"
+    fi
+done
+
+echo "All content has been extracted to $output_file"
+
+
+=== Content of ldisco.mlib ===
+CI_out
+iter_out
+boot_out
+disco_out
+get_unique
+disco_quantile_points
+disco_quantile
+disco_solve_weights
+disco_mixture_weights
+cdf_builder
+cdf_at_points
+disco_full_run
+disco_compute_ratio
+disco_permutation_test
+compute_CI_bounds
+disco_CI_iter
+bootCounterfactuals
+disco_bootstrap_CI
+disco_wrapper
+disco_permutation_wrapper
+disco_ci_wrapper
+find_grid_indices
+compute_mean_effect
+compute_boot_stats
+compute_summary_stats
+get_ci_bounds
+solve_quadprog
+qdiff_lower
+qdiff_upper
+cdiff_lower
+cdiff_upper
+qdiff_lower
+qdiff_upper
+cdiff_lower
+cdiff_upper
+target_q
+target_cdf
+weights
+controls_q
+controls_cdf
+target_q
+target_cdf
+weights
+controls_q
+controls_cdf
+quantile_diff
+cdf_diff
+quantile_synth
+cdf_synth
+quantile_t
+cdf_t
+quantile_diff
+cdf_diff
+quantile_synth
+cdf_synth
+quantile_t
+cdf_t
+weights
+quantile_diff
+cdf_diff
+quantile_synth
+cdf_synth
+quantile_t
+cdf_t
+cids
+weights
+quantile_diff
+cdf_diff
+quantile_synth
+cdf_synth
+quantile_t
+cdf_t
+cids
+sort
+uniqrows
+sort
+uniqrows
+prob
+alpha
+floor_alpha
+gamma
+sort
+prob
+alpha
+floor_alpha
+gamma
+sort
+disco_quantile_points
+disco_quantile_points
+controls_s
+C_in
+target_s
+disco_quantile_points
+solve_quadprog
+controls_s
+C_in
+target_s
+disco_quantile_points
+solve_quadprog
+grid_min
+grid_max
+total_vars
+alldata
+grid_rand
+target_cdf
+control_cdf
+ecmat
+lowerbd
+upperbd
+cdf_at_points
+LinearProgram
+yE>'
+grid_min
+grid_max
+total_vars
+alldata
+grid_rand
+target_cdf
+control_cdf
+ecmat
+lowerbd
+upperbd
+cdf_at_points
+LinearProgram
+sort
+sort
+sort
+sort
+cids
+target_data
+w_temp
+W_avg
+Q_synth
+Q_synth_sorted
+cids_t
+grid
+C_synth
+controls_data
+quantile_diff
+cdf_diff
+weights_store
+period_weights
+Q_target_all
+Q_synth_all
+C_target_all
+C_synth_all
+J_sc
+amin
+amax
+get_unique
+range
+t_loop
+ci2_loop
+disco_quantile
+cdf_builder
+disco_solve_weights
+disco_mixture_weights
+t2_loop
+t_loop2
+ci5_loop
+ci6_loop
+sort
+gg2_loop
+ci7_loop
+m2_loop
+disco_out
+amin
+amax
+cids
+target_data
+w_temp
+W_avg
+Q_synth
+Q_synth_sorted
+cids_t
+grid
+C_synth
+controls_data
+quantile_diff
+cdf_diff
+weights_store
+period_weights
+Q_target_all
+Q_synth_all
+C_target_all
+C_synth_all
+J_sc
+amin
+amax
+get_unique
+range
+t_loop
+ci2_loop
+disco_quantile
+cdf_builder
+disco_solve_weights
+disco_mixture_weights
+t2_loop
+t_loop2
+ci5_loop
+ci6_loop
+sort
+gg2_loop
+ci7_loop
+m2_loop
+disco_out
+amin
+amax
+disco_full_run
+pre_dist
+pre_count
+post_dist
+post_count
+dist_t
+ratio
+t_loop
+mean
+disco_out
+disco_full_run
+pre_dist
+pre_count
+post_dist
+post_count
+dist_t
+ratio
+t_loop
+mean
+disco_out
+actual_ratio
+pval
+count
+disco_compute_ratio
+cids
+get_unique
+j_loop
+actual_ratio
+pval
+count
+disco_compute_ratio
+cids
+get_unique
+j_loop
+alpha
+lower_idx
+upper_idx
+vals
+idx_loop
+sort
+idx_loop2
+q_crit
+c_crit
+base_val
+qmax_abs
+cmax_abs
+qdiff_mat
+cdiff_mat
+qdiff_err
+cdiff_err
+CI_out
+alpha
+lower_idx
+upper_idx
+vals
+idx_loop
+sort
+idx_loop2
+q_crit
+c_crit
+base_val
+qmax_abs
+cmax_abs
+qdiff_mat
+cdiff_mat
+qdiff_err
+cdiff_err
+CI_out
+t_len
+c_len
+target_data
+mytar
+cids
+mycon
+indices_t
+indices_c
+mycon_q
+mycon_cdf
+controls_resampled
+disco_quantile
+cdf_builder
+get_unique
+disco_solve_weights
+disco_mixture_weights
+iter_out
+t_len
+c_len
+target_data
+mytar
+cids
+mycon
+indices_t
+indices_c
+mycon_q
+mycon_cdf
+controls_resampled
+disco_quantile
+cdf_builder
+get_unique
+disco_solve_weights
+disco_mixture_weights
+iter_out
+W_avg
+target_q
+target_cdf
+Q_synth
+C_synth
+Q_synth_sorted
+weights_all
+quantile_diff
+cdf_diff
+mycon_q
+mycon_cdf
+quantile_synth
+cdf_synth
+quantile_t
+cdf_t
+t_loop
+t_loop2
+sort
+gg_loop
+m2_loop
+boot_out
+W_avg
+target_q
+target_cdf
+Q_synth
+C_synth
+Q_synth_sorted
+weights_all
+quantile_diff
+cdf_diff
+mycon_q
+mycon_cdf
+quantile_synth
+cdf_synth
+quantile_t
+cdf_t
+t_loop
+t_loop2
+sort
+gg_loop
+m2_loop
+boot_out
+main_run
+iter_results
+amin
+amax
+alpha
+lower_idx
+upper_idx
+q_crit
+c_crit
+grid
+vals
+qmax_abs
+cmax_abs
+quantile_diff_boot
+cdf_diff_boot
+qdiff_lower
+qdiff_upper
+cdiff_lower
+cdiff_upper
+quantile_synth_boot
+cdf_synth_boot
+quantile_t_boot
+cdf_t_boot
+iter_out
+range
+disco_full_run
+b_loop
+t_loop
+disco_CI_iter
+bootCounterfactuals
+t_loop2
+idx_loop3
+sort
+idx_loop4
+b2_loop
+qdiff_mat
+cdiff_mat
+qdiff_err
+cdiff_err
+t_loop3
+m_i2
+g_i2
+base_val2
+CI_out
+boot_out
+disco_out
+main_run
+iter_results
+amin
+amax
+alpha
+lower_idx
+upper_idx
+q_crit
+c_crit
+grid
+vals
+qmax_abs
+cmax_abs
+quantile_diff_boot
+cdf_diff_boot
+qdiff_lower
+qdiff_upper
+cdiff_lower
+cdiff_upper
+quantile_synth_boot
+cdf_synth_boot
+quantile_t_boot
+cdf_t_boot
+iter_out
+range
+disco_full_run
+b_loop
+t_loop
+disco_CI_iter
+bootCounterfactuals
+t_loop2
+idx_loop3
+sort
+idx_loop4
+b2_loop
+qdiff_mat
+cdiff_mat
+qdiff_err
+cdiff_err
+t_loop3
+m_i2
+g_i2
+base_val2
+CI_out
+boot_out
+disco_out
+results
+disco_full_run
+disco_out
+weights
+quantile_diff
+cdf_diff
+quantile_synth
+quantile_t
+cdf_synth
+cdf_t
+cids
+results
+disco_full_run
+disco_out
+weights
+quantile_diff
+cdf_diff
+quantile_synth
+quantile_t
+cdf_synth
+cdf_t
+cids
+results
+disco_bootstrap_CI
+CI_out
+qdiff_lower
+qdiff_upper
+cdiff_lower
+cdiff_upper
+results
+disco_bootstrap_CI
+CI_out
+qdiff_lower
+qdiff_upper
+cdiff_lower
+cdiff_upper
+idx_start
+idx_end
+Quantile values must be between 0 and 1
+idx_start
+idx_end
+Quantile values must be between 0 and 1
+range
+mean
+range
+mean
+boot_means
+stats
+mean
+variance
+ci_bounds
+get_ci_bounds
+boot_means
+stats
+mean
+variance
+ci_bounds
+get_ci_bounds
+is_cdf
+grid_points
+amin
+amax
+grid_points_temp
+sort
+n_intervals
+summary_stats
+grid
+prob_grid
+range
+mean
+diff_lower
+diff_upper
+quantile
+quantileDiff
+cdfDiff
+Invalid aggregation type\n
+amin
+amax
+e(amin)
+e(amax)
+cdiff_lower
+cdiff_upper
+qdiff_lower
+qdiff_upper
+summary_stats
+is_cdf
+grid_points
+amin
+amax
+grid_points_temp
+sort
+n_intervals
+summary_stats
+grid
+prob_grid
+range
+mean
+diff_lower
+diff_upper
+quantile
+quantileDiff
+cdfDiff
+Invalid aggregation type\n
+amin
+amax
+e(amin)
+e(amax)
+cdiff_lower
+cdiff_upper
+qdiff_lower
+qdiff_upper
+summary_stats
+sorted
+bounds
+lower_idx
+upper_idx
+sort
+sorted
+bounds
+lower_idx
+upper_idx
+sort
+tmpG
+tmpg0
+tmpCE
+tmpce0
+tmpCI
+tmpci0
+tmpres
+quadprog 
+matrix(
+tmpG
+tmpg0
+tmpCE
+tmpce0
+tmpCI
+tmpci0
+tmpres
+quadprog 
+matrix(
+
+
+
+=== Content of ldisco_utils.mlib ===
+
+
+
+=== Content of quadprog.ado ===
+program define quadprog, rclass
+    version 18.0
+    args mG mg0 mCE mce0 mCI mci0 mresults
+    
+    // Remove matrix prefix if present
+    local G = subinstr("`mG'", "matrix(", "", .)
+    local G = subinstr("`G'", ")", "", .)
+    local g0 = subinstr("`mg0'", "matrix(", "", .)
+    local g0 = subinstr("`g0'", ")", "", .)
+    local CE = subinstr("`mCE'", "matrix(", "", .)
+    local CE = subinstr("`CE'", ")", "", .)
+    local ce0 = subinstr("`mce0'", "matrix(", "", .)
+    local ce0 = subinstr("`ce0'", ")", "", .)
+    local CI = subinstr("`mCI'", "matrix(", "", .)
+    local CI = subinstr("`CI'", ")", "", .)
+    local ci0 = subinstr("`mci0'", "matrix(", "", .)
+    local ci0 = subinstr("`ci0'", ")", "", .)
+    local results = subinstr("`mresults'", "matrix(", "", .)
+    local results = subinstr("`results'", ")", "", .)
+    
+    // Determine operating system and load appropriate plugin
+    local os = c(os)
+    if "`os'" == "Windows" {
+        local plugin "quadprog_mata"
+    }
+    else if "`os'" == "MacOSX" {
+        local plugin "quadprog_mata_mac"
+    }
+    else if "`os'" == "Unix" {
+        local plugin "quadprog_mata_linux"
+    }
+    
+    plugin call `plugin', `G' `g0' `CE' `ce0' `CI' `ci0' `results'
+end
+
+// Determine operating system and load appropriate plugin
+local os = c(os)
+if "`os'" == "Windows" {
+	local plugin "quadprog_mata"
+}
+else if "`os'" == "MacOSX" {
+	local plugin "quadprog_mata_mac"
+}
+else if "`os'" == "Unix" {
+	local plugin "quadprog_mata_linux"
+}
+
+program `plugin', plugin
+
+
+
+=== Content of quadprog.mata ===
+// quadprog.mata
+version 18.0
+mata:
+
+matrix solve_quadprog(real matrix G, 
+                                    real vector g0, 
+                                    real matrix CE, 
+                                    real vector ce0, 
+                                    real matrix CI, 
+                                    real vector ci0)
+{
+    real scalar n
+    string scalar cmd
+    string scalar tmpG, tmpg0, tmpCE, tmpce0, tmpCI, tmpci0, tmpres
+    real vector res
+    
+    // Get dimensions
+    n = rows(G)
+    
+    // Create temporary names for Stata matrices
+    tmpG = st_tempname()
+    tmpg0 = st_tempname()
+    tmpCE = st_tempname()
+    tmpce0 = st_tempname()
+    tmpCI = st_tempname()
+    tmpci0 = st_tempname()
+    tmpres = st_tempname()
+    
+    // Transfer matrices to Stata
+    st_matrix(tmpG, G)
+    st_matrix(tmpg0, g0)
+    st_matrix(tmpCE, CE)
+    st_matrix(tmpce0, ce0)
+    st_matrix(tmpCI, CI)
+    st_matrix(tmpci0, ci0)
+    
+    // Initialize results matrix
+    st_matrix(tmpres, J(1, n + 1, 0))
+    
+    // Build command string
+    cmd = "quadprog " + 
+          "matrix(" + tmpG + ") " + 
+          "matrix(" + tmpg0 + ") " + 
+          "matrix(" + tmpCE + ") " + 
+          "matrix(" + tmpce0 + ") " + 
+          "matrix(" + tmpCI + ") " + 
+          "matrix(" + tmpci0 + ") " + 
+          "matrix(" + tmpres + ")"
+    
+    // Print command for debugging
+    // printf("Executing command: %s\n", cmd)
+    
+    // Call Stata command
+    stata(cmd)
+    
+    // Get results back
+    res = st_matrix(tmpres)
+    
+    
+    return(res)
+}
+
+end
+
+
+
+=== Content of quadprog_mata_linux.plugin ===
+)xhM
+__gmon_start__
+_ITM_deregisterTMCloneTable
+_ITM_registerTMCloneTable
+__cxa_finalize
+_ZNKSt5ctypeIcE8do_widenEc
+_ZN10quadprogpp14add_constraintERNS_6MatrixIdEES2_RNS_6VectorIdEERjRd
+sqrt
+_ZN10quadprogpp17delete_constraintERNS_6MatrixIdEES2_RNS_6VectorIiEERNS3_IdEEjiRji
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEC1ESt13_Ios_Openmode
+_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l
+_ZNSolsEi
+__cxa_allocate_exception
+_ZNKSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE3strEv
+_ZNSt16invalid_argumentC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+_ZdlPv
+__gxx_personality_v0
+_ZNSt16invalid_argumentD1Ev
+_ZTISt16invalid_argument
+__cxa_throw
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+_Unwind_Resume
+__cxa_free_exception
+_ZN10quadprogpp14cholesky_solveERKNS_6MatrixIdEERNS_6VectorIdEERKS5_
+_Znam
+_ZdaPv
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED2Ev
+_ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE
+_ZTVSt15basic_streambufIcSt11char_traitsIcEE
+_ZNSt6localeD1Ev
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+_ZN10quadprogpp12print_matrixEPKcRKNS_6MatrixIdEEii
+_ZNSt8ios_baseC2Ev
+_ZTVSt9basic_iosIcSt11char_traitsIcEE
+_ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+_ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+_ZNSt6localeC1Ev
+strlen
+_ZNSo3putEc
+_ZNSo5flushEv
+_ZNSo9_M_insertIdEERSoT_
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_replaceEmmPKcm
+_ZSt4cout
+_ZNSt8ios_baseD2Ev
+_ZNKSt5ctypeIcE13_M_widen_initEv
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERmm
+memcpy
+_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_
+_ZSt16__throw_bad_castv
+_ZSt19__throw_logic_errorPKc
+_ZN10quadprogpp22cholesky_decompositionERNS_6MatrixIdEE
+_ZNSt11logic_errorC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+_ZNSt11logic_errorD1Ev
+_ZTISt11logic_error
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED0Ev
+_ZN10quadprogpp6MatrixIdEC2Ejj
+_ZN10quadprogpp6MatrixIdEC1Ejj
+_ZN10quadprogpp6MatrixIdED2Ev
+_ZN10quadprogpp6MatrixIdED1Ev
+_ZN10quadprogpp14solve_quadprogERNS_6MatrixIdEERNS_6VectorIdEERKS1_RKS4_S7_S9_S5_
+_ZNSt13runtime_errorC1EPKc
+_ZNSo9_M_insertImEERSoT_
+_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+_ZNSt13runtime_errorD1Ev
+_ZTISt13runtime_error
+_ZNSt8ios_base4InitC1Ev
+_ZNSt8ios_base4InitD1Ev
+__cxa_atexit
+pginit
+_stata_
+stata_call
+_Znwm
+_ZSt17__throw_bad_allocv
+__cxa_begin_catch
+__cxa_end_catch
+_ZTISt9exception
+libstdc++.so.6
+libm.so.6
+libgcc_s.so.1
+libc.so.6
+_edata
+__bss_start
+_end
+quadprog_mata.so
+GCC_3.0
+GLIBC_2.2.5
+GLIBC_2.14
+GLIBCXX_3.4.11
+GLIBCXX_3.4.9
+CXXABI_1.3
+GLIBCXX_3.4.21
+GLIBCXX_3.4
+%zq 
+%rq 
+%jq 
+%bq 
+%Zq 
+%Rq 
+%Jq 
+%Bq 
+%:q 
+%2q 
+%*q 
+%"q 
+%zp 
+%rp 
+%jp 
+%bp 
+%Zp 
+%Rp 
+%Jp 
+%Bp 
+%:p 
+%2p 
+5Bn 
+|$@H
+|$PH
+|$0H
+5um 
+|$0H
+d$PL
+5fk 
+5Pk 
+=Ah 
+=Ei 
+u+UH
+AWfE
+AVAUATUSH
+~5cL
+D$HH
+L$@H
+T$8H
+t$0H
+T$8H
+L$@fE
+D$HH
+t$0L
+~5LJ
+X[]A\A]A^A_
+D$HH
+L$@H
+T$8H
+t$0H
+T$8H
+L$@fE
+D$HH
+t$0L
+~5!I
+AWAVAUATUSH
+|$@H
+D$<H
+t$0H
+L$8H
+D$<H
+t$0H
+L$8H
+[]A\A]A^A_
+D$<H
+t$0H
+L$8H
+D$<H
+t$0H
+L$8H
+xWHc
+~$Lc
+AWAVAUI
+L$H
+D$@H
+D$0H
+D$M
+t$CH
+D$1
+~8f.
+L9d$
+D$PH
+t$PH
+|$0H
+T$XH9
+L$`H
+D$@H
+t$0H
+T$8H
+L$@H
+|$PH
+D$`H
+|$PH9
+D$8L
+l$0L
+d$pI
+T$pH9
+\$(H
+t$pI
+|$0H9
+L$xH
+D$@H
+t$0H
+L$8H
+T$@H
+|$pH
+|$pL9
+T$8H
+t$0H
+|$0H
+E`H9
+[]A\A]A^A_
+@0H;
+@0H;
+@0H;
+t$(1
+T$(H
+D$pH
+\$(H
+T$xH
+T$xH
+|$0H
+T$XH
+|$0H
+t$0H
+L$8H
+T$@I
+t$0H
+T$8H
+L$@H
+T$xH
+T$XH
+AWAVAUATUSH
+x5Hc
+[]A\A]A^A_
+\$PH
+d$PH
+T$PH
+D$XH
+D$XH
+D$0H
+D$pH
+L$xL9
+vuH)
+|$0H
+|$(L
+|$(L
+AWAVL
+AUATSH
+D;(t%H
+X8H
+[A\A]A^A_]
+CXH9
+CXH9
+AUATI
+[]A\A]
+t7SH
+[]A\A]
+AWAVAUATSH
+|$ H
+|$(H
+|$0H
+[A\A]A^A_]
+@  as 
+re matriH
+ents prof
+videf
+nd or inH
+valif
+@  as 
+x 1 vectH
+constraiH
+@8nts.
+y constrH
+@8aint
+@ fD
+|$(L
+|$0H
+Attempt to delete non existing constraint, constraint: 
+basic_string::_M_construct null not valid
+Error in cholesky decomposition, sum: 
+The matrix G is not a squared matrix (
+The matrix CE is incompatible (incorrect number of rows 
+The vector ce0 is incompatible (incorrect dimension 
+The matrix CI is incompatible (incorrect number of rows 
+The vector ci0 is incompatible (incorrect dimension 
+Constraints are linearly dependent
+ , expecting 
+Error reading ce0.
+Error reading CI.
+Error reading ci0.
+Error storing solution in results.
+Error storing cost in results.
+Not enough argumMatrix G not fouG must be a squag0 must be an n CE must have same number of rowsce0 must be p x 1, where p = number of equality CI must have samci0 must be m x 1, where m = number of inequalitresults matrix must have at least 1 row and (n_vars+1) columns.
+Error reading G.Error reading g0Error reading CE
+;*3$"
+zPLR
+zPLR
+zPLR
+zPLR
+zPLR
+GCC: (GNU) 8.5.0 20210514 (Red Hat 8.5.0-18)
+QuadProg++.cc
+_ZN10quadprogpp17delete_constraintERNS_6MatrixIdEES2_RNS_6VectorIiEERNS3_IdEEjiRji.cold.38
+_ZN10quadprogpp12print_matrixEPKcRKNS_6MatrixIdEEii.cold.39
+_ZN10quadprogpp22cholesky_decompositionERNS_6MatrixIdEE.cold.40
+_ZN10quadprogpp14solve_quadprogERNS_6MatrixIdEERNS_6VectorIdEERKS1_RKS4_S7_S9_S5_.cold.41
+_GLOBAL__sub_I_QuadProg__.cc
+_ZStL8__ioinit
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2EPKcRKS3_.isra.24
+stata_call.cold.33
+_GLOBAL__sub_I_quadprog_mata.cpp
+crtstuff.c
+deregister_tm_clones
+__do_global_dtors_aux
+completed.7303
+__do_global_dtors_aux_fini_array_entry
+frame_dummy
+__frame_dummy_init_array_entry
+__FRAME_END__
+__GNU_EH_FRAME_HDR
+__dso_handle
+DW.ref.__gxx_personality_v0
+_fini
+DW.ref._ZTISt9exception
+_init
+_DYNAMIC
+__TMC_END__
+_GLOBAL_OFFSET_TABLE_
+_Znam@@GLIBCXX_3.4
+_ZNSo3putEc@@GLIBCXX_3.4
+pginit
+_ZN10quadprogpp12print_matrixEPKcRKNS_6MatrixIdEEii
+stata_call
+_ZTVSt9basic_iosIcSt11char_traitsIcEE@@GLIBCXX_3.4
+_ZN10quadprogpp6MatrixIdED1Ev
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev@@GLIBCXX_3.4.21
+_edata
+_ZNSt8ios_baseC2Ev@@GLIBCXX_3.4
+_ZNSt8ios_baseD2Ev@@GLIBCXX_3.4
+_ZSt17__throw_bad_allocv@@GLIBCXX_3.4
+_ZNSt13runtime_errorC1EPKc@@GLIBCXX_3.4.21
+__cxa_begin_catch@@CXXABI_1.3
+__cxa_finalize@@GLIBC_2.2.5
+strlen@@GLIBC_2.2.5
+__cxa_allocate_exception@@CXXABI_1.3
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_@@GLIBCXX_3.4.21
+_ZN10quadprogpp6MatrixIdEC2Ejj
+_ZTVSt15basic_streambufIcSt11char_traitsIcEE@@GLIBCXX_3.4
+_ZNSo9_M_insertImEERSoT_@@GLIBCXX_3.4.9
+_ZNSo5flushEv@@GLIBCXX_3.4
+_ZSt19__throw_logic_errorPKc@@GLIBCXX_3.4
+__cxa_free_exception@@CXXABI_1.3
+sqrt@@GLIBC_2.2.5
+_stata_
+memcpy@@GLIBC_2.14
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEC1ESt13_Ios_Openmode@@GLIBCXX_3.4.21
+_ZNKSt5ctypeIcE8do_widenEc
+__cxa_atexit@@GLIBC_2.2.5
+_ZdlPv@@GLIBCXX_3.4
+_ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+_ZN10quadprogpp22cholesky_decompositionERNS_6MatrixIdEE
+_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@@GLIBCXX_3.4
+_Znwm@@GLIBCXX_3.4
+_ZNSt13runtime_errorD1Ev@@GLIBCXX_3.4
+_ZN10quadprogpp17delete_constraintERNS_6MatrixIdEES2_RNS_6VectorIiEERNS3_IdEEjiRji
+_ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+_ZN10quadprogpp6MatrixIdED2Ev
+_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@@GLIBCXX_3.4.9
+_ZNKSt5ctypeIcE13_M_widen_initEv@@GLIBCXX_3.4.11
+_ZNSt11logic_errorD1Ev@@GLIBCXX_3.4
+_ZSt16__throw_bad_castv@@GLIBCXX_3.4
+_ZSt4cout@@GLIBCXX_3.4
+_ZdaPv@@GLIBCXX_3.4
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E@@GLIBCXX_3.4
+_end
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED2Ev
+_ZNSt6localeD1Ev@@GLIBCXX_3.4
+_ZN10quadprogpp14solve_quadprogERNS_6MatrixIdEERNS_6VectorIdEERKS1_RKS4_S7_S9_S5_
+_ZNSt11logic_errorC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+__bss_start
+_ZNSt8ios_base4InitC1Ev@@GLIBCXX_3.4
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_replaceEmmPKcm@@GLIBCXX_3.4.21
+_ZNKSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE3strEv@@GLIBCXX_3.4.21
+_ZNSo9_M_insertIdEERSoT_@@GLIBCXX_3.4.9
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+__cxa_end_catch@@CXXABI_1.3
+__gxx_personality_v0@@CXXABI_1.3
+_ZNSt16invalid_argumentD1Ev@@GLIBCXX_3.4
+_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate@@GLIBCXX_3.4
+__cxa_throw@@CXXABI_1.3
+_ZN10quadprogpp14add_constraintERNS_6MatrixIdEES2_RNS_6VectorIdEERjRd
+_ZNSolsEi@@GLIBCXX_3.4
+_ZNSt16invalid_argumentC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+_ITM_deregisterTMCloneTable
+_ZN10quadprogpp14cholesky_solveERKNS_6MatrixIdEERNS_6VectorIdEERKS5_
+_Unwind_Resume@@GCC_3.0
+_ZTISt11logic_error@@GLIBCXX_3.4
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERmm@@GLIBCXX_3.4.21
+_ZTISt16invalid_argument@@GLIBCXX_3.4
+_ZTISt9exception@@GLIBCXX_3.4
+__gmon_start__
+_ITM_registerTMCloneTable
+_ZTISt13runtime_error@@GLIBCXX_3.4
+_ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED0Ev
+_ZNSt6localeC1Ev@@GLIBCXX_3.4
+_ZN10quadprogpp6MatrixIdEC1Ejj
+_ZNSt8ios_base4InitD1Ev@@GLIBCXX_3.4
+.symtab
+.strtab
+.shstrtab
+.note.gnu.build-id
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.gcc_except_table
+.init_array
+.fini_array
+.data.rel.ro
+.dynamic
+.got
+.got.plt
+.data
+.bss
+.comment
+.gnu.build.attributes
+
+
+
+=== Content of quadprog_mata_linux.so ===
+)xhM
+__gmon_start__
+_ITM_deregisterTMCloneTable
+_ITM_registerTMCloneTable
+__cxa_finalize
+_ZNKSt5ctypeIcE8do_widenEc
+_ZN10quadprogpp14add_constraintERNS_6MatrixIdEES2_RNS_6VectorIdEERjRd
+sqrt
+_ZN10quadprogpp17delete_constraintERNS_6MatrixIdEES2_RNS_6VectorIiEERNS3_IdEEjiRji
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEC1ESt13_Ios_Openmode
+_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l
+_ZNSolsEi
+__cxa_allocate_exception
+_ZNKSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE3strEv
+_ZNSt16invalid_argumentC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+_ZdlPv
+__gxx_personality_v0
+_ZNSt16invalid_argumentD1Ev
+_ZTISt16invalid_argument
+__cxa_throw
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+_Unwind_Resume
+__cxa_free_exception
+_ZN10quadprogpp14cholesky_solveERKNS_6MatrixIdEERNS_6VectorIdEERKS5_
+_Znam
+_ZdaPv
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED2Ev
+_ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE
+_ZTVSt15basic_streambufIcSt11char_traitsIcEE
+_ZNSt6localeD1Ev
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+_ZN10quadprogpp12print_matrixEPKcRKNS_6MatrixIdEEii
+_ZNSt8ios_baseC2Ev
+_ZTVSt9basic_iosIcSt11char_traitsIcEE
+_ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+_ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+_ZNSt6localeC1Ev
+strlen
+_ZNSo3putEc
+_ZNSo5flushEv
+_ZNSo9_M_insertIdEERSoT_
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_replaceEmmPKcm
+_ZSt4cout
+_ZNSt8ios_baseD2Ev
+_ZNKSt5ctypeIcE13_M_widen_initEv
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERmm
+memcpy
+_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_
+_ZSt16__throw_bad_castv
+_ZSt19__throw_logic_errorPKc
+_ZN10quadprogpp22cholesky_decompositionERNS_6MatrixIdEE
+_ZNSt11logic_errorC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+_ZNSt11logic_errorD1Ev
+_ZTISt11logic_error
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED0Ev
+_ZN10quadprogpp6MatrixIdEC2Ejj
+_ZN10quadprogpp6MatrixIdEC1Ejj
+_ZN10quadprogpp6MatrixIdED2Ev
+_ZN10quadprogpp6MatrixIdED1Ev
+_ZN10quadprogpp14solve_quadprogERNS_6MatrixIdEERNS_6VectorIdEERKS1_RKS4_S7_S9_S5_
+_ZNSt13runtime_errorC1EPKc
+_ZNSo9_M_insertImEERSoT_
+_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc
+_ZNSt13runtime_errorD1Ev
+_ZTISt13runtime_error
+_ZNSt8ios_base4InitC1Ev
+_ZNSt8ios_base4InitD1Ev
+__cxa_atexit
+pginit
+_stata_
+stata_call
+_Znwm
+_ZSt17__throw_bad_allocv
+__cxa_begin_catch
+__cxa_end_catch
+_ZTISt9exception
+libstdc++.so.6
+libm.so.6
+libgcc_s.so.1
+libc.so.6
+_edata
+__bss_start
+_end
+quadprog_mata.so
+GCC_3.0
+GLIBC_2.2.5
+GLIBC_2.14
+GLIBCXX_3.4.11
+GLIBCXX_3.4.9
+CXXABI_1.3
+GLIBCXX_3.4.21
+GLIBCXX_3.4
+%zq 
+%rq 
+%jq 
+%bq 
+%Zq 
+%Rq 
+%Jq 
+%Bq 
+%:q 
+%2q 
+%*q 
+%"q 
+%zp 
+%rp 
+%jp 
+%bp 
+%Zp 
+%Rp 
+%Jp 
+%Bp 
+%:p 
+%2p 
+5Bn 
+|$@H
+|$PH
+|$0H
+5um 
+|$0H
+d$PL
+5fk 
+5Pk 
+=Ah 
+=Ei 
+u+UH
+AWfE
+AVAUATUSH
+~5cL
+D$HH
+L$@H
+T$8H
+t$0H
+T$8H
+L$@fE
+D$HH
+t$0L
+~5LJ
+X[]A\A]A^A_
+D$HH
+L$@H
+T$8H
+t$0H
+T$8H
+L$@fE
+D$HH
+t$0L
+~5!I
+AWAVAUATUSH
+|$@H
+D$<H
+t$0H
+L$8H
+D$<H
+t$0H
+L$8H
+[]A\A]A^A_
+D$<H
+t$0H
+L$8H
+D$<H
+t$0H
+L$8H
+xWHc
+~$Lc
+AWAVAUI
+L$H
+D$@H
+D$0H
+D$M
+t$CH
+D$1
+~8f.
+L9d$
+D$PH
+t$PH
+|$0H
+T$XH9
+L$`H
+D$@H
+t$0H
+T$8H
+L$@H
+|$PH
+D$`H
+|$PH9
+D$8L
+l$0L
+d$pI
+T$pH9
+\$(H
+t$pI
+|$0H9
+L$xH
+D$@H
+t$0H
+L$8H
+T$@H
+|$pH
+|$pL9
+T$8H
+t$0H
+|$0H
+E`H9
+[]A\A]A^A_
+@0H;
+@0H;
+@0H;
+t$(1
+T$(H
+D$pH
+\$(H
+T$xH
+T$xH
+|$0H
+T$XH
+|$0H
+t$0H
+L$8H
+T$@I
+t$0H
+T$8H
+L$@H
+T$xH
+T$XH
+AWAVAUATUSH
+x5Hc
+[]A\A]A^A_
+\$PH
+d$PH
+T$PH
+D$XH
+D$XH
+D$0H
+D$pH
+L$xL9
+vuH)
+|$0H
+|$(L
+|$(L
+AWAVL
+AUATSH
+D;(t%H
+X8H
+[A\A]A^A_]
+CXH9
+CXH9
+AUATI
+[]A\A]
+t7SH
+[]A\A]
+AWAVAUATSH
+|$ H
+|$(H
+|$0H
+[A\A]A^A_]
+@  as 
+re matriH
+ents prof
+videf
+nd or inH
+valif
+@  as 
+x 1 vectH
+constraiH
+@8nts.
+y constrH
+@8aint
+@ fD
+|$(L
+|$0H
+Attempt to delete non existing constraint, constraint: 
+basic_string::_M_construct null not valid
+Error in cholesky decomposition, sum: 
+The matrix G is not a squared matrix (
+The matrix CE is incompatible (incorrect number of rows 
+The vector ce0 is incompatible (incorrect dimension 
+The matrix CI is incompatible (incorrect number of rows 
+The vector ci0 is incompatible (incorrect dimension 
+Constraints are linearly dependent
+ , expecting 
+Error reading ce0.
+Error reading CI.
+Error reading ci0.
+Error storing solution in results.
+Error storing cost in results.
+Not enough argumMatrix G not fouG must be a squag0 must be an n CE must have same number of rowsce0 must be p x 1, where p = number of equality CI must have samci0 must be m x 1, where m = number of inequalitresults matrix must have at least 1 row and (n_vars+1) columns.
+Error reading G.Error reading g0Error reading CE
+;*3$"
+zPLR
+zPLR
+zPLR
+zPLR
+zPLR
+GCC: (GNU) 8.5.0 20210514 (Red Hat 8.5.0-18)
+QuadProg++.cc
+_ZN10quadprogpp17delete_constraintERNS_6MatrixIdEES2_RNS_6VectorIiEERNS3_IdEEjiRji.cold.38
+_ZN10quadprogpp12print_matrixEPKcRKNS_6MatrixIdEEii.cold.39
+_ZN10quadprogpp22cholesky_decompositionERNS_6MatrixIdEE.cold.40
+_ZN10quadprogpp14solve_quadprogERNS_6MatrixIdEERNS_6VectorIdEERKS1_RKS4_S7_S9_S5_.cold.41
+_GLOBAL__sub_I_QuadProg__.cc
+_ZStL8__ioinit
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2EPKcRKS3_.isra.24
+stata_call.cold.33
+_GLOBAL__sub_I_quadprog_mata.cpp
+crtstuff.c
+deregister_tm_clones
+__do_global_dtors_aux
+completed.7303
+__do_global_dtors_aux_fini_array_entry
+frame_dummy
+__frame_dummy_init_array_entry
+__FRAME_END__
+__GNU_EH_FRAME_HDR
+__dso_handle
+DW.ref.__gxx_personality_v0
+_fini
+DW.ref._ZTISt9exception
+_init
+_DYNAMIC
+__TMC_END__
+_GLOBAL_OFFSET_TABLE_
+_Znam@@GLIBCXX_3.4
+_ZNSo3putEc@@GLIBCXX_3.4
+pginit
+_ZN10quadprogpp12print_matrixEPKcRKNS_6MatrixIdEEii
+stata_call
+_ZTVSt9basic_iosIcSt11char_traitsIcEE@@GLIBCXX_3.4
+_ZN10quadprogpp6MatrixIdED1Ev
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev@@GLIBCXX_3.4.21
+_edata
+_ZNSt8ios_baseC2Ev@@GLIBCXX_3.4
+_ZNSt8ios_baseD2Ev@@GLIBCXX_3.4
+_ZSt17__throw_bad_allocv@@GLIBCXX_3.4
+_ZNSt13runtime_errorC1EPKc@@GLIBCXX_3.4.21
+__cxa_begin_catch@@CXXABI_1.3
+__cxa_finalize@@GLIBC_2.2.5
+strlen@@GLIBC_2.2.5
+__cxa_allocate_exception@@CXXABI_1.3
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_@@GLIBCXX_3.4.21
+_ZN10quadprogpp6MatrixIdEC2Ejj
+_ZTVSt15basic_streambufIcSt11char_traitsIcEE@@GLIBCXX_3.4
+_ZNSo9_M_insertImEERSoT_@@GLIBCXX_3.4.9
+_ZNSo5flushEv@@GLIBCXX_3.4
+_ZSt19__throw_logic_errorPKc@@GLIBCXX_3.4
+__cxa_free_exception@@CXXABI_1.3
+sqrt@@GLIBC_2.2.5
+_stata_
+memcpy@@GLIBC_2.14
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEC1ESt13_Ios_Openmode@@GLIBCXX_3.4.21
+_ZNKSt5ctypeIcE8do_widenEc
+__cxa_atexit@@GLIBC_2.2.5
+_ZdlPv@@GLIBCXX_3.4
+_ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+_ZN10quadprogpp22cholesky_decompositionERNS_6MatrixIdEE
+_ZStlsISt11char_traitsIcEERSt13basic_ostreamIcT_ES5_PKc@@GLIBCXX_3.4
+_Znwm@@GLIBCXX_3.4
+_ZNSt13runtime_errorD1Ev@@GLIBCXX_3.4
+_ZN10quadprogpp17delete_constraintERNS_6MatrixIdEES2_RNS_6VectorIiEERNS3_IdEEjiRji
+_ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+_ZN10quadprogpp6MatrixIdED2Ev
+_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_l@@GLIBCXX_3.4.9
+_ZNKSt5ctypeIcE13_M_widen_initEv@@GLIBCXX_3.4.11
+_ZNSt11logic_errorD1Ev@@GLIBCXX_3.4
+_ZSt16__throw_bad_castv@@GLIBCXX_3.4
+_ZSt4cout@@GLIBCXX_3.4
+_ZdaPv@@GLIBCXX_3.4
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E@@GLIBCXX_3.4
+_end
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED2Ev
+_ZNSt6localeD1Ev@@GLIBCXX_3.4
+_ZN10quadprogpp14solve_quadprogERNS_6MatrixIdEERNS_6VectorIdEERKS1_RKS4_S7_S9_S5_
+_ZNSt11logic_errorC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+__bss_start
+_ZNSt8ios_base4InitC1Ev@@GLIBCXX_3.4
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_replaceEmmPKcm@@GLIBCXX_3.4.21
+_ZNKSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE3strEv@@GLIBCXX_3.4.21
+_ZNSo9_M_insertIdEERSoT_@@GLIBCXX_3.4.9
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+__cxa_end_catch@@CXXABI_1.3
+__gxx_personality_v0@@CXXABI_1.3
+_ZNSt16invalid_argumentD1Ev@@GLIBCXX_3.4
+_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate@@GLIBCXX_3.4
+__cxa_throw@@CXXABI_1.3
+_ZN10quadprogpp14add_constraintERNS_6MatrixIdEES2_RNS_6VectorIdEERjRd
+_ZNSolsEi@@GLIBCXX_3.4
+_ZNSt16invalid_argumentC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+_ITM_deregisterTMCloneTable
+_ZN10quadprogpp14cholesky_solveERKNS_6MatrixIdEERNS_6VectorIdEERKS5_
+_Unwind_Resume@@GCC_3.0
+_ZTISt11logic_error@@GLIBCXX_3.4
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERmm@@GLIBCXX_3.4.21
+_ZTISt16invalid_argument@@GLIBCXX_3.4
+_ZTISt9exception@@GLIBCXX_3.4
+__gmon_start__
+_ITM_registerTMCloneTable
+_ZTISt13runtime_error@@GLIBCXX_3.4
+_ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE@@GLIBCXX_3.4.21
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED0Ev
+_ZNSt6localeC1Ev@@GLIBCXX_3.4
+_ZN10quadprogpp6MatrixIdEC1Ejj
+_ZNSt8ios_base4InitD1Ev@@GLIBCXX_3.4
+.symtab
+.strtab
+.shstrtab
+.note.gnu.build-id
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.gcc_except_table
+.init_array
+.fini_array
+.data.rel.ro
+.dynamic
+.got
+.got.plt
+.data
+.bss
+.comment
+.gnu.build.attributes
+
+
+
+=== Content of quadprog_mata_mac.plugin ===
+The matrix G is not a squared matrix (
+The matrix CE is incompatible (incorrect number of rows 
+ , expecting 
+The vector ce0 is incompatible (incorrect dimension 
+, expecting 
+The matrix CI is incompatible (incorrect number of rows 
+The vector ci0 is incompatible (incorrect dimension 
+Constraints are linearly dependent
+Attempt to delete non existing constraint, constraint: 
+Error in cholesky decomposition, sum: 
+basic_string
+Not enough arguments provided.
+Matrix G not found or invalid.
+G must be a square matrix.
+g0 must be an n x 1 vector.
+CE must have same number of rows as G.
+ce0 must be p x 1, where p = number of equality constraints.
+CI must have same number of rows as G.
+ci0 must be m x 1, where m = number of inequality constraints.
+results matrix must have at least 1 row and (n_vars+1) columns.
+Error reading G.
+Error reading g0.
+Error reading CE.
+Error reading ce0.
+Error reading CI.
+Error reading ci0.
+Error storing solution in results.
+Error storing cost in results.
+vector
+
+
+
+=== Content of stata.toc ===
+v 1.0.0
+d 'DISCO': Distributional Synthetic Controls
+d 
+d Author: David Van Dijcke
+d University of Michigan, Ann Arbor
+d dvdijcke@umich.edu
+d
+d DiSCo implements the Distributional Synthetic Controls method,
+d extending synthetic controls to entire outcome distributions.
+d
+p disco Estimate distributional synthetic controls
+p disco_estat Post-estimation statistics for DiSCo
+p disco_plot Visualization tools for DiSCo results
+
+
+
+=== Content of test_disco.do ===
+clear
+set seed 123
+
+capture program drop _all
+mata: mata clear
+
+net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/main/src/") replace
+//net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
+// do disco.ado 
+// do disco_plot.ado
+// do disco_utils.mata
+// do quadprog.ado
+// do quadprog.mata
+
+
+* Step 1: Generate IDs and Time Periods
+set obs 20                    // Number of IDs
+gen id_col = _n               // Create unique IDs
+expand 20                     // Duplicate each ID 20 times (for time periods)
+bysort id_col: gen time_col = _n   // Generate time_col within each ID
+expand 50                     // Create 50 observations per ID-time pair
+
+* Step 2: Generate group-specific means and standard deviations
+bysort id_col time_col: gen double group_mean = runiform()*10 - 5   // Means between -5 and 5
+bysort id_col time_col: gen double group_sd   = runiform()*2 + 0.5  // SDs between 0.5 and 2.5
+
+* Step 3: Generate the y_col with group-specific means and variances
+gen double y_col = group_mean + group_sd * rnormal()
+
+
+// Run disco with aggregation
+disco y_col id_col time_col, idtarget(1) t0(2) agg("quantile") graph permutation m(100) g(100)
+
+
+
+=== Content of test_quadprog.ado ===
+// clear
+// matrix G = (2,0 \ 0,2)
+// matrix g0 = (-2 \ -5)
+// matrix CE = (1 \ 1)
+// matrix ce0 = (1)
+// matrix CI = (1,0 \ 0,1)
+// matrix ci0 = (0 \ 0)
+// matrix results = J(1, 3, 0)  // room for 2 variables + cost
+//
+// gen y = 1
+// plugin call quadprog_mata, G g0 CE ce0 CI ci0 results
+//
+
+// Load everything
+
+program drop _all
+
+mata: mata clear
+clear
+
+do quadprog.ado
+
+do quadprog.mata
+
+
+// Define matrices
+matrix G = (1,0 \ 0,1) // Identity matrix
+matrix g0 = (0 \ 0)    // 2x1 zero vector
+matrix CE = (1 \ 1)    // 2x1
+matrix ce0 = (-1)      // p=1, so ce0 is 1x1 with value -1
+matrix CI = (1,0 \ 0,1) // This enforces x1 >=0 and x2 >=0
+matrix ci0 = (0 \ 0)    // 2x1 zero vector
+matrix results = J(1, 3, 0)  // 1 row, 3 columns for x1, x2, cost
+
+// Create a dummy variable to ensure the plugin call knows there's data
+gen y = 1
+
+// // Run the quadprog interface defined in quadprog.ado and quadprog.mata
+// mata:
+// G_m = st_matrix("G")
+// g0_m = st_matrix("g0")
+// CE_m = st_matrix("CE")
+// ce0_m = st_matrix("ce0")
+// CI_m = st_matrix("CI")
+// ci0_m = st_matrix("ci0")
+//
+// res = solve_quadprog(G_m, g0_m, CE_m, ce0_m, CI_m, ci0_m)
+// res
+// end
+
+// The above 'res' should contain a row vector: [x1, x2, cost] = [0.5, 0.5, 0.25]
+
+// Or call via quadprog ado directly
+quadprog matrix(G) matrix(g0) matrix(CE) matrix(ce0) matrix(CI) matrix(ci0) matrix(results)
+
+// Check the results matrix
+matrix list results
+
+
+
+=== Content of ~disco.pkg.stswp ===
+v 1.0.0
+d 'DISCO': Distributional Synthetic Controls
+d
+d Author: David Van Dijcke
+d University of Michigan, Ann Arbor
+d dvdijcke@umich.edu
+d Distribution-Date: 19dec2024
+
+Main command files
+f disco.ado
+f disco.sthlp
+f disco_estat.ado
+f disco_plot.ado
+f
+f ldisco.mlib
+f quadprog_mata_mac.plugin
+f quadprog_mata_linux.so
+
+
+
+=== Content of ~quadprog.ado.stswp ===
+program define quadprog, rclass
+    version 18.0
+    args mG mg0 mCE mce0 mCI mci0 mresults
+    
+    // Remove matrix prefix if present
+    local G = subinstr("`mG'", "matrix(", "", .)
+    local G = subinstr("`G'", ")", "", .)
+    local g0 = subinstr("`mg0'", "matrix(", "", .)
+    local g0 = subinstr("`g0'", ")", "", .)
+    local CE = subinstr("`mCE'", "matrix(", "", .)
+    local CE = subinstr("`CE'", ")", "", .)
+    local ce0 = subinstr("`mce0'", "matrix(", "", .)
+    local ce0 = subinstr("`ce0'", ")", "", .)
+    local CI = subinstr("`mCI'", "matrix(", "", .)
+    local CI = subinstr("`CI'", ")", "", .)
+    local ci0 = subinstr("`mci0'", "matrix(", "", .)
+    local ci0 = subinstr("`ci0'", ")", "", .)
+    local results = subinstr("`mresults'", "matrix(", "", .)
+    local results = subinstr("`results'", ")", "", .)
+    
+    // Determine operating system and load appropriate plugin
+    local os = c(os)
+    if "`os'" == "Windows" {
+        local plugin "quadprog_mata"
+    }
+    else if "`os'" == "MacOSX" {
+        local plugin "quadprog_mata_mac"
+    }
+    else if "`os'" == "Unix" {
+        local plugin "quadprog_mata_linux"
+    }
+    
+    plugin call `plugin', `G' `g0' `CE' `ce0' `CI' `ci0' `results'
+end
+
+// Determine operating system and load appropriate plugin
+local os = c(os)
+if "`os'" == "Windows" {
+	local plugin "quadprog_mata"
+}
+else if "`os'" == "MacOSX" {
+	local plugin "quadprog_mata_mac"
+}
+else if "`os'" == "Unix" {
+	local plugin "quadprog_mata_linux"
+}
+
+program quadprog_mata_mac, plugin
+
+
+
+=== Content of ~test_disco.do.stswp ===
+clear
+set seed 123
+
+capture program drop _all
+mata: mata clear
+
+
+//net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
+// do disco.ado 
+// do disco_plot.ado
+// do disco_utils.mata
+// do quadprog.ado
+// do quadprog.mata
+
+
+* Step 1: Generate IDs and Time Periods
+set obs 20                    // Number of IDs
+gen id_col = _n               // Create unique IDs
+expand 20                     // Duplicate each ID 20 times (for time periods)
+bysort id_col: gen time_col = _n   // Generate time_col within each ID
+expand 50                     // Create 50 observations per ID-time pair
+
+* Step 2: Generate group-specific means and standard deviations
+bysort id_col time_col: gen double group_mean = runiform()*10 - 5   // Means between -5 and 5
+bysort id_col time_col: gen double group_sd   = runiform()*2 + 0.5  // SDs between 0.5 and 2.5
+
+* Step 3: Generate the y_col with group-specific means and variances
+gen double y_col = group_mean + group_sd * rnormal()
+
+
+// Run disco with aggregation
+disco y_col id_col time_col, idtarget(1) t0(2) agg("quantile") graph permutation m(100) g(100)
+
+
+

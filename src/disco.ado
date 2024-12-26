@@ -59,6 +59,8 @@ Date: December 2024
 
 program define disco, eclass
     version 18.0
+	
+
     
     // Syntax parsing
     syntax varlist(min=3 max=3) [if] [in], ///
@@ -86,6 +88,9 @@ program define disco, eclass
         di as error "agg() must be one of: quantile, cdf, quantileDiff, cdfDiff"
         exit 198
     }
+	
+// 	// load mata objects
+// 	mata mata mlib index
     
     // Mark the estimation sample
     marksample touse, novarlist
@@ -145,6 +150,10 @@ program define disco, eclass
         di as err "q_min must be >=0 and q_max <=1"
         exit 198
     }
+	// Preserve dataset before Mata operations
+    tempname base
+    preserve
+    quietly: keep if `touse'
     
     // Identify time range in data
     quietly levelsof `time_col', local(times)
@@ -154,10 +163,7 @@ program define disco, eclass
     local t_max = `max_time' - `min_time' + 1
     local t0_col = `t0' - `min_time' + 1
     
-    // Preserve dataset before Mata operations
-    tempname base
-    preserve
-    quietly: keep if `touse'
+
     
     //************************
     // Main analysis in Mata
@@ -218,9 +224,27 @@ program define disco, eclass
 	
 	// Generate plots if requested
     if "`graph'" != "" & "`agg'" != "" {
-        quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl')
+        tempname qd qt qs cd cs qdl qdu cdl cdu
+        matrix `qd' = e(quantile_diff)
+        matrix `qt' = e(quantile_t)
+        matrix `qs' = e(quantile_synth)
+        matrix `cd' = e(cdf_diff)
+        matrix `cs' = e(cdf_synth)
+        
+        if `doci' == 1 {
+            matrix `qdl' = e(qdiff_lower)
+            matrix `qdu' = e(qdiff_upper)
+            matrix `cdl' = e(cdiff_lower)
+            matrix `cdu' = e(cdiff_upper)
+        }
+        
+        quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl') ///
+            quantile_diff(`qd') quantile_t(`qt') quantile_synth(`qs') ///
+            cdf_diff(`cd') cdf_synth(`cs') cdf_t(cdf_t) ///
+            qdiff_lower(`qdl') qdiff_upper(`qdu') cdiff_lower(`cdl') cdiff_upper(`cdu') ///
+            `options'
     }
-    
+	
     // Store results
     if `doci' == 1 {
         ereturn matrix qdiff_lower = qdiff_lower
@@ -239,11 +263,8 @@ program define disco, eclass
 	ereturn matrix cids = cids // to match weights back to treated units
 	ereturn scalar amin = amin
 	ereturn scalar amax = amax
-    
-    if "`agg'" != "" & !inlist("`agg'", "quantile", "cdf") {
-        ereturn matrix summary_stats = summary_stats
-		disco_estat summary
-    }
+	
+
     
     // Store metadata
     ereturn local cmd "disco"
@@ -257,5 +278,9 @@ program define disco, eclass
     // Display permutation test results if requested
     if `permutation_flag' {
         di _n as txt "Permutation test p-value: " as res %5.3f `pval'
-    }
+		ereturn scalar pval = `pval'
+    } 
+	else {
+		ereturn scalar pval = .
+	}
 end
