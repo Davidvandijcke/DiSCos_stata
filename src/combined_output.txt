@@ -1726,9 +1726,8 @@ Options:
     SEED(integer):     Set random seed
     NOUNIFORM:         Don't use uniform confidence bands
     AGG(string):       Type of aggregation for summary statistics
-                       ("quantile", "cdf", "quantileDiff", "cdfDiff")
+                       ("quantile", "cdf", "quantileDiff", "cdfDiff"). 
     SAMPLES(numlist):  Quantile points for summary statistics
-    GRAPH:             Generate plots of results
 
 Stored results:
     e(weights):        Synthetic control weights
@@ -1774,8 +1773,7 @@ program define disco, eclass
         SEED(integer -1) ///
         NOUNIForm ///
         AGG(string) ///
-        SAMPles(numlist) ///
-        GRaph]
+        SAMPles(numlist)]
     
 	
     // Input validation
@@ -1845,6 +1843,10 @@ program define disco, eclass
         di as err "q_min must be >=0 and q_max <=1"
         exit 198
     }
+	// Preserve dataset before Mata operations
+    tempname base
+    preserve
+    quietly: keep if `touse'
     
     // Identify time range in data
     quietly levelsof `time_col', local(times)
@@ -1854,10 +1856,7 @@ program define disco, eclass
     local t_max = `max_time' - `min_time' + 1
     local t0_col = `t0' - `min_time' + 1
     
-    // Preserve dataset before Mata operations
-    tempname base
-    preserve
-    quietly: keep if `touse'
+
     
     //************************
     // Main analysis in Mata
@@ -1915,30 +1914,32 @@ program define disco, eclass
     }
 	//************************
 
-	
-	// Generate plots if requested
-    if "`graph'" != "" & "`agg'" != "" {
-        tempname qd qt qs cd cs qdl qdu cdl cdu
-        matrix `qd' = e(quantile_diff)
-        matrix `qt' = e(quantile_t)
-        matrix `qs' = e(quantile_synth)
-        matrix `cd' = e(cdf_diff)
-        matrix `cs' = e(cdf_synth)
-        
-        if `doci' == 1 {
-            matrix `qdl' = e(qdiff_lower)
-            matrix `qdu' = e(qdiff_upper)
-            matrix `cdl' = e(cdiff_lower)
-            matrix `cdu' = e(cdiff_upper)
-        }
-        
-        quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl') ///
-            quantile_diff(`qd') quantile_t(`qt') quantile_synth(`qs') ///
-            cdf_diff(`cd') cdf_synth(`cs') cdf_t(cdf_t) ///
-            qdiff_lower(`qdl') qdiff_upper(`qdu') cdiff_lower(`cdl') cdiff_upper(`cdu') ///
-            `options'
-    }
-	
+//	
+// 	// Generate plots if requested
+//     if "`graph'" != "" & "`agg'" != "" {
+//         tempname qd qt qs cd cs qdl qdu cdl cdu 
+//         matrix `qd' = quantile_diff
+//         matrix `qt' = quantile_t
+//         matrix `qs' = quantile_synth
+//         matrix `cd' = cdf_diff
+//         matrix `cs' = cdf_synth
+//
+// 		local amin = amin
+// 		local amax = amax
+//        
+//         if `doci' == 1 {
+//             matrix `qdl' = qdiff_lower
+//             matrix `qdu' = qdiff_upper
+//             matrix `cdl' = cdiff_lower
+//             matrix `cdu' = cdiff_upper
+//         }
+//         quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl') ///
+//             quantile_diff(`qd') quantile_t(`qt') quantile_synth(`qs') ///
+//             cdf_diff(`cd') cdf_synth(`cs') cdf_t(cdf_t) ///
+//             qdiff_lower(`qdl') qdiff_upper(`qdu') cdiff_lower(`cdl') cdiff_upper(`cdu') ///
+//             xmin(`amin') xmax(`amax') `options'
+//     }
+//	
     // Store results
     if `doci' == 1 {
         ereturn matrix qdiff_lower = qdiff_lower
@@ -1957,11 +1958,8 @@ program define disco, eclass
 	ereturn matrix cids = cids // to match weights back to treated units
 	ereturn scalar amin = amin
 	ereturn scalar amax = amax
-    
-    if "`agg'" != "" & !inlist("`agg'", "quantile", "cdf") {
-        ereturn matrix summary_stats = summary_stats
-		disco_estat summary
-    }
+	
+
     
     // Store metadata
     ereturn local cmd "disco"
@@ -1969,13 +1967,21 @@ program define disco, eclass
     ereturn local agg "`agg'"
     ereturn local cl = `cl'
     ereturn local t0 = `t0'
+	ereturn scalar m = `m'
+	ereturn scalar g = `g'
+	ereturn scalar t_max = `t_max'
+	ereturn local doci = `doci'
     ereturn scalar N = _N
     
 
     // Display permutation test results if requested
     if `permutation_flag' {
         di _n as txt "Permutation test p-value: " as res %5.3f `pval'
-    }
+		ereturn scalar pval = `pval'
+    } 
+	else {
+		ereturn scalar pval = .
+	}
 end
 
 
@@ -1999,8 +2005,7 @@ f ldisco.mlib
 f quadprog_mata_mac.plugin
 f quadprog_mata_linux.so
 f quadprog_mata_linux.plugin
-
-
+f quadprog_mata_win.plugin
 
 
 === Content of disco.sthlp ===
@@ -2417,94 +2422,153 @@ University of Michigan, Ann Arbor{break}
 
 
 === Content of disco_plot.ado ===
-
-program define disco_plot
+/*******************************************************************************
+ * Distributional Synthetic Controls Plot (disco_plot)
+ * 
+ * Post-estimation command for DiSCo (disco.ado).
+ * Reads results from e(...) and plots them by time period.
+ *
+ * Implementation based on Gunsilius (2023) and Van Dijcke, Gunsilius, and
+ * Wright (2024).
+ *
+ * Syntax (after disco):
+ *     disco_plot [ , AGG(string) M(integer) G(integer) DOCI(integer) 
+ *                      CL(real) TITLE(string) YTITLE(string) XTITLE(string) 
+ *                      COLOR1(string) COLOR2(string) CIcolor(string) 
+ *                      LWIDTH(string) LPATTERN(string) BYOPTS(string) 
+ *                      PLOTREGION(string) GRAPHREGION(string) SCHEME(string) 
+ *                      LEGEND(string)
+ *                ]
+ *
+ * Author: David Van Dijcke
+ * Version: 1.0.0
+ * Date: December 2024
+ *******************************************************************************/
+program define disco_plot, eclass
     version 18.0
-    
-    syntax, AGG(string) M(integer) G(integer) T_max(integer) DOCI(integer) CL(real) ///
-        quantile_diff(name) quantile_t(name) quantile_synth(name) ///
-        cdf_diff(name) cdf_synth(name) cdf_t(name) ///
-        [qdiff_lower(name) qdiff_upper(name) cdiff_lower(name) cdiff_upper(name) ///
-        TITLE(string) YTITLE(string) XTITLE(string) ///
-        BYOPTS(string) PLOTREGION(string) GRAPHREGION(string) ///
-        SCHEME(string) LEGEND(string) COLOR1(string) COLOR2(string) ///
-        CIcolor(string) LWIDTH(string) LPATTERN(string)]
-    
+
+    // 2. Syntax parsing
+    syntax[ , AGG(string) /// 
+            TITLE(string) YTITLE(string) XTITLE(string) ///
+            COLOR1(string) COLOR2(string) CIcolor(string) ///
+            LWIDTH(string) LPATTERN(string) LEGEND(string) ///
+            BYOPTS(string) PLOTREGION(string) GRAPHREGION(string) ///
+            SCHEME(string)]
+		
+	// 1. Check that e(cmd) is "disco"
+    if "`e(cmd)'" != "disco" {
+        di as error "disco_plot is a post-estimation command for disco. Run disco first."
+        exit 198
+    }
+    // set default agg if user didnt specify
+    if missing(e(agg)) {
+		local agg = "quantileDiff"
+	}
+    local m = e(m)
+    local g = e(g)
+	local doci = e(doci)
+	local cl = e(cl)
+	
+
+    // Confidence intervals (if e(doci)==1 by default)
+    if missing(`doci') local doci = e(doci)
+    if missing(`cl') local cl = e(cl)
+    local cl_txt = subinstr("`cl'", ".", "", .)
+
+    // Extract needed matrices from e()
+    matrix quantile_diff    = e(quantile_diff)
+    matrix quantile_t       = e(quantile_t)
+    matrix quantile_synth   = e(quantile_synth)
+    matrix cdf_diff         = e(cdf_diff)
+    matrix cdf_synth        = e(cdf_synth)
+    matrix cdf_t            = e(cdf_t)
+
+    // If we have CIs
+    if `doci' == 1 {
+        matrix qdiff_lower   = e(qdiff_lower)
+        matrix qdiff_upper   = e(qdiff_upper)
+        matrix cdiff_lower   = e(cdiff_lower)
+        matrix cdiff_upper   = e(cdiff_upper)
+    }
+
+    // Scalars for time range and x-lims
+    scalar t_max = e(t_max)
+    scalar xmin  = e(amin)
+    scalar xmax  = e(amax)
+
+    // Default graph options
+    if "`color1'" == "" local color1 "blue"
+    if "`color2'" == "" local color2 "red"
+    if "`cicolor'" == "" local cicolor "gs12"
+    if "`lwidth'" == "" local lwidth "medium"
+    if ("`lpattern'" == "") local lpattern "dash"
+
+    // Now replicate your plotting logic using only the e(...) results.
     preserve
     clear
     
-    // Set default colors and styles if not specified
-    if "`color1'" == "" local color1 "blue"
-    if "`color2'" == "" local color2 "red" 
-    if "`cicolor'" == "" local cicolor "gs12"
-    if "`lwidth'" == "" local lwidth "medium"
-    if "`lpattern'" == "" local lpattern "dash"
-    
-    local cl_txt = subinstr("`cl'", ".", "", .)
-
     if "`agg'" == "quantileDiff" {
-        // Set default titles if not specified
+        // Default titles
         if "`title'" == "" local title "Distributional Effects by Time Period"
         if "`ytitle'" == "" local ytitle "Difference in Quantile Functions"
         if "`xtitle'" == "" local xtitle "Quantile"
 
         if `doci' {
-            set obs `m'
+            quietly: set obs `m'
             gen tau = (_n-1)/(`m'-1)
             
-            svmat `quantile_diff'
-            svmat `qdiff_lower'
-            svmat `qdiff_upper'
-            reshape long `quantile_diff' `qdiff_lower' `qdiff_upper', i(tau) j(time)
+            svmat quantile_diff
+            svmat qdiff_lower
+            svmat qdiff_upper
+            quietly: reshape long quantile_diff qdiff_lower qdiff_upper, i(tau) j(time)
             
-            twoway (rarea `qdiff_lower' `qdiff_upper' tau, color(`cicolor')) ///
-                   (line `quantile_diff' tau, lcolor(`color1') lwidth(`lwidth')), ///
-                   by(time, note("") title(`"`title'"') `byopts') ///
-                   ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+            twoway (rarea qdiff_lower qdiff_upper tau, color(`cicolor')) ///
+                   (line quantile_diff tau, lcolor(`color1') lwidth(`lwidth')), ///
+                   by(time, note("") title("`title'") `byopts') ///
+                   ytitle("`ytitle'") xtitle("`xtitle'") ///
                    xlabel(0(.2)1) ylabel(, angle(horizontal)) ///
-                   legend(label(1 "`cl_txt'% confidence intervals") ///
-                          label(2 "Estimates") `legend') ///
+                   legend(label(1 "`cl_txt'% CIs") label(2 "Estimates") `legend') ///
                    `plotregion' `graphregion' `scheme'
         }
         else {
-            set obs `m'
+            quietly: set obs `m'
             gen tau = (_n-1)/(`m'-1)
             
-            svmat `quantile_diff'
-            reshape long `quantile_diff', i(tau) j(time)
+            svmat quantile_diff
+            quietly: reshape long quantile_diff, i(tau) j(time)
             
-            twoway line `quantile_diff' tau, ///
+            twoway line quantile_diff tau, ///
                    lcolor(`color1') lwidth(`lwidth') ///
-                   by(time, note("") title(`"`title'"') `byopts') ///
-                   ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+                   by(time, note("") title("`title'") `byopts') ///
+                   ytitle("`ytitle'") xtitle("`xtitle'") ///
                    xlabel(0(.2)1) ylabel(, angle(horizontal)) ///
                    legend(off) ///
                    `plotregion' `graphregion' `scheme'
         }
     }
     else if "`agg'" == "quantile" {
-        // Set default titles
+        // Default titles
         if "`title'" == "" local title "Synthetic vs. Treated Quantiles by Time Period"
         if "`ytitle'" == "" local ytitle "Quantile Function (Synthetic vs. Target)"
         if "`xtitle'" == "" local xtitle "Quantile"
         
-        set obs `m'
+        quietly: set obs `m'
         gen tau = (_n-1)/(`m'-1)
         
-        svmat `quantile_t'
-        svmat `quantile_synth'
-        reshape long `quantile_t' `quantile_synth', i(tau) j(time)
+        svmat quantile_t
+        svmat quantile_synth
+        quietly: reshape long quantile_t quantile_synth, i(tau) j(time)
         
-        twoway (line `quantile_t' tau, lcolor(`color1') lwidth(`lwidth')) ///
-               (line `quantile_synth' tau, lcolor(`color2') lwidth(`lwidth') lpattern(`lpattern')), ///
-               by(time, note("") title(`"`title'"') `byopts') ///
-               ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+        twoway (line quantile_t tau, lcolor(`color1') lwidth(`lwidth')) ///
+               (line quantile_synth tau, lcolor(`color2') lwidth(`lwidth') lpattern(`lpattern')), ///
+               by(time, note("") title("`title'") `byopts') ///
+               ytitle("`ytitle'") xtitle("`xtitle'") ///
                legend(order(1 "Observed" 2 "Synthetic") ring(0) pos(1) `legend') ///
                xlabel(0(.2)1) ylabel(, angle(horizontal)) ///
                `plotregion' `graphregion' `scheme'
     }
     else if inlist("`agg'", "cdf", "cdfDiff") {
-        // Set default titles
+        // Defaults
         if "`agg'" == "cdfDiff" {
             if "`ytitle'" == "" local ytitle "Difference in CDFs"
             if "`title'" == "" local title "Distributional Effects by Time Period"
@@ -2515,61 +2579,59 @@ program define disco_plot
         }
         if "`xtitle'" == "" local xtitle "Y"
         
-        local gmin = `min'  // You'll need to pass these from disco.ado
-        local gmax = `max'
-        
+        // cdfDiff
         if "`agg'" == "cdfDiff" {
             if `doci' {
-                set obs `g'
-                gen grid_val = `gmin' + (_n-1)*(`gmax' - `gmin')/(`g'-1)
+                quietly: set obs `g'
+                quietly: gen grid_val = xmin + (_n-1)*(xmax - xmin)/(`g'-1)
         
-                svmat `cdf_diff'
-                svmat `cdiff_lower'
-                svmat `cdiff_upper'
-                reshape long `cdf_diff' `cdiff_lower' `cdiff_upper', i(grid_val) j(time)
+                svmat cdf_diff
+                svmat cdiff_lower
+                svmat cdiff_upper
+                quietly: reshape long cdf_diff cdiff_lower cdiff_upper, i(grid_val) j(time)
                 
-                twoway (rarea `cdiff_lower' `cdiff_upper' grid_val, color(`cicolor')) ///
-                       (line `cdf_diff' grid_val, lcolor(`color1') lwidth(`lwidth')), ///
-                       by(time, note("") title(`"`title'"') `byopts') ///
-                       ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
-                       legend(label(1 "`cl_txt'% confidence intervals") ///
-                              label(2 "Estimates") `legend') ///
+                twoway (rarea cdiff_lower cdiff_upper grid_val, color(`cicolor')) ///
+                       (line cdf_diff grid_val, lcolor(`color1') lwidth(`lwidth')), ///
+                       by(time, note("") title("`title'") `byopts') ///
+                       ytitle("`ytitle'") xtitle("`xtitle'") ///
+                       legend(label(1 "`cl_txt'% CIs") label(2 "Estimates") `legend') ///
                        ylabel(, angle(horizontal)) ///
                        `plotregion' `graphregion' `scheme'
             }
             else {
-                set obs `g'
-                gen grid_val = `gmin' + (_n-1)*(`gmax' - `gmin')/(`g'-1)
+                quietly: set obs `g'
+                gen grid_val = xmin + (_n-1)*(xmax - xmin)/(`g'-1)
                 
-                svmat `cdf_diff'
-                reshape long `cdf_diff', i(grid_val) j(time)
+                svmat cdf_diff
+                quietly: reshape long cdf_diff, i(grid_val) j(time)
                 
-                twoway line `cdf_diff' grid_val, ///
+                twoway line cdf_diff grid_val, ///
                        lcolor(`color1') lwidth(`lwidth') ///
-                       by(time, note("") title(`"`title'"') `byopts') ///
-                       ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+                       by(time, note("") title("`title'") `byopts') ///
+                       ytitle("`ytitle'") xtitle("`xtitle'") ///
                        legend(off) ylabel(, angle(horizontal)) ///
                        `plotregion' `graphregion' `scheme'
             }
         }
+        // cdf (levels)
         else {
-            set obs `g'
-            gen grid_val = `gmin' + (_n-1)*(`gmax' - `gmin')/(`g'-1)
+            quietly: set obs `g'
+            gen grid_val = xmin + (_n-1)*(xmax - xmin)/(`g'-1)
             
-            svmat `cdf_t'
-            svmat `cdf_synth'
-            reshape long `cdf_t' `cdf_synth', i(grid_val) j(time)
+            svmat cdf_t
+            svmat cdf_synth
+            quietly: reshape long cdf_t cdf_synth, i(grid_val) j(time)
             
-            twoway (line `cdf_t' grid_val, lcolor(`color1') lwidth(`lwidth')) ///
-                   (line `cdf_synth' grid_val, lcolor(`color2') lwidth(`lwidth') lpattern(`lpattern')), ///
-                   by(time, note("") title(`"`title'"') `byopts') ///
-                   ytitle(`"`ytitle'"') xtitle(`"`xtitle'"') ///
+            twoway (line cdf_t grid_val, lcolor(`color1') lwidth(`lwidth')) ///
+                   (line cdf_synth grid_val, lcolor(`color2') lwidth(`lwidth') lpattern(`lpattern')), ///
+                   by(time, note("") title("`title'") `byopts') ///
+                   ytitle("`ytitle'") xtitle("`xtitle'") ///
                    legend(order(1 "Observed" 2 "Synthetic") ring(0) pos(1) `legend') ///
                    ylabel(0(.2)1, angle(horizontal)) ///
                    `plotregion' `graphregion' `scheme'
         }
     }
-    
+
     restore
 end
 
@@ -2668,132 +2730,274 @@ University of Michigan, Ann Arbor{break}
 
 
 === Content of disco_testing_suite.do ===
+************************************************************
+* Install disco (only once, outside the tests)
+************************************************************
 clear all
-set seed 12345
+net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src") replace
 
-net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
+************************************************************
+* Program to generate artificial data
+************************************************************
+capture program drop gen_data
+program define gen_data
+    version 16.0
+    
+    * Make sure we start with an empty dataset
+    clear all
+    
+	mata: mata clear 
+	
+    * If you want the exact same data each time:
+    set seed 12345
 
-//------------------------------------------------------
-// Create a small artificial dataset
-// Suppose we have 5 units (id=1,...,5), 4 periods (time=1,...,4)
-// Unit 1 is treated starting period 3 (t0=3)
-// Outcome is linear in id and time, with a shift for the treated unit
-//------------------------------------------------------
-set obs 20
-gen id = ceil(_n/4)
-gen time = _n - 4*(id-1)
-gen y = id*0.5 + time*0.2
-// Introduce a "treatment effect" after period t0 on treated unit id=1
-replace y = y + 1 if id==1 & time>=3
+    //------------------------------------------------------
+    // Create artificial dataset with varying distributions
+    //------------------------------------------------------
+    * Step 1: Generate IDs and Time Periods
+    set obs 20                         // Number of IDs
+    gen id = _n                        // Create unique IDs
+    expand 20                          // Duplicate each ID 20 times (for time periods)
+    bysort id: gen time = _n          // Generate time within each ID
+    expand 50                          // Create 50 observations per ID-time pair
 
-tsset id time
+    * Step 2: Generate group-specific means and standard deviations
+    bysort id time: gen double group_mean = runiform()*10 - 5   
+    bysort id time: gen double group_sd = runiform()*2 + 0.5    
 
-//------------------------------------------------------
-// Test the disco command without mixture, with simplex
-//------------------------------------------------------
-disco y id time, idtarget(1) t0(3) m(50) g(100) 
+    * Step 3: Generate the y variable with group-specific means and variances
+    gen double y = group_mean + group_sd * rnormal()
 
-// Check that weights sum to one
+    // Add treatment effect that varies across the distribution
+    replace y = y + 1 + 0.5*y if id==1 & time>=10  // Treatment effect increases with y
+end
+
+************************************************************
+* Now we run each test, calling gen_data prior to each test
+************************************************************
+
+*----------------------------------------------------------------------
+* Test 1: Basic disco without options
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) 
+disco_plot
+
+// Check return values
+assert e(cmd) == "disco"
+assert e(t0) == "10"
+assert e(cl) == ".95"
+assert e(N) > 0
+
+// Check matrix dimensions
 matrix w = e(weights)
-scalar sum_w = 0
-quietly {
-    forvalues i=1/`=colsof(w)' {
-        scalar sum_w = sum_w + w[1,i]
-    }
+mata {
+    st_numscalar("dims_ok", cols(st_matrix("w"))==19 & rows(st_matrix("w"))==1)
+    assert(st_numscalar("dims_ok"))
 }
-display "Check weights sum to one (quantile-based, simplex): " sum_w
 
-// Check that weights are nonnegative
-scalar min_w = w[1,1]
-forvalues i=1/`=colsof(w)' {
-    if (w[1,i]<min_w) scalar min_w = w[1,i]
+// Check weights sum to 1 (standard approach with simplex)
+mata {
+    st_numscalar("sum_w", sum(st_matrix("w")))
+    assert(abs(st_numscalar("sum_w") - 1) < 1e-8)
 }
-display "Check weights are nonnegative: minimum weight = " min_w
 
-//------------------------------------------------------
-// Test with mixture approach and simplex
-//------------------------------------------------------
-disco y id time, idtarget(1) t0(3) mixture m(50) g(100) 
+// Check non-negativity constraint
+mata {
+    st_numscalar("min_w", min(st_matrix("w")))
+    assert(st_numscalar("min_w") >= -1e-8)
+}
 
+
+*----------------------------------------------------------------------
+* Test 2: Mixture approach with simplex
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) mixture
+
+// Check weights
 matrix w_mix = e(weights)
-scalar sum_w_mix = 0
-quietly {
-    forvalues i=1/`=colsof(w_mix)' {
-        scalar sum_w_mix = sum_w_mix + w_mix[1,i]
+mata {
+    st_numscalar("sum_w_mix", sum(st_matrix("w_mix")))
+    st_numscalar("min_w_mix", min(st_matrix("w_mix")))
+    assert(abs(st_numscalar("sum_w_mix") - 1) < 1e-8)
+    assert(st_numscalar("min_w_mix") >= -1e-8)
+}
+
+// Check matrix dimensions and content
+foreach mat in weights quantile_diff cdf_diff quantile_synth cdf_synth quantile_t cdf_t cids {
+    matrix temp = e(`mat')
+    mata {
+        st_numscalar("has_content", !missing(st_matrix("temp")[1,1]))
+        assert(st_numscalar("has_content"))
     }
 }
-display "Check weights sum to one (mixture, simplex): " sum_w_mix
 
-// Check nonnegativity in mixture case
-scalar min_w_mix = w_mix[1,1]
-forvalues i=1/`=colsof(w_mix)' {
-    if (w_mix[1,i]<min_w_mix) scalar min_w_mix = w_mix[1,i]
+
+*----------------------------------------------------------------------
+* Test 3: Standard approach without simplex
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) nosimplex
+
+// Check weights
+matrix w_nosimplex = e(weights)
+mata {
+    st_numscalar("sum_w_nosimplex", sum(st_matrix("w_nosimplex")))
+    assert(abs(st_numscalar("sum_w_nosimplex") - 1) < 1e-8)
 }
-display "Check weights are nonnegative (mixture): minimum weight = " min_w_mix
 
-//------------------------------------------------------
-// Check monotonicity of quantile and CDF estimates
-//------------------------------------------------------
-matrix qt = e(quantile_t)        
-matrix qs = e(quantile_synth)
-matrix ct = e(cdf_t)
-matrix cs = e(cdf_synth)
+// Should allow negative weights
+mata {
+    st_numscalar("min_w_nosimplex", min(st_matrix("w_nosimplex")))
+    st_numscalar("has_neg", st_numscalar("min_w_nosimplex") < 0)
+    assert(st_numscalar("has_neg") == 1)
+}
 
-local M = rowsof(qt)
-local T = colsof(qt)
 
-// Check monotonicity of quantile_t
-local monotone_quantile_t = 1
-forvalues t=1/`T' {
-    forvalues m=2/`M' {
-        scalar diff = qt[`m',`t'] - qt[`=m-1',`t']
-        if diff < -1e-10 {
-            local monotone_quantile_t = 0
-            break
-        }
+*----------------------------------------------------------------------
+* Test 4: Mixture approach without simplex
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) mixture nosimplex
+
+// Check weights
+matrix w_mix_nosimplex = e(weights)
+mata {
+    st_numscalar("sum_w_mix_nosimplex", sum(st_matrix("w_mix_nosimplex")))
+    assert(abs(st_numscalar("sum_w_mix_nosimplex") - 1) < 1e-8)
+}
+
+mata {
+    st_numscalar("min_w_mix_nosimplex", min(st_matrix("w_mix_nosimplex")))
+    st_numscalar("has_neg_mix", st_numscalar("min_w_mix_nosimplex") < 0)
+    assert(st_numscalar("has_neg_mix") == 1)
+}
+
+
+*----------------------------------------------------------------------
+* Test 5: Confidence intervals
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) ci boots(100) cl(0.90)
+
+// Check CI matrices
+foreach mat in qdiff_lower qdiff_upper cdiff_lower cdiff_upper {
+    matrix temp = e(`mat')
+    mata {
+        st_numscalar("dims_ok", rows(st_matrix("temp"))==100 & cols(st_matrix("temp"))==20)
+        assert(st_numscalar("dims_ok"))
     }
 }
-display "quantile_t is monotone nondecreasing: " `monotone_quantile_t'
 
-// Check monotonicity of quantile_synth
-local monotone_quantile_synth = 1
-forvalues t=1/`T' {
-    forvalues m=2/`M' {
-        scalar diff = qs[`m',`t'] - qs[`=m-1',`t']
-        if diff < -1e-10 {
-            local monotone_quantile_synth = 0
-            break
-        }
-    }
+
+*----------------------------------------------------------------------
+* Test 6: Permutation test
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) permutation
+assert e(pval) != .
+assert e(pval) >= 0 & e(pval) <= 1
+
+
+*----------------------------------------------------------------------
+* Test 7: Different grid sizes
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) m(50) g(50)
+mata {
+    st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==50 & rows(st_matrix("e(cdf_diff)"))==50)
+    assert(st_numscalar("dims_ok"))
 }
-display "quantile_synth is monotone nondecreasing: " `monotone_quantile_synth'
 
-local G = rowsof(ct)
-local monotone_cdf_t = 1
-forvalues t=1/`T' {
-    forvalues g=2/`G' {
-        scalar diff = ct[`g',`t'] - ct[`=g-1',`t']
-        if diff < -1e-10 {
-            local monotone_cdf_t = 0
-            break
-        }
-    }
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) m(200) g(200)
+mata {
+    st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==200 & rows(st_matrix("e(cdf_diff)"))==200)
+    assert(st_numscalar("dims_ok"))
 }
-display "cdf_t is monotone nondecreasing: " `monotone_cdf_t'
 
-local monotone_cdf_synth = 1
-forvalues t=1/`T' {
-    forvalues g=2/`G' {
-        scalar diff = cs[`g',`t'] - cs[`=g-1',`t']
-        if diff < -1e-10 {
-            local monotone_cdf_synth = 0
-            break
-        }
-    }
+
+*----------------------------------------------------------------------
+* Test 8: Aggregation "quantileDiff"
+*----------------------------------------------------------------------
+
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff")  
+mata {
+    st_numscalar("has_content", !missing(st_matrix("e(summary_stats)")))
+    assert(st_numscalar("has_content"))
 }
-display "cdf_synth is monotone nondecreasing: " `monotone_cdf_synth'
+disco_plot
 
-display "All tests completed."
+
+*----------------------------------------------------------------------
+* Test 9: CDF differences
+*----------------------------------------------------------------------
+gen_data
+disco y id time, idtarget(1) t0(10) agg("cdfDiff") 
+mata {
+    st_numscalar("has_content", !missing(st_matrix("e(summary_stats)")))
+    assert(st_numscalar("has_content"))
+}
+disco_plot
+
+gen_data
+disco y id time, idtarget(1) t0(10) agg("cdf") 
+// TODO: fix - local gmin = `min' = local gmin =  ...
+disco_plot
+
+*----------------------------------------------------------------------
+* Tests 10-13: Disco_plot
+*----------------------------------------------------------------------
+
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) ci boots(100) // so we have some CI mats stored
+
+
+// Test 13: CDF plot with custom options
+quietly: disco_plot, title("Distribution Effects") ytitle("CDF") xtitle("Y") ///
+    color1("blue") color2("red") lwidth("thick")
+
+
+*----------------------------------------------------------------------
+* Test 14: Check amin and amax
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10)
+assert e(amin) < 0
+assert e(amax) > 0
+assert e(amin) != .
+assert e(amax) != .
+
+
+*----------------------------------------------------------------------
+* Tests 15-18: Error handling
+*----------------------------------------------------------------------
+gen_data
+rcof "noi disco y id time, idtarget(1) t0(10) agg(invalid)" == 198
+rcof "noi disco y id time, idtarget(1) t0(10) ci cl(1.5)" == 198
+rcof "noi disco y id time, idtarget(1) t0(10) m(0)" == 198
+rcof "noi disco y id time" == 198
+
+
+*----------------------------------------------------------------------
+* Test 19: Missing data
+*----------------------------------------------------------------------
+gen_data
+preserve
+replace y = . if _n == 1
+quietly: disco y id time, idtarget(1) t0(10)
+restore
+
+
+*----------------------------------------------------------------------
+* Test 20: Custom quantile range
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) qmin(0.1) qmax(0.9)
+
+display "All tests completed successfully!"
 
 
 
@@ -3781,8 +3985,8 @@ real scalar compute_summary_stats(string scalar agg, real vector sample_points,
             summary_stats[row, 3] = grid_points[i + 1]
 
             if (is_cdf) {
-                amin = st_numscalar("e(amin)")
-                amax = st_numscalar("e(amax)")
+                amin = st_numscalar("amin")
+                amax = st_numscalar("amax")
                 G = rows(cdf_diff)
                 grid = range(amin, amax, (amax - amin)/(G-1))'
                 idx = selectindex(grid :>= grid_points[i] :& grid :<= grid_points[i + 1])
@@ -4410,8 +4614,6 @@ cdfDiff
 Invalid aggregation type\n
 amin
 amax
-e(amin)
-e(amax)
 cdiff_lower
 cdiff_upper
 qdiff_lower
@@ -4437,8 +4639,6 @@ cdfDiff
 Invalid aggregation type\n
 amin
 amax
-e(amin)
-e(amax)
 cdiff_lower
 cdiff_upper
 qdiff_lower
@@ -4503,7 +4703,7 @@ program define quadprog, rclass
     // Determine operating system and load appropriate plugin
     local os = c(os)
     if "`os'" == "Windows" {
-        local plugin "quadprog_mata"
+        local plugin "quadprog_mata_win"
     }
     else if "`os'" == "MacOSX" {
         local plugin "quadprog_mata_mac"
@@ -4518,7 +4718,7 @@ end
 // Determine operating system and load appropriate plugin
 local os = c(os)
 if "`os'" == "Windows" {
-	local plugin "quadprog_mata"
+	local plugin "quadprog_mata_win"
 }
 else if "`os'" == "MacOSX" {
 	local plugin "quadprog_mata_mac"
@@ -5503,6 +5703,2695 @@ vector
 
 
 
+=== Content of quadprog_mata_win.plugin ===
+!This program cannot be run in DOS mode.
+.text
+`.data
+.rdata
+@.pdata
+@.xdata
+@.bss
+.edata
+@.idata
+.CRT
+.tls
+.reloc
+B/19
+B/31
+B/45
+B/57
+B/70
+B/81
+B/97
+B/113
+AUATUWVSH
+([^_]A\A]
+([^_]A\A]
+ATUWVSH
+ [^_]A\
+AWAVAUATUWVSH
+|$ D
+D$0D
+L$@D
+T$PD
+\$`D
+d$pA
+L$O
+L$9
+D$0D
+L$@D
+T$PD
+\$`D
+d$pH
+[^_]A\A]A^A_
+WVSH
+ [^_
+AVAUATUWVSH
+t.ff.
+~%{x
+~=vx
+[^_]A\A]A^
+t$@H
+|$@H
+t$HH
+D$@f
+D$HH
+|$@L
+AWAVAUATUWVSH
+t$XH
+T$H1
+D$PH
+D$hH
+D$@H
+D$8I
+D$@H
+t$xH
+D$@H
+D$@H9
+D$hH9
+L$`H
+D$HH
+|$PH
+L$XH
+[^_]A\A]A^A_
+@0H9
+@0H9
+@0H9
+T$xE1
+D$xH
+t$xH
+D$HH
+|$PH
+L$XH
+AWAVAUATUWVSH
+L$(H
+|$PL
+l$PH
+t$PH
+D$XH
+L$(H
+[^_]A\A]A^A_
+l$PL
+AWAVAUATUWVSH
+|$HL
+t$`H
+D$xH
+|$T98
+|$HA
+|$HA
+|$HA
+\$HA
+\$HA
+D$XH
+|$TL
+l$XH
+X<J
+\$XH
+~1ff.
+D$XH
+D9L$T
+L$TD
+D$TH
+T$XA
+9L$T
+D$XD
+L$8H
+D$XD
+L$8H
+D$(L
+D$XH
+D$xH9
+D$`H
+|$hH
+L$pH
+[^_]A\A]A^A_
+9L$T
+9L$T
+D$XH
+D$ L
+L$0H
+9D$T
+D$T)
+D$XH
+L$pH
+D$`H
+|$hH
+UWVSH
+D$(H
+8[^_]
+T$(E1
+D$(H
+D$(H
+AWAVAUATUWVSH
+D$D9
+9|$D
+D$PH
+D$P1
+D$XH
+D$xH
+t$xM
+D$`H
+D$hH
+HcD$DH
+D$pH
+HcD$HA
+t$H9
+T$XIc
+T$HI
+Error reH
+ading CEH
+e numberH
+ of rowsH
+have samH
+CE must H
+s as G.
+[^_]A\A]A^A_
+ading G.H
+Error reH
+D$pH
+D$hH
+D$`H
+D$XH
+ square H
+matrix.
+e a squaH
+G must bH
+uments pH
+rovided.H
+gh argumH
+Not enouH
+und or iH
+nvalid.
+ not fouH
+Matrix GH
+e numberH
+ of rowsH
+have samH
+CI must H
+s as G.
+n n x 1 H
+vector.
+be an n H
+g0 must H
+ust haveH
+ at leasH
+matrix mH
+results H
+t 1 row H
+and (n_vH
+ars+1) cH
+olumns.
+1, whereH
+ p = numH
+ be p x H
+ce0 mustH
+ber of eH
+quality H
+ty constH
+raints.
+ber of iH
+nequalitH
+ be m x H
+ci0 mustH
+1, whereH
+ m = numH
+ty constH
+raints.
+Error reH
+ading g0H
+D$HE
+HcD$HH
+T$hA
+D9d$D|NH
+T$H9
+9|$D|SH
+|$xH
+\$PH
+\$XHc
+L$`1
+L$D1
+|$hHc
+L$p1
+9D$D
+l$ H
+L$HH
+D$0H
+K0fI
+t*ff.
+T$XL
+D$`L
+L$hH
+WVSH
+PHc5
+T$ H
+P[^_
+L$ H
+T$8A
+UAWAVAUATWVSH
+l$@D
+[^_A\A]A^A_]
+D$0H
+(D;%vU
+ATUWVSH
+ [^_]A\H
+WVSH
+ [^_
+t ff.
+9MZu
+HcQ<H
+HcA<H
+WVSH
+:MZuYHcB<H
+ [^_
+ [^_
+:MZu
+LcB<I
+8MZu
+HcP<H
+8MZu
+IcP<L
+(ff.
+@' t
+8MZu
+HcH<H
+:MZu
+LcB<I
+;MZu
+McC<M
+QPH=
+s&ff.
+UWVSH
+([^_]
+WVSH
+ [^_
+UWVSH
+([^_]
+CXH9
+Attempt to delete non existing constraint, constraint: 
+Error in cholesky decomposition, sum: 
+The matrix G is not a squared matrix (
+The matrix CE is incompatible (incorrect number of rows 
+ , expecting 
+The vector ce0 is incompatible (incorrect dimension 
+, expecting 
+The matrix CI is incompatible (incorrect number of rows 
+The vector ci0 is incompatible (incorrect dimension 
+Constraints are linearly dependent
+basic_string: construction from null is not valid
+cannot create std::vector larger than max_size()
+Error reading ce0.
+Error reading CI.
+Error reading ci0.
+Error storing solution in results.
+Error storing cost in results.
+Mingw-w64 runtime failure:
+Address %p has no image-section
+  VirtualQuery failed for %d bytes at address %p
+  VirtualProtect failed with code 0x%x
+  Unknown pseudo relocation protocol version %d.
+  Unknown pseudo relocation bit size %d.
+%d bit pseudo relocation at %p out of range, targeting %p, yielding the value %p.
+St11logic_error
+St13runtime_error
+St16invalid_argument
+St9exception
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+GCC: (Rev2, Built by MSYS2 project) 14.2.0
+quadprog_mata.dll
+_ZN10quadprogpp12print_matrixEPKcRKNS_6MatrixIdEEii
+_ZN10quadprogpp14add_constraintERNS_6MatrixIdEES2_RNS_6VectorIdEERjRd
+_ZN10quadprogpp14cholesky_solveERKNS_6MatrixIdEERNS_6VectorIdEERKS5_
+_ZN10quadprogpp14solve_quadprogERNS_6MatrixIdEERNS_6VectorIdEERKS1_RKS4_S7_S9_S5_
+_ZN10quadprogpp17delete_constraintERNS_6MatrixIdEES2_RNS_6VectorIiEERNS3_IdEEjiRji
+_ZN10quadprogpp22cholesky_decompositionERNS_6MatrixIdEE
+_ZN10quadprogpp6MatrixIdEC1Ejj
+_ZN10quadprogpp6MatrixIdED1Ev
+_ZNKSt5ctypeIcE8do_widenEc
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+_ZTISt11logic_error
+_ZTISt13runtime_error
+_ZTISt16invalid_argument
+_ZTISt9exception
+_ZTSSt11logic_error
+_ZTSSt13runtime_error
+_ZTSSt16invalid_argument
+_ZTSSt9exception
+_stata_
+pginit
+stata_call
+_Unwind_Resume
+DeleteCriticalSection
+EnterCriticalSection
+GetLastError
+InitializeCriticalSection
+LeaveCriticalSection
+Sleep
+TlsGetValue
+VirtualProtect
+VirtualQuery
+__iob_func
+_amsg_exit
+_initterm
+_lock
+_unlock
+abort
+calloc
+free
+fwrite
+memcpy
+memset
+realloc
+strlen
+strncmp
+vfprintf
+_ZNKSt5ctypeIcE13_M_widen_initEv
+_ZNKSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE3strEv
+_ZNSo3putEc
+_ZNSo5flushEv
+_ZNSo9_M_insertIdEERSoT_
+_ZNSo9_M_insertImEERSoT_
+_ZNSolsEi
+_ZNSt11logic_errorC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+_ZNSt11logic_errorD1Ev
+_ZNSt13runtime_errorC1EPKc
+_ZNSt13runtime_errorD1Ev
+_ZNSt16invalid_argumentC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+_ZNSt16invalid_argumentD1Ev
+_ZNSt6localeC1Ev
+_ZNSt6localeD1Ev
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_replaceEyyPKcy
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERyy
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+_ZNSt8ios_baseC2Ev
+_ZNSt8ios_baseD2Ev
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_x
+_ZSt16__throw_bad_castv
+_ZSt19__throw_logic_errorPKc
+_ZSt20__throw_length_errorPKc
+_ZSt4cout
+_ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+_ZTVN10__cxxabiv117__class_type_infoE
+_ZTVN10__cxxabiv120__si_class_type_infoE
+_ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE
+_ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+_ZTVSt15basic_streambufIcSt11char_traitsIcEE
+_ZTVSt9basic_iosIcSt11char_traitsIcEE
+_ZdaPv
+_ZdlPv
+_Znay
+_Znwy
+__cxa_allocate_exception
+__cxa_begin_catch
+__cxa_end_catch
+__cxa_free_exception
+__cxa_throw
+__gxx_personality_seh0
+libgcc_s_seh-1.dll
+KERNEL32.dll
+msvcrt.dll
+libstdc++-6.dll
+2GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+_EXCEPTION_RECORD
+ExceptionCode
+ExceptionFlags
+ExceptionRecord
+ExceptionAddress
+NumberParameters
+ExceptionInformation
+#_CONTEXT
+P1Home
+P2Home
+P3Home
+P4Home
+P5Home
+P6Home
+ContextFlags
+MxCsr
+SegCs
+SegDs
+SegEs
+SegFs
+SegGs
+SegSs
+EFlags
+VectorRegister
+VectorControl
+DebugControl
+LastBranchToRip
+LastBranchFromRip
+LastExceptionToRip
+LastExceptionFromRip
+WINBOOL
+BYTE
+WORD
+DWORD
+float
+LPVOID
+signed char
+short int
+ULONG_PTR
+DWORD64
+PVOID
+LONG
+HANDLE
+LONGLONG
+ULONGLONG
+EXCEPTION_ROUTINE
+PEXCEPTION_ROUTINE
+6_M128A
+High
+$M128A
+_onexit_t
+double
+long double
+_Float16
+__bf16
+#_XMM_SAVE_AREA32
+ControlWord
+StatusWord
+TagWord
+Reserved1
+ErrorOpcode
+ErrorOffset
+ErrorSelector
+Reserved2
+DataOffset
+DataSelector
+Reserved3
+MxCsr
+MxCsr_Mask
+FloatRegisters
+XmmRegisters
+Reserved4
+$XMM_SAVE_AREA32
+Header
+Legacy
+Xmm0
+Xmm1
+Xmm2
+Xmm3
+Xmm4
+Xmm5
+Xmm6
+Xmm7
+Xmm8
+Xmm9
+Xmm10
+Xmm11
+Xmm12
+Xmm13
+Xmm14
+Xmm15
+%FltSave
+%FloatSave
+Next
+prev
+_EXCEPTION_REGISTRATION_RECORD
+Handler
+handler
+FiberData
+Version
+_NT_TIB
+ExceptionList
+StackBase
+StackLimit
+SubSystemTib
+ArbitraryUserPointer
+Self
+NT_TIB
+PNT_TIB
+&JOB_OBJECT_NET_RATE_CONTROL_FLAGS
+JOB_OBJECT_NET_RATE_CONTROL_ENABLE
+JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH
+JOB_OBJECT_NET_RATE_CONTROL_DSCP_TAG
+JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS
+PIMAGE_TLS_CALLBACK
+>tagCOINITBASE
+COINITBASE_MULTITHREADED
+&VARENUM
+VT_EMPTY
+VT_NULL
+VT_I2
+VT_I4
+VT_R4
+VT_R8
+VT_CY
+VT_DATE
+VT_BSTR
+VT_DISPATCH
+VT_ERROR
+VT_BOOL
+VT_VARIANT
+VT_UNKNOWN
+VT_DECIMAL
+VT_I1
+VT_UI1
+VT_UI2
+VT_UI4
+VT_I8
+VT_UI8
+VT_INT
+VT_UINT
+VT_VOID
+VT_HRESULT
+VT_PTR
+VT_SAFEARRAY
+VT_CARRAY
+VT_USERDEFINED
+VT_LPSTR
+VT_LPWSTR
+VT_RECORD
+VT_INT_PTR
+VT_UINT_PTR
+VT_FILETIME
+VT_BLOB
+VT_STREAM
+VT_STORAGE
+VT_STREAMED_OBJECT
+VT_STORED_OBJECT
+VT_BLOB_OBJECT
+VT_CF
+VT_CLSID
+VT_VERSIONED_STREAM
+VT_BSTR_BLOB
+VT_VECTOR
+VT_ARRAY
+VT_BYREF
+VT_RESERVED
+VT_ILLEGAL
+VT_ILLEGALMASKED
+VT_TYPEMASK
+__uninitialized
+__initializing
+__initialized
+__native_startup_state
+__native_startup_lock
+@__native_dllmain_reason
+_PVFV
+_PIFV
+_first
+_last
+_end
+__xi_a
+__xi_z
+__xc_a
+__xc_z
+__dyn_tls_init_callback
+)__proc_attached
+)atexit_table
+__mingw_app_type
+*pcinit
+*__mingw_module_is_dll
+_register_onexit_function
+DllMain
+B__main
+DllEntryPoint
+D_pei386_runtime_relocator
+_execute_onexit_table
++_initterm
+_initterm_e
+E_amsg_exit
++Sleep
+_initialize_onexit_table
+Fatexit
+Gfunc
+,__DllMainCRTStartup
+ retcode
+Hi__leave
+-DllMainCRTStartup
+-_CRT_INIT
+ fiberid
+ nested
+,pre_c_init
+M_TEB
+NNtCurrentTeb
+1_InterlockedExchangePointer
+Target
+Value
+1_InterlockedCompareExchangePointer
+Destination
+ExChange
+Comperand
+O__readgsqword
+Offset
+Pret
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+ptrdiff_t
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+float
+signed char
+short int
+double
+long double
+_Float16
+__bf16
+JOB_OBJECT_NET_RATE_CONTROL_FLAGS
+JOB_OBJECT_NET_RATE_CONTROL_ENABLE
+JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH
+JOB_OBJECT_NET_RATE_CONTROL_DSCP_TAG
+JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS
+tagCOINITBASE
+COINITBASE_MULTITHREADED
+VARENUM
+VT_EMPTY
+VT_NULL
+VT_I2
+VT_I4
+VT_R4
+VT_R8
+VT_CY
+VT_DATE
+VT_BSTR
+VT_DISPATCH
+VT_ERROR
+VT_BOOL
+VT_VARIANT
+VT_UNKNOWN
+VT_DECIMAL
+VT_I1
+VT_UI1
+VT_UI2
+VT_UI4
+VT_I8
+VT_UI8
+VT_INT
+VT_UINT
+VT_VOID
+VT_HRESULT
+VT_PTR
+VT_SAFEARRAY
+VT_CARRAY
+VT_USERDEFINED
+VT_LPSTR
+VT_LPWSTR
+VT_RECORD
+VT_INT_PTR
+VT_UINT_PTR
+VT_FILETIME
+VT_BLOB
+VT_STREAM
+VT_STORAGE
+VT_STREAMED_OBJECT
+VT_STORED_OBJECT
+VT_BLOB_OBJECT
+VT_CF
+VT_CLSID
+VT_VERSIONED_STREAM
+VT_BSTR_BLOB
+VT_VECTOR
+VT_ARRAY
+VT_BYREF
+VT_RESERVED
+VT_ILLEGAL
+VT_ILLEGALMASKED
+VT_TYPEMASK
+func_ptr
+__CTOR_LIST__
+__DTOR_LIST__
+initialized
+atexit
+__main
+__do_global_ctors
+nptrs
+__do_global_dtors
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+float
+signed char
+short int
+double
+long double
+_Float16
+__bf16
+JOB_OBJECT_NET_RATE_CONTROL_FLAGS
+JOB_OBJECT_NET_RATE_CONTROL_ENABLE
+JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH
+JOB_OBJECT_NET_RATE_CONTROL_DSCP_TAG
+JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS
+tagCOINITBASE
+COINITBASE_MULTITHREADED
+VARENUM
+VT_EMPTY
+VT_NULL
+VT_I2
+VT_I4
+VT_R4
+VT_R8
+VT_CY
+VT_DATE
+VT_BSTR
+VT_DISPATCH
+VT_ERROR
+VT_BOOL
+VT_VARIANT
+VT_UNKNOWN
+VT_DECIMAL
+VT_I1
+VT_UI1
+VT_UI2
+VT_UI4
+VT_I8
+VT_UI8
+VT_INT
+VT_UINT
+VT_VOID
+VT_HRESULT
+VT_PTR
+VT_SAFEARRAY
+VT_CARRAY
+VT_USERDEFINED
+VT_LPSTR
+VT_LPWSTR
+VT_RECORD
+VT_INT_PTR
+VT_UINT_PTR
+VT_FILETIME
+VT_BLOB
+VT_STREAM
+VT_STORAGE
+VT_STREAMED_OBJECT
+VT_STORED_OBJECT
+VT_BLOB_OBJECT
+VT_CF
+VT_CLSID
+VT_VERSIONED_STREAM
+VT_BSTR_BLOB
+VT_VECTOR
+VT_ARRAY
+VT_BYREF
+VT_RESERVED
+VT_ILLEGAL
+VT_ILLEGALMASKED
+VT_TYPEMASK
+__uninitialized
+__initializing
+__initialized
+__native_startup_state
+__native_startup_lock
+__native_dllmain_reason
+__native_vcclrit_reason
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+uintptr_t
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+ULONG
+WINBOOL
+DWORD
+float
+LPVOID
+signed char
+short int
+ULONG_PTR
+PVOID
+HANDLE
+ULONGLONG
+double
+long double
+_Float16
+__bf16
+JOB_OBJECT_NET_RATE_CONTROL_FLAGS
+JOB_OBJECT_NET_RATE_CONTROL_ENABLE
+JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH
+JOB_OBJECT_NET_RATE_CONTROL_DSCP_TAG
+JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS
+PIMAGE_TLS_CALLBACK
+_IMAGE_TLS_DIRECTORY64
+StartAddressOfRawData
+EndAddressOfRawData
+AddressOfIndex
+AddressOfCallBacks
+SizeOfZeroFill
+Characteristics
+IMAGE_TLS_DIRECTORY64
+IMAGE_TLS_DIRECTORY
+_PVFV
+_tls_index
+_tls_start
+_tls_end
+__xl_a
+__xl_z
+_tls_used
+__xd_a
+__xd_z
+_CRT_MT
+__dyn_tls_init_callback
+__xl_c
+__xl_d
+__mingw_initltsdrot_force
+__mingw_initltsdyn_force
+__mingw_initltssuo_force
+__mingw_TLScallback
+__dyn_tls_dtor
+__tlregdtor
+func
+__dyn_tls_init
+pfunc
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+_PVFV
+_PIFV
+__xi_a
+__xi_z
+__xc_a
+__xc_z
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+__mingw_app_type
+'GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+__gnuc_va_list
+__builtin_va_list
+char
+va_list
+size_t
+long long unsigned int
+long long int
+ptrdiff_t
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+ULONG
+WINBOOL
+BYTE
+WORD
+DWORD
+float
+PBYTE
+LPBYTE
+PDWORD
+LPVOID
+LPCVOID
+signed char
+short int
+ULONG_PTR
+SIZE_T
+PVOID
+LONG
+double
+long double
+_Float16
+__bf16
+JOB_OBJECT_NET_RATE_CONTROL_FLAGS
+JOB_OBJECT_NET_RATE_CONTROL_ENABLE
+JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH
+JOB_OBJECT_NET_RATE_CONTROL_DSCP_TAG
+JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS
+_MEMORY_BASIC_INFORMATION
+BaseAddress
+AllocationBase
+AllocationProtect
+PartitionId
+RegionSize
+State
+Protect
+Type
+MEMORY_BASIC_INFORMATION
+PMEMORY_BASIC_INFORMATION
+_IMAGE_DOS_HEADER
+e_magic
+e_cblp
+e_cp
+e_crlc
+e_cparhdr
+e_minalloc
+e_maxalloc
+e_ss
+e_sp
+e_csum
+e_ip
+e_cs
+e_lfarlc
+e_ovno
+e_res
+e_oemid
+e_oeminfo
+e_res2
+e_lfanew
+IMAGE_DOS_HEADER
+ PhysicalAddress
+ VirtualSize
+_IMAGE_SECTION_HEADER
+Name
+Misc
+VirtualAddress
+SizeOfRawData
+PointerToRawData
+PointerToRelocations
+PointerToLinenumbers
+NumberOfRelocations
+NumberOfLinenumbers
+Characteristics
+PIMAGE_SECTION_HEADER
+,tagCOINITBASE
+COINITBASE_MULTITHREADED
+VARENUM
+VT_EMPTY
+VT_NULL
+VT_I2
+VT_I4
+VT_R4
+VT_R8
+VT_CY
+VT_DATE
+VT_BSTR
+VT_DISPATCH
+VT_ERROR
+VT_BOOL
+VT_VARIANT
+VT_UNKNOWN
+VT_DECIMAL
+VT_I1
+VT_UI1
+VT_UI2
+VT_UI4
+VT_I8
+VT_UI8
+VT_INT
+VT_UINT
+VT_VOID
+VT_HRESULT
+VT_PTR
+VT_SAFEARRAY
+VT_CARRAY
+VT_USERDEFINED
+VT_LPSTR
+VT_LPWSTR
+VT_RECORD
+VT_INT_PTR
+VT_UINT_PTR
+VT_FILETIME
+VT_BLOB
+VT_STREAM
+VT_STORAGE
+VT_STREAMED_OBJECT
+VT_STORED_OBJECT
+VT_BLOB_OBJECT
+VT_CF
+VT_CLSID
+VT_VERSIONED_STREAM
+VT_BSTR_BLOB
+VT_VECTOR
+VT_ARRAY
+VT_BYREF
+VT_RESERVED
+VT_ILLEGAL
+VT_ILLEGALMASKED
+VT_TYPEMASK
+-_iobuf
+_ptr
+_cnt
+_base
+_flag
+_file
+_charbuf
+_bufsiz
+_tmpfname
+FILE
+__RUNTIME_PSEUDO_RELOC_LIST__
+__RUNTIME_PSEUDO_RELOC_LIST_END__
+__ImageBase
+addend
+target
+runtime_pseudo_reloc_item_v1
+target
+flags
+runtime_pseudo_reloc_item_v2
+M(
+magic1
+magic2
+version
+runtime_pseudo_reloc_v2
+old_protect
+base_address
+region_size
+sec_start
+hash
+the_secs
+maxSections
+GetLastError
+VirtualProtect
+VirtualQuery
+_GetPEImageBase
+__mingw_GetSectionForAddress
+memcpy
+0abort
+(1vfprintf
+__builtin_ms_va_list
+__acrt_iob_func
+__mingw_GetSectionCount
+2_pei386_runtime_relocator
+3was_init
+4mSecs
+#do_pseudo_reloc
+start
+base
+addr_imp
+reldata
+reloc_target
+v2_hdr
+bits
+$newval
+$max_unsigned
+min_signed
+#__write_memory
+addr
+;restore_modified_sections
+%oldprot
+<mark_section_writable
+&addr
+new_protect
+>__report_error
+&msg
+argp
+@fwrite
+__builtin_fwrite
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+WINBOOL
+WORD
+DWORD
+float
+LPVOID
+signed char
+short int
+ULONG_PTR
+LONG
+HANDLE
+_LIST_ENTRY
+Flink
+Blink
+LIST_ENTRY
+double
+long double
+_Float16
+__bf16
+JOB_OBJECT_NET_RATE_CONTROL_FLAGS
+JOB_OBJECT_NET_RATE_CONTROL_ENABLE
+JOB_OBJECT_NET_RATE_CONTROL_MAX_BANDWIDTH
+JOB_OBJECT_NET_RATE_CONTROL_DSCP_TAG
+JOB_OBJECT_NET_RATE_CONTROL_VALID_FLAGS
+_RTL_CRITICAL_SECTION_DEBUG
+Type
+CreatorBackTraceIndex
+CriticalSection
+ProcessLocksList
+EntryCount
+ContentionCount
+Flags
+CreatorBackTraceIndexHigh
+SpareWORD
+_RTL_CRITICAL_SECTION
+DebugInfo
+LockCount
+RecursionCount
+OwningThread
+LockSemaphore
+SpinCount
+PRTL_CRITICAL_SECTION_DEBUG
+RTL_CRITICAL_SECTION
+PRTL_CRITICAL_SECTION
+CRITICAL_SECTION
+LPCRITICAL_SECTION
+__mingwthr_cs
+__mingwthr_cs_init
+__mingwthr_key_t
+__mingwthr_key
+dtor
+next
+key_dtor_list
+GetLastError
+TlsGetValue
+_fpreset
+%DeleteCriticalSection
+InitializeCriticalSection
+free
+LeaveCriticalSection
+EnterCriticalSection
+calloc
+__mingw_TLScallback
+hDllHandle
+reason
+reserved
+keyp
+$__mingwthr_run_key_dtors
+keyp
+value
+___w64_mingwthr_remove_key_dtor
+prev_key
+cur_key
+___w64_mingwthr_add_key_dtor
+dtor
+new_key
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+_CRT_MT
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+__RUNTIME_PSEUDO_RELOC_LIST_END__
+char
+__RUNTIME_PSEUDO_RELOC_LIST__
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+long long unsigned int
+char
+size_t
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+WINBOOL
+BYTE
+WORD
+DWORD
+float
+PBYTE
+LPVOID
+signed char
+short int
+ULONG_PTR
+DWORD_PTR
+LONG
+ULONGLONG
+double
+long double
+_Float16
+__bf16
+_IMAGE_DOS_HEADER
+e_magic
+e_cblp
+e_cp
+e_crlc
+e_cparhdr
+e_minalloc
+e_maxalloc
+e_ss
+e_sp
+e_csum
+e_ip
+e_cs
+e_lfarlc
+e_ovno
+e_res
+e_oemid
+e_oeminfo
+e_res2
+e_lfanew
+IMAGE_DOS_HEADER
+PIMAGE_DOS_HEADER
+_IMAGE_FILE_HEADER
+Machine
+NumberOfSections
+PointerToSymbolTable
+NumberOfSymbols
+SizeOfOptionalHeader
+IMAGE_FILE_HEADER
+_IMAGE_DATA_DIRECTORY
+Size
+IMAGE_DATA_DIRECTORY
+_IMAGE_OPTIONAL_HEADER64
+Magic
+MajorLinkerVersion
+MinorLinkerVersion
+SizeOfCode
+SizeOfInitializedData
+SizeOfUninitializedData
+AddressOfEntryPoint
+BaseOfCode
+ImageBase
+SectionAlignment
+FileAlignment
+MajorOperatingSystemVersion
+MinorOperatingSystemVersion
+MajorImageVersion
+MinorImageVersion
+MajorSubsystemVersion
+MinorSubsystemVersion
+Win32VersionValue
+SizeOfImage
+SizeOfHeaders
+CheckSum
+Subsystem
+DllCharacteristics
+SizeOfStackReserve
+SizeOfStackCommit
+SizeOfHeapReserve
+SizeOfHeapCommit
+LoaderFlags
+NumberOfRvaAndSizes
+DataDirectory
+IMAGE_OPTIONAL_HEADER64
+PIMAGE_OPTIONAL_HEADER64
+PIMAGE_OPTIONAL_HEADER
+!_IMAGE_NT_HEADERS64
+Signature
+FileHeader
+OptionalHeader
+PIMAGE_NT_HEADERS64
+PIMAGE_NT_HEADERS
+PhysicalAddress
+VirtualSize
+_IMAGE_SECTION_HEADER
+Name
+Misc
+SizeOfRawData
+PointerToRawData
+PointerToRelocations
+PointerToLinenumbers
+NumberOfRelocations
+NumberOfLinenumbers
+PIMAGE_SECTION_HEADER
+OriginalFirstThunk
+_IMAGE_IMPORT_DESCRIPTOR
+ForwarderChain
+Name
+FirstThunk
+IMAGE_IMPORT_DESCRIPTOR
+PIMAGE_IMPORT_DESCRIPTOR
+&__ImageBase
+strncmp
+strlen
+__mingw_enum_import_library_names
+importDesc
+importsStartRVA
+_IsNonwritableInCurrentImage
+pTarget
+rvaTarget
+_GetPEImageBase
+_FindPESectionExec
+__mingw_GetSectionCount
+__mingw_GetSectionForAddress
+_FindPESectionByName
+pName
+_FindPESection
+)rva
+_ValidateImageBase
+pDOSHeader
+pOptHeader
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+_fpreset
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+BOOL
+DWORD
+float
+LPVOID
+signed char
+short int
+HANDLE
+double
+long double
+_Float16
+__bf16
+DllEntryPoint
+hDllHandle
+dwReason
+lpreserved
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+BOOL
+DWORD
+float
+LPVOID
+signed char
+short int
+HANDLE
+double
+long double
+_Float16
+__bf16
+DllMain
+hDllHandle
+dwReason
+lpreserved
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+_PIFV
+__imp__initterm_e
+_initterm_e
+first_func
+last_func
+func
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+long long unsigned int
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+_iobuf
+_ptr
+_cnt
+_base
+_flag
+_file
+_charbuf
+_bufsiz
+_tmpfname
+FILE
+_f__acrt_iob_func
+__imp___acrt_iob_func
+__iob_func
+__acrt_iob_func
+index
+GNU C99 14.2.0 -m64 -masm=att -mtune=generic -march=nocona -g -O2 -std=gnu99
+char
+size_t
+long long unsigned int
+long long int
+short unsigned int
+long int
+unsigned int
+long unsigned int
+unsigned char
+_PVFV
+_first
+_last
+_end
+_onexit_t
+double
+float
+long double
+__imp__initialize_onexit_table
+__imp__register_onexit_function
+__imp__execute_onexit_table
+free
+realloc
+_unlock
+calloc
+_lock
+_execute_onexit_table
+table
+first
+last
+_register_onexit_function
+table
+func
+new_buf
+_initialize_onexit_table
+table
+9!I
+9!$I
+9!I
+?.tX
+X  <
+_onexit_table_t
+__enative_startup_state
+hDllHandle
+dwReason
+lpreserved
+lock_free
+__enative_startup_state
+hDllHandle
+lpreserved
+dwReason
+sSecInfo
+pSection
+TimeDateStamp
+pNTHeader
+Characteristics
+pImageBase
+VirtualAddress
+iSection
+_onexit_table_t
+C:\M\B\src\build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/crtdll.c
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+D:/a/msys64/mingw64/include/psdk_inc
+D:/a/msys64/mingw64/include
+C:/M/B/src/mingw-w64/mingw-w64-crt/include
+crtdll.c
+crtdll.c
+intrin-impl.h
+winnt.h
+minwindef.h
+basetsd.h
+stdlib.h
+combaseapi.h
+wtypes.h
+internal.h
+corecrt_startup.h
+process.h
+synchapi.h
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/gccmain.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+D:/a/msys64/mingw64/include
+gccmain.c
+gccmain.c
+winnt.h
+combaseapi.h
+wtypes.h
+corecrt.h
+stdlib.h
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/natstart.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+D:/a/msys64/mingw64/include
+C:/M/B/src/mingw-w64/mingw-w64-crt/include
+natstart.c
+winnt.h
+combaseapi.h
+wtypes.h
+internal.h
+natstart.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/tlssup.c
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+D:/a/msys64/mingw64/include
+tlssup.c
+tlssup.c
+corecrt.h
+minwindef.h
+basetsd.h
+winnt.h
+corecrt_startup.h
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/cinitexe.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+D:/a/msys64/mingw64/include
+cinitexe.c
+corecrt_startup.h
+cinitexe.c
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/mingw_helpers.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+mingw_helpers.c
+mingw_helpers.c
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/pseudo-reloc.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+D:/a/msys64/mingw64/include
+pseudo-reloc.c
+pseudo-reloc.c
+vadefs.h
+corecrt.h
+minwindef.h
+basetsd.h
+winnt.h
+combaseapi.h
+wtypes.h
+stdio.h
+memoryapi.h
+errhandlingapi.h
+string.h
+stdlib.h
+<built-in>
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/tlsthrd.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+D:/a/msys64/mingw64/include
+tlsthrd.c
+tlsthrd.c
+minwindef.h
+basetsd.h
+winnt.h
+minwinbase.h
+synchapi.h
+stdlib.h
+processthreadsapi.h
+errhandlingapi.h
+C:\M\B\src\build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/tlsmcrt.c
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+tlsmcrt.c
+tlsmcrt.c
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/pseudo-reloc-list.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+pseudo-reloc-list.c
+pseudo-reloc-list.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/pesect.c
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+D:/a/msys64/mingw64/include
+pesect.c
+pesect.c
+corecrt.h
+minwindef.h
+basetsd.h
+winnt.h
+string.h
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt/CRT_fp10.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/crt
+CRT_fp10.c
+CRT_fp10.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/misc/dllentrypoint.c
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/misc
+D:/a/msys64/mingw64/include
+dllentrypoint.c
+dllentrypoint.c
+minwindef.h
+winnt.h
+C:/M/B/src/mingw-w64/mingw-w64-crt/misc/dllmain.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/misc
+D:/a/msys64/mingw64/include
+dllmain.c
+dllmain.c
+minwindef.h
+winnt.h
+process.h
+C:/M/B/src/mingw-w64/mingw-w64-crt/misc/_initterm_e.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/misc
+D:/a/msys64/mingw64/include
+_initterm_e.c
+_initterm_e.c
+corecrt_startup.h
+C:/M/B/src/mingw-w64/mingw-w64-crt/stdio/acrt_iob_func.c
+C:\M\B\src\build-MINGW64
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/stdio
+D:/a/msys64/mingw64/include
+acrt_iob_func.c
+acrt_iob_func.c
+stdio.h
+C:\M\B\src\build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/misc/onexit_table.c
+C:/M/B/src/build-MINGW64
+C:/M/B/src/mingw-w64/mingw-w64-crt/misc
+D:/a/msys64/mingw64/include
+onexit_table.c
+onexit_table.c
+corecrt_startup.h
+corecrt.h
+stdlib.h
+Xt:p
+.file
+crtdll.c
+atexit
+.text
+.data
+.bss
+.xdata
+.pdata
+.file
+cygming-crtbeg
+.text
+.data
+.bss
+.xdata
+.pdata
+.file
+QuadProg++.cc
+.text
+.data
+.bss
+.xdata
+.pdata
+.rdata
+.file
+quadprog_mata.
+pginit
+.text
+.data
+.bss
+.rdata
+.xdata
+.pdata
+.text
+.idata$7
+.idata$5
+.idata$4
+.idata$6d
+.text
+.idata$7
+.idata$5
+.idata$4
+.idata$6T
+.text
+.idata$7
+.idata$5
+.idata$4
+.idata$6<
+.text
+.idata$7
+.idata$5
+.idata$4
+.idata$6(
+.text
+.idata$7
+.idata$5
+.idata$4
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4x
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4p
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4h
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4`
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4X
+.idata$6x
+.text
+.idata$7
+.idata$5
+.idata$4P
+.idata$64
+.text
+.idata$7
+.idata$5
+.idata$4H
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4@
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$48
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$40
+.idata$6\
+.text
+.idata$7
+.idata$5
+.idata$4(
+.idata$6P
+.text
+.idata$7
+.idata$5x
+.idata$4 
+.idata$60
+.text
+.idata$7|
+.idata$5p
+.idata$4
+.idata$6
+.text
+.idata$7x
+.idata$5h
+.idata$4
+.idata$6
+.text
+.idata$7t
+.idata$5`
+.idata$4
+.idata$6
+.text
+.idata$7p
+.idata$5X
+.idata$4
+.idata$6d
+.text
+.idata$7l
+.idata$5P
+.idata$4
+.idata$6
+.text
+.idata$7h
+.idata$5H
+.idata$4
+.idata$6
+.text
+.idata$7d
+.idata$5@
+.idata$4
+.idata$6
+.text
+.idata$7`
+.idata$58
+.idata$4
+.idata$6
+.text
+.idata$7\
+.idata$50
+.idata$4
+.idata$6`
+.text
+.idata$7X
+.idata$5(
+.idata$4
+.idata$6
+.text
+.idata$7T
+.idata$5 
+.idata$4
+.idata$6
+.text
+.idata$7P
+.idata$5
+.idata$4
+.idata$6
+.text
+.idata$7L
+.idata$5
+.idata$4
+.idata$6p
+.text
+.idata$7H
+.idata$5
+.idata$4
+.idata$6\
+.text
+.idata$7D
+.idata$5
+.idata$4
+.idata$6<
+.text
+.idata$7@
+.idata$5
+.idata$4
+.idata$6
+.text
+.idata$7<
+.idata$5
+.idata$4
+.idata$6
+.text
+.idata$78
+.idata$5
+.idata$4
+.idata$6
+.text
+.idata$74
+.idata$5
+.idata$4
+.idata$6
+.text
+.idata$70
+.idata$5
+.idata$4
+.idata$6@
+.text
+.idata$7,
+.idata$5
+.idata$4x
+.idata$64
+.text
+.idata$7(
+.idata$5
+.idata$4p
+.idata$6
+.text
+.idata$7$
+.idata$5
+.idata$4h
+.idata$6
+.text
+.idata$7 
+.idata$5
+.idata$4`
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4X
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4P
+.idata$6
+.text
+.idata$7
+.idata$5
+.idata$4H
+.idata$6t
+.file
+gccmain.c
+__main
+.text
+.data
+.bss
+.xdata
+.pdata
+.file
+natstart.c
+.text
+.data
+.bss
+.file
+tlssup.c
+__xd_a
+__xd_z
+.text
+.data
+.bss
+.xdata
+.pdata
+.CRT$XLD8
+.CRT$XLC0
+.rdata
+.CRT$XDZP
+.CRT$XDAH
+.CRT$XLZ@
+.CRT$XLA(
+.tls$ZZZ
+.tls
+.file
+cinitexe.c
+.text
+.data
+.bss
+.CRT$XCZ
+.CRT$XCA
+.CRT$XIZ 
+.CRT$XIA
+.file
+mingw_helpers.
+.text
+.data
+.bss
+.file
+pseudo-reloc.c
+the_secsx
+.text
+.data
+.bss
+.rdata
+.xdata
+.pdata
+.file
+tlsthrd.c
+.text
+.data
+.bss
+.xdata
+.pdata
+.file
+tlsmcrt.c
+.text
+.data
+.bss
+.file
+.text
+.data
+.bss
+.file
+pesect.c
+.text
+.data
+.bss
+.xdata
+.pdata
+.file
+CRT_fp10.c
+_fpreset c
+fpreset
+.text
+.data
+.bss
+.xdata
+.pdata
+.text
+.idata$7
+.idata$5
+.idata$4h
+.idata$6
+.text
+.data
+.bss
+.text
+.data
+.bss
+.file
+dllentrypoint.
+.text
+.data
+.bss
+.xdata
+.pdata
+.file
+dllmain.c
+DllMain
+.text
+.data
+.bss
+.xdata
+.pdata
+.file
+_initterm_e.c
+.text
+.data
+.bss
+.xdata
+.pdata
+.file
+acrt_iob_func.
+.text
+.data
+.bss
+.xdata
+.pdata
+.file
+onexit_table.c
+.text
+.data
+.bss
+.xdata
+.pdata
+.text
+.data
+.bss
+.idata$7
+.idata$5 
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5(
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$50
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$58
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5@
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5H
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5P
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5X
+.idata$4
+.idata$6$
+.text
+.data
+.bss
+.idata$7
+.idata$5`
+.idata$4
+.idata$6,
+.text
+.data
+.bss
+.idata$7
+.idata$5h
+.idata$4
+.idata$66
+.text
+.data
+.bss
+.idata$7
+.idata$5p
+.idata$4
+.idata$6@
+.text
+.data
+.bss
+.idata$7
+.idata$5x
+.idata$4 
+.idata$6J
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4(
+.idata$6T
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$40
+.idata$6^
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$48
+.idata$6h
+.file
+fake
+hname
+fthunk
+.text
+.data
+.bss
+.idata$2(
+.idata$4
+.idata$5 
+.file
+fake
+.text
+.data
+.bss
+.idata$4@
+.idata$5
+.idata$7
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4
+.idata$6
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4
+.idata$6l
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4
+.idata$6\
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4
+.idata$6D
+.text
+.data
+.bss
+.idata$7
+.idata$5
+.idata$4x
+.idata$6,
+.file
+fake
+hname
+fthunk
+.text
+.data
+.bss
+.idata$2
+.idata$4x
+.idata$5
+.file
+fake
+.text
+.data
+.bss
+.idata$4
+.idata$5
+.idata$7
+.file
+cygming-crtend
+.text
+.data
+.bss
+.rdata
+.idata$2
+.idata$5
+.idata$4h
+.idata$2<
+.idata$5
+.idata$4H
+.idata$4p
+.idata$5
+.idata$7
+.idata$4
+.idata$5
+.idata$7
+__xc_z
+_Znwy
+_lock
+__xl_a
+__xl_d
+_tls_end
+memcpy
+_CRT_MT
+_ZdlPv
+abort
+__dll__
+calloc
+Sleep
+__xi_z
+pcinit
+strncmp
+realloc
+memset
+_ZdaPv
+__xl_z
+__end__
+__xi_a
+__xc_a
+__xl_c
+fwrite
+_stata_
+strlen
+_Znay
+_unlock
+vfprintf
+free
+.debug_aranges
+.debug_info
+.debug_abbrev
+.debug_line
+.debug_frame
+.debug_str
+.debug_line_str
+.debug_loclists
+.debug_rnglists
+pre_c_init
+atexit_table
+_CRT_INIT
+__proc_attached
+.rdata$.refptr.__native_startup_lock
+.rdata$.refptr.__native_startup_state
+.rdata$.refptr.__dyn_tls_init_callback
+.rdata$.refptr.__xi_z
+.rdata$.refptr.__xi_a
+.rdata$.refptr.__xc_z
+.rdata$.refptr.__xc_a
+__DllMainCRTStartup
+.rdata$.refptr.__native_dllmain_reason
+DllMainCRTStartup
+.rdata$.refptr.__mingw_app_type
+.CRT$XIAA
+.debug_info
+.debug_abbrev
+.debug_loclists
+.debug_aranges
+.debug_rnglists
+.debug_line
+.debug_str
+.debug_line_str
+.rdata$zzz
+.debug_frame
+__gcc_register_frame
+__gcc_deregister_frame
+.text$_ZNKSt5ctypeIcE8do_widenEc
+_ZNKSt5ctypeIcE8do_widenEc
+_ZN10quadprogpp14add_constraintERNS_6MatrixIdEES2_RNS_6VectorIdEERjRd
+_ZN10quadprogpp14cholesky_solveERKNS_6MatrixIdEERNS_6VectorIdEERKS5_
+.text$_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+.rdata$.refptr._ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE
+.rdata$.refptr._ZTVSt15basic_streambufIcSt11char_traitsIcEE
+_ZN10quadprogpp17delete_constraintERNS_6MatrixIdEES2_RNS_6VectorIiEERNS3_IdEEjiRji
+.rdata$.refptr._ZTVSt9basic_iosIcSt11char_traitsIcEE
+.rdata$.refptr._ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+.rdata$.refptr._ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+.rdata$_ZTISt16invalid_argument
+_ZN10quadprogpp12print_matrixEPKcRKNS_6MatrixIdEEii
+.rdata$.refptr._ZSt4cout
+_ZN10quadprogpp22cholesky_decompositionERNS_6MatrixIdEE
+.rdata$_ZTISt11logic_error
+.text$_ZN10quadprogpp6MatrixIdEC1Ejj
+_ZN10quadprogpp6MatrixIdEC1Ejj
+.text$_ZN10quadprogpp6MatrixIdED1Ev
+_ZN10quadprogpp6MatrixIdED1Ev
+_ZN10quadprogpp14solve_quadprogERNS_6MatrixIdEERNS_6VectorIdEERKS1_RKS4_S7_S9_S5_
+.rdata$_ZTISt13runtime_error
+.rdata$_ZTSSt9exception
+.rdata$_ZTISt9exception
+.rdata$_ZTSSt11logic_error
+.rdata$_ZTSSt16invalid_argument
+.rdata$_ZTSSt13runtime_error
+.rdata$.refptr._ZNSt13runtime_errorD1Ev
+.rdata$.refptr._ZNSt11logic_errorD1Ev
+.rdata$.refptr._ZNSt16invalid_argumentD1Ev
+.xdata$_ZNKSt5ctypeIcE8do_widenEc
+.pdata$_ZNKSt5ctypeIcE8do_widenEc
+.xdata$_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+.pdata$_ZNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEED1Ev
+.xdata$_ZN10quadprogpp6MatrixIdEC1Ejj
+.pdata$_ZN10quadprogpp6MatrixIdEC1Ejj
+.xdata$_ZN10quadprogpp6MatrixIdED1Ev
+.pdata$_ZN10quadprogpp6MatrixIdED1Ev
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEC2EPKcRKS3_.isra.0
+stata_call
+__do_global_dtors
+__do_global_ctors
+.rdata$.refptr.__CTOR_LIST__
+initialized
+__dyn_tls_dtor
+__dyn_tls_init
+.rdata$.refptr._CRT_MT
+__tlregdtor
+__report_error
+mark_section_writable
+maxSections
+_pei386_runtime_relocator
+was_init.0
+.rdata$.refptr.__RUNTIME_PSEUDO_RELOC_LIST_END__
+.rdata$.refptr.__RUNTIME_PSEUDO_RELOC_LIST__
+.rdata$.refptr.__ImageBase
+__mingwthr_run_key_dtors.part.0
+__mingwthr_cs
+key_dtor_list
+___w64_mingwthr_add_key_dtor
+__mingwthr_cs_init
+___w64_mingwthr_remove_key_dtor
+__mingw_TLScallback
+pseudo-reloc-list.c
+_ValidateImageBase
+_FindPESection
+_FindPESectionByName
+__mingw_GetSectionForAddress
+__mingw_GetSectionCount
+_FindPESectionExec
+_GetPEImageBase
+_IsNonwritableInCurrentImage
+__mingw_enum_import_library_names
+DllEntryPoint
+_initterm_e
+__acrt_iob_func
+_initialize_onexit_table
+_register_onexit_function
+_execute_onexit_table
+register_frame_ctor
+.text.startup
+.xdata.startup
+.pdata.startup
+.ctors.65535
+.rdata_runtime_pseudo_reloc
+__cxa_free_exception
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_replaceEyyPKcy
+.refptr._ZTVSt9basic_iosIcSt11char_traitsIcEE
+__imp__ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+___RUNTIME_PSEUDO_RELOC_LIST__
+__imp__ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE
+_ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+__imp_abort
+__lib64_libkernel32_a_iname
+__imp__initterm_e
+__data_start__
+___DTOR_LIST__
+__imp__lock
+__imp__ZNSo9_M_insertIdEERSoT_
+__imp__ZTVSt15basic_streambufIcSt11char_traitsIcEE
+.refptr._ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+_head_lib64_libmsvcrt_def_a
+__imp__ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+__imp_calloc
+___tls_start__
+__imp__ZNSt16invalid_argumentD1Ev
+__imp__ZSt20__throw_length_errorPKc
+.refptr.__native_startup_state
+__fu5__ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+_ZNSt16invalid_argumentC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+__imp__ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERyy
+.refptr._ZTVSt15basic_streambufIcSt11char_traitsIcEE
+__imp__ZNSt6localeD1Ev
+GetLastError
+__imp__ZNSolsEi
+__rt_psrelocs_start
+__imp__ZTVSt9basic_iosIcSt11char_traitsIcEE
+__fu3__ZTVN10__cxxabiv120__si_class_type_infoE
+__dll_characteristics__
+__size_of_stack_commit__
+__mingw_module_is_dll
+__iob_func
+__size_of_stack_reserve__
+__major_subsystem_version__
+___crt_xl_start__
+__imp_DeleteCriticalSection
+_ZNSt6localeC1Ev
+.refptr.__CTOR_LIST__
+_ZNSo5flushEv
+_ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+__imp__ZNSt16invalid_argumentC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+VirtualQuery
+___crt_xi_start__
+__imp__amsg_exit
+___crt_xi_end__
+_tls_start
+__imp__ZNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEED1Ev
+.refptr.__RUNTIME_PSEUDO_RELOC_LIST__
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv
+__fu8__ZTVSt15basic_streambufIcSt11char_traitsIcEE
+__imp__ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_x
+_ZNSo3putEc
+TlsGetValue
+__imp__ZNSt13runtime_errorC1EPKc
+__imp__ZTVN10__cxxabiv117__class_type_infoE
+_head_libstdc___6_dll
+__bss_start__
+_ZNKSt5ctypeIcE13_M_widen_initEv
+___RUNTIME_PSEUDO_RELOC_LIST_END__
+__size_of_heap_commit__
+__imp_GetLastError
+__mingw_initltsdrot_force
+__imp_free
+__fu6__ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+_ZTSSt16invalid_argument
+.refptr.__mingw_app_type
+__mingw_initltssuo_force
+.refptr._ZNSt13runtime_errorD1Ev
+VirtualProtect
+___crt_xp_start__
+__nm__ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE
+__imp__ZTVN10__cxxabiv120__si_class_type_infoE
+__imp_LeaveCriticalSection
+__imp__ZNSt13runtime_errorD1Ev
+_ZSt20__throw_length_errorPKc
+.refptr.__RUNTIME_PSEUDO_RELOC_LIST_END__
+__cxa_end_catch
+___crt_xp_end__
+__imp__ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_
+__minor_os_version__
+EnterCriticalSection
+__nm__ZTVSt15basic_streambufIcSt11char_traitsIcEE
+__imp__ZNSt11logic_errorC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+.refptr.__xi_a
+.refptr._CRT_MT
+__section_alignment__
+__native_dllmain_reason
+__imp___cxa_begin_catch
+_ZTISt9exception
+_ZNSt11logic_errorC1ERKNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEEE
+_tls_used
+__imp__ZNSt6localeC1Ev
+__imp_memset
+__IAT_end__
+_ZNSt13runtime_errorD1Ev
+__imp_memcpy
+__RUNTIME_PSEUDO_RELOC_LIST__
+__lib64_libmsvcrt_def_a_iname
+_Unwind_Resume
+__imp___cxa_end_catch
+__data_end__
+__imp_fwrite
+__imp__Unwind_Resume
+__CTOR_LIST__
+_ZNSo9_M_insertImEERSoT_
+_ZTISt13runtime_error
+__imp__ZdlPv
+_head_lib64_libkernel32_a
+libstdc___6_dll_iname
+__bss_end__
+_ZSt16__ostream_insertIcSt11char_traitsIcEERSt13basic_ostreamIT_T0_ES6_PKS3_x
+__native_vcclrit_reason
+___crt_xc_end__
+_ZTISt11logic_error
+.refptr.__native_startup_lock
+__imp___gxx_personality_seh0
+__imp_EnterCriticalSection
+_ZNSolsEi
+_tls_index
+__native_startup_state
+___crt_xc_start__
+_ZNSt8ios_baseC2Ev
+__imp__ZNSo9_M_insertImEERSoT_
+libgcc_s_seh_1_dll_iname
+__fu4__ZSt4cout
+___CTOR_LIST__
+.refptr.__dyn_tls_init_callback
+__imp__register_onexit_function
+_ZNSt16invalid_argumentD1Ev
+__imp__ZNSo5flushEv
+__imp__ZNSt9basic_iosIcSt11char_traitsIcEE4initEPSt15basic_streambufIcS1_E
+__imp__ZSt19__throw_logic_errorPKc
+__rt_psrelocs_size
+.refptr._ZSt4cout
+.refptr.__ImageBase
+__imp__ZNKSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE3strEv
+_ZNSt6localeD1Ev
+__imp_strlen
+__file_alignment__
+__imp__ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_disposeEv
+.refptr._ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE
+__imp_InitializeCriticalSection
+_ZSt19__throw_logic_errorPKc
+__cxa_throw
+__fu9__ZTVNSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEEE
+__imp_realloc
+InitializeCriticalSection
+_ZTSSt13runtime_error
+__imp__ZNSt11logic_errorD1Ev
+__imp_vfprintf
+__nm__ZSt4cout
+__major_os_version__
+__nm__ZTVN10__cxxabiv120__si_class_type_infoE
+_head_libgcc_s_seh_1_dll
+__nm__ZTVSt9basic_iosIcSt11char_traitsIcEE
+__IAT_start__
+__fu2__ZTVN10__cxxabiv120__si_class_type_infoE
+__imp__ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE10_M_replaceEyyPKcy
+__fu7__ZTVSt9basic_iosIcSt11char_traitsIcEE
+__DTOR_LIST__
+__imp__initialize_onexit_table
+__imp_Sleep
+LeaveCriticalSection
+__size_of_heap_reserve__
+___crt_xt_start__
+_ZTSSt11logic_error
+_ZNSt11logic_errorD1Ev
+__subsystem__
+_amsg_exit
+__imp__Znay
+__imp_TlsGetValue
+__imp__execute_onexit_table
+__imp__ZNKSt5ctypeIcE13_M_widen_initEv
+__imp_VirtualProtect
+__imp__ZNSo3putEc
+___tls_end__
+__imp_VirtualQuery
+__imp__initterm
+_ZNSt8ios_baseD2Ev
+__cxa_begin_catch
+__mingw_initltsdyn_force
+__imp___iob_func
+__dyn_tls_init_callback
+_ZSt16__throw_bad_castv
+__imp__ZSt4cout
+_initterm
+__cxa_allocate_exception
+__imp___cxa_throw
+__imp_strncmp
+__fu1__ZTVN10__cxxabiv120__si_class_type_infoE
+__imp___cxa_allocate_exception
+__imp___acrt_iob_func
+__major_image_version__
+__loader_flags__
+.refptr._ZNSt11logic_errorD1Ev
+__imp___cxa_free_exception
+___chkstk_ms
+__native_startup_lock
+.refptr.__native_dllmain_reason
+__nm__ZTTNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+__fu0__ZTVN10__cxxabiv117__class_type_infoE
+_ZNKSt7__cxx1115basic_stringbufIcSt11char_traitsIcESaIcEE3strEv
+__imp__ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+__rt_psrelocs_end
+__minor_subsystem_version__
+__minor_image_version__
+__imp__unlock
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_createERyy
+__imp__ZNSt8ios_baseD2Ev
+__imp__ZSt16__throw_bad_castv
+__nm__ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+__imp__ZdaPv
+__imp__ZNSt8ios_baseC2Ev
+_ZNSt9basic_iosIcSt11char_traitsIcEE5clearESt12_Ios_Iostate
+.refptr.__xc_a
+_ZNSo9_M_insertIdEERSoT_
+.refptr.__xi_z
+_ZNSt7__cxx1112basic_stringIcSt11char_traitsIcESaIcEE9_M_assignERKS4_
+_ZNSt13runtime_errorC1EPKc
+_ZTSSt9exception
+DeleteCriticalSection
+__RUNTIME_PSEUDO_RELOC_LIST_END__
+_ZTISt16invalid_argument
+.refptr.__xc_z
+___crt_xt_end__
+.refptr._ZTVNSt7__cxx1119basic_ostringstreamIcSt11char_traitsIcESaIcEEE
+__gxx_personality_seh0
+.refptr._ZNSt16invalid_argumentD1Ev
+__imp__Znwy
+__nm__ZTVN10__cxxabiv117__class_type_infoE
+__mingw_app_type
+
+
+
 === Content of stata.toc ===
 v 1.0.0
 d 'DISCO': Distributional Synthetic Controls
@@ -5617,112 +8506,788 @@ matrix list results
 
 
 
-=== Content of ~disco.pkg.stswp ===
-v 1.0.0
-d 'DISCO': Distributional Synthetic Controls
-d
-d Author: David Van Dijcke
-d University of Michigan, Ann Arbor
-d dvdijcke@umich.edu
-d Distribution-Date: 19dec2024
+=== Content of ~disco.ado.stswp ===
+/*
+Distributional Synthetic Controls (DiSCo)
+Implementation based on Gunsilius (2023) and Van Dijcke, Gunsilius, and Wright (2024)
 
-Main command files
-f disco.ado
-f disco.sthlp
-f disco_estat.ado
-f disco_plot.ado
-f
-f ldisco.mlib
-f quadprog_mata_mac.plugin
-f quadprog_mata_linux.so
+This command implements the DiSCo method for estimating counterfactual distributions
+using synthetic controls. It allows for both quantile-based and mixture-based approaches,
+with options for confidence intervals, permutation tests, and summary statistics.
+
+Syntax:
+    disco varlist(3) [if] [in], idtarget(integer) t0(integer) [options]
+
+Required input:
+    varlist:    Three variables in order:
+                1. Outcome variable (numeric)
+                2. Unit ID variable (numeric)
+                3. Time period variable (integer)
+    idtarget:   ID of the treated unit
+    t0:         First treatment period
+
+Options:
+    M(integer):         Number of quantile points (default: 100)
+    G(integer):         Number of grid points (default: 100)
+    CI:                 Compute confidence intervals
+    BOOTS(integer):     Number of bootstrap replications (default: 300)
+    CL(real):          Confidence level (default: 0.95)
+    QMIN(real):        Minimum quantile for estimation (default: 0)
+    QMAX(real):        Maximum quantile for estimation (default: 1)
+    NOSIMPLEX:         Don't constrain weights to unit simplex
+    MIXTURE:           Use mixture of distributions approach
+    PERMUTATION:       Perform permutation test
+    SEED(integer):     Set random seed
+    NOUNIFORM:         Don't use uniform confidence bands
+    AGG(string):       Type of aggregation for summary statistics
+                       ("quantile", "cdf", "quantileDiff", "cdfDiff"). 
+    SAMPLES(numlist):  Quantile points for summary statistics
+
+Stored results:
+    e(weights):        Synthetic control weights
+    e(quantile_diff):  Quantile differences
+    e(cdf_diff):       CDF differences
+    e(quantile_synth): Synthetic control quantiles
+    e(quantile_t):     Target unit quantiles
+    e(cdf_synth):      Synthetic control CDFs
+    e(cdf_t):          Target unit CDFs
+    e(summary_stats):  Summary statistics (if agg specified)
+    
+    If CI specified:
+    e(qdiff_lower):    Lower bound for quantile differences
+    e(qdiff_upper):    Upper bound for quantile differences
+    e(cdiff_lower):    Lower bound for CDF differences
+    e(cdiff_upper):    Upper bound for CDF differences
+
+Author: David Van Dijcke
+Version: 1.0.0
+Date: December 2024
+*/
 
 
-
-=== Content of ~quadprog.ado.stswp ===
-program define quadprog, rclass
+program define disco, eclass
     version 18.0
-    args mG mg0 mCE mce0 mCI mci0 mresults
+	
+
     
-    // Remove matrix prefix if present
-    local G = subinstr("`mG'", "matrix(", "", .)
-    local G = subinstr("`G'", ")", "", .)
-    local g0 = subinstr("`mg0'", "matrix(", "", .)
-    local g0 = subinstr("`g0'", ")", "", .)
-    local CE = subinstr("`mCE'", "matrix(", "", .)
-    local CE = subinstr("`CE'", ")", "", .)
-    local ce0 = subinstr("`mce0'", "matrix(", "", .)
-    local ce0 = subinstr("`ce0'", ")", "", .)
-    local CI = subinstr("`mCI'", "matrix(", "", .)
-    local CI = subinstr("`CI'", ")", "", .)
-    local ci0 = subinstr("`mci0'", "matrix(", "", .)
-    local ci0 = subinstr("`ci0'", ")", "", .)
-    local results = subinstr("`mresults'", "matrix(", "", .)
-    local results = subinstr("`results'", ")", "", .)
+    // Syntax parsing
+    syntax varlist(min=3 max=3) [if] [in], ///
+        idtarget(integer) ///
+        T0(integer) ///
+        [M(integer 100) ///
+        G(integer 100) ///
+        CI ///
+        BOOTS(integer 300) ///
+        CL(real 0.95) ///
+        QMIN(real 0) ///
+        QMAX(real 1) ///
+        NOSIMPlex ///
+        MIXture ///
+        PERMutation ///
+        SEED(integer -1) ///
+        NOUNIForm ///
+        AGG(string) ///
+        SAMPles(numlist)]
     
-    // Determine operating system and load appropriate plugin
-    local os = c(os)
-    if "`os'" == "Windows" {
-        local plugin "quadprog_mata"
+	
+    // Input validation
+    if !inlist("`agg'", "", "quantile", "cdf", "quantileDiff", "cdfDiff") {
+        di as error "agg() must be one of: quantile, cdf, quantileDiff, cdfDiff"
+        exit 198
     }
-    else if "`os'" == "MacOSX" {
-        local plugin "quadprog_mata_mac"
+	
+// 	// load mata objects
+// 	mata mata mlib index
+    
+    // Mark the estimation sample
+    marksample touse, novarlist
+    
+    // Extract variable names from varlist
+    local y_col : word 1 of `varlist'
+    local id_col : word 2 of `varlist'
+    local time_col : word 3 of `varlist'
+    
+    // Check for missing values
+    markout `touse' `y_col' `time_col'
+    markout `touse' `id_col', strok
+    
+    // Initialize optional arguments
+    if ("`m'"=="") local m = 100
+    if ("`g'"=="") local g = 100
+    if ("`boots'"=="") local boots = 300
+    if ("`cl'"=="") local cl = 0.95
+    if ("`qmin'"=="") local qmin = 0
+    if ("`qmax'"=="") local qmax = 1
+    if ("`seed'"=="") local seed = -1
+    if ("`samples'"=="") local samples "0.25 0.5 0.75"
+    
+    // Check required numeric options
+    if missing(`t0') {
+        di as err "t0() is required"
+        exit 198
     }
-    else if "`os'" == "Unix" {
-        local plugin "quadprog_mata_linux"
+    if missing(`idtarget') {
+        di as err "idtarget() is required"
+        exit 198
+    }
+
+    // Set flags based on options
+    local simplex_flag = 1
+    local mixture_flag = 0
+    local permutation_flag = 0
+    local doci = 0
+    local uniform_flag = 0
+
+    if "`nosimplex'" != "" local simplex_flag = 0
+    if "`mixture'" != "" local mixture_flag = 1
+    if "`permutation'" != "" local permutation_flag = 1
+    if "`ci'" != "" local doci = 1
+    if "`nouniform'" != "" local uniform_flag = 0
+    
+    // Additional validation checks
+    if `m' < 1 {
+        di as err "M must be >=1"
+        exit 198
+    }
+    if `g' < 2 {
+        di as err "G must be >=2"
+        exit 198
+    }
+    if `qmin' < 0 | `qmax' > 1 {
+        di as err "q_min must be >=0 and q_max <=1"
+        exit 198
+    }
+	// Preserve dataset before Mata operations
+    tempname base
+    preserve
+    quietly: keep if `touse'
+    
+    // Identify time range in data
+    quietly levelsof `time_col', local(times)
+    local min_time : word 1 of `times'
+    local max_time : word `=wordcount("`times'")' of `times'
+    gen t_col = `time_col' - `min_time' + 1
+    local t_max = `max_time' - `min_time' + 1
+    local t0_col = `t0' - `min_time' + 1
+    
+
+    
+    //************************
+    // Main analysis in Mata
+    mata {
+        // Store options in Mata variables
+        M = `m'
+        G = `g'
+        T0 = `t0_col'
+        T_max = `t_max'
+        q_min = `qmin'
+        q_max = `qmax'
+        cl = `cl'
+        nboots = `boots'
+        simplex = `simplex_flag'
+        mixture = `mixture_flag'
+        uniform = `uniform_flag'
+        
+        // Load data into Mata
+        y = st_data(.,"`y_col'")
+        id = st_data(.,"`id_col'")
+        tt = st_data(.,"t_col")
+        target_id = `idtarget'
+        
+        // Run main DiSCo analysis
+        rc = disco_wrapper(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+        
+        // Permutation test if requested
+        if (`permutation_flag'==1) {
+            pval = disco_permutation_test(y,id,tt,target_id,T0,T_max,M,G,q_min,q_max,simplex,mixture)
+            st_local("pval", strofreal(pval))
+        };
+        
+        // Confidence intervals if requested
+        if (`doci'==1) {
+            rc2 = disco_ci_wrapper(y, id, tt, target_id, T0, T_max, M, G,
+                                q_min, q_max, simplex, mixture,
+                                nboots, cl, uniform)
+            st_local("rc2", strofreal(rc2))
+        };
+        
+        // Summary statistics if requested
+		if (anyof(("quantile", "cdf"), "`agg'")) {
+				printf("Levels requested so no summary stats table produced.")
+		}
+        else if ("`agg'" != "") {
+
+            samples_str = "`samples'"
+            sample_points = strtoreal(tokens(samples_str))
+			quantile_diff_mata = st_matrix("quantile_diff")
+			cdf_diff_mata = st_matrix("cdf_diff")
+           
+            rc3 = compute_summary_stats("`agg'", sample_points, T0, T_max, quantile_diff_mata,
+			cdf_diff_mata, `doci', cl)
+        };
+    }
+	//************************
+
+//	
+// 	// Generate plots if requested
+//     if "`graph'" != "" & "`agg'" != "" {
+//         tempname qd qt qs cd cs qdl qdu cdl cdu 
+//         matrix `qd' = quantile_diff
+//         matrix `qt' = quantile_t
+//         matrix `qs' = quantile_synth
+//         matrix `cd' = cdf_diff
+//         matrix `cs' = cdf_synth
+//
+// 		local amin = amin
+// 		local amax = amax
+//        
+//         if `doci' == 1 {
+//             matrix `qdl' = qdiff_lower
+//             matrix `qdu' = qdiff_upper
+//             matrix `cdl' = cdiff_lower
+//             matrix `cdu' = cdiff_upper
+//         }
+//         quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl') ///
+//             quantile_diff(`qd') quantile_t(`qt') quantile_synth(`qs') ///
+//             cdf_diff(`cd') cdf_synth(`cs') cdf_t(cdf_t) ///
+//             qdiff_lower(`qdl') qdiff_upper(`qdu') cdiff_lower(`cdl') cdiff_upper(`cdu') ///
+//             xmin(`amin') xmax(`amax') `options'
+//     }
+//	
+    // Store results
+    if `doci' == 1 {
+        ereturn matrix qdiff_lower = qdiff_lower
+        ereturn matrix qdiff_upper = qdiff_upper
+        ereturn matrix cdiff_lower = cdiff_lower
+        ereturn matrix cdiff_upper = cdiff_upper
     }
     
-    plugin call `plugin', `G' `g0' `CE' `ce0' `CI' `ci0' `results'
+    ereturn matrix weights = weights
+    ereturn matrix quantile_diff = quantile_diff
+    ereturn matrix cdf_diff = cdf_diff
+    ereturn matrix quantile_synth = quantile_synth
+    ereturn matrix quantile_t = quantile_t
+    ereturn matrix cdf_synth = cdf_synth
+    ereturn matrix cdf_t = cdf_t
+	ereturn matrix cids = cids // to match weights back to treated units
+	ereturn scalar amin = amin
+	ereturn scalar amax = amax
+	
+
+    
+    // Store metadata
+    ereturn local cmd "disco"
+    ereturn local cmdline `"disco `0'"'
+    ereturn local agg "`agg'"
+    ereturn local cl = `cl'
+    ereturn local t0 = `t0'
+	ereturn scalar m = `m'
+	ereturn scalar g = `g'
+	ereturn scalar t_max = `t_max'
+	ereturn local doci = `doci'
+	ereturn local agg = `'
+    ereturn scalar N = _N
+    
+
+    // Display permutation test results if requested
+    if `permutation_flag' {
+        di _n as txt "Permutation test p-value: " as res %5.3f `pval'
+		ereturn scalar pval = `pval'
+    } 
+	else {
+		ereturn scalar pval = .
+	}
 end
 
-// Determine operating system and load appropriate plugin
-local os = c(os)
-if "`os'" == "Windows" {
-	local plugin "quadprog_mata"
+
+
+=== Content of ~disco_plot.ado.stswp ===
+/*******************************************************************************
+ * Distributional Synthetic Controls Plot (disco_plot)
+ * 
+ * Post-estimation command for DiSCo (disco.ado).
+ * Reads results from e(...) and plots them by time period.
+ *
+ * Implementation based on Gunsilius (2023) and Van Dijcke, Gunsilius, and
+ * Wright (2024).
+ *
+ * Syntax (after disco):
+ *     disco_plot [ , AGG(string) M(integer) G(integer) DOCI(integer) 
+ *                      CL(real) TITLE(string) YTITLE(string) XTITLE(string) 
+ *                      COLOR1(string) COLOR2(string) CIcolor(string) 
+ *                      LWIDTH(string) LPATTERN(string) BYOPTS(string) 
+ *                      PLOTREGION(string) GRAPHREGION(string) SCHEME(string) 
+ *                      LEGEND(string)
+ *                ]
+ *
+ * Author: David Van Dijcke
+ * Version: 1.0.0
+ * Date: December 2024
+ *******************************************************************************/
+program define disco_plot, eclass
+    version 18.0
+
+    // 2. Syntax parsing
+    syntax ///
+        [ , AGG(string) //
+            TITLE(string) YTITLE(string) XTITLE(string) ///
+            COLOR1(string) COLOR2(string) CIcolor(string) ///
+            LWIDTH(string) LPATTERN(string) LEGEND(string) ///
+            BYOPTS(string) PLOTREGION(string) GRAPHREGION(string) ///
+            SCHEME(string)
+        ]
+		
+	// 1. Check that e(cmd) is "disco"
+    if "`e(cmd)'" != "disco" {
+        di as error "disco_plot is a post-estimation command for disco. Run disco first."
+        exit 198
+    }
+    // set default agg if user didnt specify
+    if missing(e(agg)) {
+		local agg = "quantileDiff"
+	}
+    local m = e(m)
+    local g = e(g)
+	local doci = e(doci)
+	local cl = e(cl)
+	
+
+    // Confidence intervals (if e(doci)==1 by default)
+    if missing(`doci') local doci = e(doci)
+    if missing(`cl') local cl = e(cl)
+    local cl_txt = subinstr("`cl'", ".", "", .)
+
+    // Extract needed matrices from e()
+    matrix quantile_diff    = e(quantile_diff)
+    matrix quantile_t       = e(quantile_t)
+    matrix quantile_synth   = e(quantile_synth)
+    matrix cdf_diff         = e(cdf_diff)
+    matrix cdf_synth        = e(cdf_synth)
+    matrix cdf_t            = e(cdf_t)
+
+    // If we have CIs
+    if `doci' == 1 {
+        matrix qdiff_lower   = e(qdiff_lower)
+        matrix qdiff_upper   = e(qdiff_upper)
+        matrix cdiff_lower   = e(cdiff_lower)
+        matrix cdiff_upper   = e(cdiff_upper)
+    }
+
+    // Scalars for time range and x-lims
+    scalar t_max = e(t_max)
+    scalar xmin  = e(amin)
+    scalar xmax  = e(amax)
+
+    // Default graph options
+    if "`color1'" == "" local color1 "blue"
+    if "`color2'" == "" local color2 "red"
+    if "`cicolor'" == "" local cicolor "gs12"
+    if "`lwidth'" == "" local lwidth "medium"
+    if ("`lpattern'" == "") local lpattern "dash"
+
+    // Now replicate your plotting logic using only the e(...) results.
+    preserve
+    clear
+    
+    if "`agg'" == "quantileDiff" {
+        // Default titles
+        if "`title'" == "" local title "Distributional Effects by Time Period"
+        if "`ytitle'" == "" local ytitle "Difference in Quantile Functions"
+        if "`xtitle'" == "" local xtitle "Quantile"
+
+        if `doci' {
+            quietly: set obs `m'
+            gen tau = (_n-1)/(`m'-1)
+            
+            svmat quantile_diff
+            svmat qdiff_lower
+            svmat qdiff_upper
+            quietly: reshape long quantile_diff qdiff_lower qdiff_upper, i(tau) j(time)
+            
+            twoway (rarea qdiff_lower qdiff_upper tau, color(`cicolor')) ///
+                   (line quantile_diff tau, lcolor(`color1') lwidth(`lwidth')), ///
+                   by(time, note("") title("`title'") `byopts') ///
+                   ytitle("`ytitle'") xtitle("`xtitle'") ///
+                   xlabel(0(.2)1) ylabel(, angle(horizontal)) ///
+                   legend(label(1 "`cl_txt'% CIs") label(2 "Estimates") `legend') ///
+                   `plotregion' `graphregion' `scheme'
+        }
+        else {
+            quietly: set obs `m'
+            gen tau = (_n-1)/(`m'-1)
+            
+            svmat quantile_diff
+            quietly: reshape long quantile_diff, i(tau) j(time)
+            
+            twoway line quantile_diff tau, ///
+                   lcolor(`color1') lwidth(`lwidth') ///
+                   by(time, note("") title("`title'") `byopts') ///
+                   ytitle("`ytitle'") xtitle("`xtitle'") ///
+                   xlabel(0(.2)1) ylabel(, angle(horizontal)) ///
+                   legend(off) ///
+                   `plotregion' `graphregion' `scheme'
+        }
+    }
+    else if "`agg'" == "quantile" {
+        // Default titles
+        if "`title'" == "" local title "Synthetic vs. Treated Quantiles by Time Period"
+        if "`ytitle'" == "" local ytitle "Quantile Function (Synthetic vs. Target)"
+        if "`xtitle'" == "" local xtitle "Quantile"
+        
+        quietly: set obs `m'
+        gen tau = (_n-1)/(`m'-1)
+        
+        svmat quantile_t
+        svmat quantile_synth
+        quietly: reshape long quantile_t quantile_synth, i(tau) j(time)
+        
+        twoway (line quantile_t tau, lcolor(`color1') lwidth(`lwidth')) ///
+               (line quantile_synth tau, lcolor(`color2') lwidth(`lwidth') lpattern(`lpattern')), ///
+               by(time, note("") title("`title'") `byopts') ///
+               ytitle("`ytitle'") xtitle("`xtitle'") ///
+               legend(order(1 "Observed" 2 "Synthetic") ring(0) pos(1) `legend') ///
+               xlabel(0(.2)1) ylabel(, angle(horizontal)) ///
+               `plotregion' `graphregion' `scheme'
+    }
+    else if inlist("`agg'", "cdf", "cdfDiff") {
+        // Defaults
+        if "`agg'" == "cdfDiff" {
+            if "`ytitle'" == "" local ytitle "Difference in CDFs"
+            if "`title'" == "" local title "Distributional Effects by Time Period"
+        }
+        else {
+            if "`ytitle'" == "" local ytitle "CDF (Synthetic vs. Target)"
+            if "`title'" == "" local title "Synthetic vs. Treated CDFs by Time Period"
+        }
+        if "`xtitle'" == "" local xtitle "Y"
+        
+        // cdfDiff
+        if "`agg'" == "cdfDiff" {
+            if `doci' {
+                quietly: set obs `g'
+                quietly: gen grid_val = xmin + (_n-1)*(xmax - xmin)/(`g'-1)
+        
+                svmat cdf_diff
+                svmat cdiff_lower
+                svmat cdiff_upper
+                quietly: reshape long cdf_diff cdiff_lower cdiff_upper, i(grid_val) j(time)
+                
+                twoway (rarea cdiff_lower cdiff_upper grid_val, color(`cicolor')) ///
+                       (line cdf_diff grid_val, lcolor(`color1') lwidth(`lwidth')), ///
+                       by(time, note("") title("`title'") `byopts') ///
+                       ytitle("`ytitle'") xtitle("`xtitle'") ///
+                       legend(label(1 "`cl_txt'% CIs") label(2 "Estimates") `legend') ///
+                       ylabel(, angle(horizontal)) ///
+                       `plotregion' `graphregion' `scheme'
+            }
+            else {
+                quietly: set obs `g'
+                gen grid_val = xmin + (_n-1)*(xmax - xmin)/(`g'-1)
+                
+                svmat cdf_diff
+                quietly: reshape long cdf_diff, i(grid_val) j(time)
+                
+                twoway line cdf_diff grid_val, ///
+                       lcolor(`color1') lwidth(`lwidth') ///
+                       by(time, note("") title("`title'") `byopts') ///
+                       ytitle("`ytitle'") xtitle("`xtitle'") ///
+                       legend(off) ylabel(, angle(horizontal)) ///
+                       `plotregion' `graphregion' `scheme'
+            }
+        }
+        // cdf (levels)
+        else {
+            quietly: set obs `g'
+            gen grid_val = xmin + (_n-1)*(xmax - xmin)/(`g'-1)
+            
+            svmat cdf_t
+            svmat cdf_synth
+            quietly: reshape long cdf_t cdf_synth, i(grid_val) j(time)
+            
+            twoway (line cdf_t grid_val, lcolor(`color1') lwidth(`lwidth')) ///
+                   (line cdf_synth grid_val, lcolor(`color2') lwidth(`lwidth') lpattern(`lpattern')), ///
+                   by(time, note("") title("`title'") `byopts') ///
+                   ytitle("`ytitle'") xtitle("`xtitle'") ///
+                   legend(order(1 "Observed" 2 "Synthetic") ring(0) pos(1) `legend') ///
+                   ylabel(0(.2)1, angle(horizontal)) ///
+                   `plotregion' `graphregion' `scheme'
+        }
+    }
+
+    restore
+end
+
+
+
+=== Content of ~disco_testing_suite.do.stswp ===
+************************************************************
+* Install disco (only once, outside the tests)
+************************************************************
+clear all
+net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src") replace
+
+************************************************************
+* Program to generate artificial data
+************************************************************
+capture program drop gen_data
+program define gen_data
+    version 16.0
+    
+    * Make sure we start with an empty dataset
+    clear all
+    
+	mata: mata clear 
+	
+    * If you want the exact same data each time:
+    set seed 12345
+
+    //------------------------------------------------------
+    // Create artificial dataset with varying distributions
+    //------------------------------------------------------
+    * Step 1: Generate IDs and Time Periods
+    set obs 20                         // Number of IDs
+    gen id = _n                        // Create unique IDs
+    expand 20                          // Duplicate each ID 20 times (for time periods)
+    bysort id: gen time = _n          // Generate time within each ID
+    expand 50                          // Create 50 observations per ID-time pair
+
+    * Step 2: Generate group-specific means and standard deviations
+    bysort id time: gen double group_mean = runiform()*10 - 5   
+    bysort id time: gen double group_sd = runiform()*2 + 0.5    
+
+    * Step 3: Generate the y variable with group-specific means and variances
+    gen double y = group_mean + group_sd * rnormal()
+
+    // Add treatment effect that varies across the distribution
+    replace y = y + 1 + 0.5*y if id==1 & time>=10  // Treatment effect increases with y
+end
+
+************************************************************
+* Now we run each test, calling gen_data prior to each test
+************************************************************
+
+*----------------------------------------------------------------------
+* Test 1: Basic disco without options
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) 
+disco_plot
+
+// Check return values
+assert e(cmd) == "disco"
+assert e(t0) == "10"
+assert e(cl) == ".95"
+assert e(N) > 0
+
+// Check matrix dimensions
+matrix w = e(weights)
+mata {
+    st_numscalar("dims_ok", cols(st_matrix("w"))==19 & rows(st_matrix("w"))==1)
+    assert(st_numscalar("dims_ok"))
 }
-else if "`os'" == "MacOSX" {
-	local plugin "quadprog_mata_mac"
+
+// Check weights sum to 1 (standard approach with simplex)
+mata {
+    st_numscalar("sum_w", sum(st_matrix("w")))
+    assert(abs(st_numscalar("sum_w") - 1) < 1e-8)
 }
-else if "`os'" == "Unix" {
-	local plugin "quadprog_mata_linux"
+
+// Check non-negativity constraint
+mata {
+    st_numscalar("min_w", min(st_matrix("w")))
+    assert(st_numscalar("min_w") >= -1e-8)
 }
 
-program quadprog_mata_mac, plugin
+
+*----------------------------------------------------------------------
+* Test 2: Mixture approach with simplex
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) mixture
+
+// Check weights
+matrix w_mix = e(weights)
+mata {
+    st_numscalar("sum_w_mix", sum(st_matrix("w_mix")))
+    st_numscalar("min_w_mix", min(st_matrix("w_mix")))
+    assert(abs(st_numscalar("sum_w_mix") - 1) < 1e-8)
+    assert(st_numscalar("min_w_mix") >= -1e-8)
+}
+
+// Check matrix dimensions and content
+foreach mat in weights quantile_diff cdf_diff quantile_synth cdf_synth quantile_t cdf_t cids {
+    matrix temp = e(`mat')
+    mata {
+        st_numscalar("has_content", !missing(st_matrix("temp")[1,1]))
+        assert(st_numscalar("has_content"))
+    }
+}
 
 
+*----------------------------------------------------------------------
+* Test 3: Standard approach without simplex
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) nosimplex
 
-=== Content of ~test_disco.do.stswp ===
-clear
-set seed 123
+// Check weights
+matrix w_nosimplex = e(weights)
+mata {
+    st_numscalar("sum_w_nosimplex", sum(st_matrix("w_nosimplex")))
+    assert(abs(st_numscalar("sum_w_nosimplex") - 1) < 1e-8)
+}
 
-capture program drop _all
-mata: mata clear
-
-
-//net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/") replace
-// do disco.ado 
-// do disco_plot.ado
-// do disco_utils.mata
-// do quadprog.ado
-// do quadprog.mata
-
-
-* Step 1: Generate IDs and Time Periods
-set obs 20                    // Number of IDs
-gen id_col = _n               // Create unique IDs
-expand 20                     // Duplicate each ID 20 times (for time periods)
-bysort id_col: gen time_col = _n   // Generate time_col within each ID
-expand 50                     // Create 50 observations per ID-time pair
-
-* Step 2: Generate group-specific means and standard deviations
-bysort id_col time_col: gen double group_mean = runiform()*10 - 5   // Means between -5 and 5
-bysort id_col time_col: gen double group_sd   = runiform()*2 + 0.5  // SDs between 0.5 and 2.5
-
-* Step 3: Generate the y_col with group-specific means and variances
-gen double y_col = group_mean + group_sd * rnormal()
+// Should allow negative weights
+mata {
+    st_numscalar("min_w_nosimplex", min(st_matrix("w_nosimplex")))
+    st_numscalar("has_neg", st_numscalar("min_w_nosimplex") < 0)
+    assert(st_numscalar("has_neg") == 1)
+}
 
 
-// Run disco with aggregation
-disco y_col id_col time_col, idtarget(1) t0(2) agg("quantile") graph permutation m(100) g(100)
+*----------------------------------------------------------------------
+* Test 4: Mixture approach without simplex
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) mixture nosimplex
+
+// Check weights
+matrix w_mix_nosimplex = e(weights)
+mata {
+    st_numscalar("sum_w_mix_nosimplex", sum(st_matrix("w_mix_nosimplex")))
+    assert(abs(st_numscalar("sum_w_mix_nosimplex") - 1) < 1e-8)
+}
+
+mata {
+    st_numscalar("min_w_mix_nosimplex", min(st_matrix("w_mix_nosimplex")))
+    st_numscalar("has_neg_mix", st_numscalar("min_w_mix_nosimplex") < 0)
+    assert(st_numscalar("has_neg_mix") == 1)
+}
+
+
+*----------------------------------------------------------------------
+* Test 5: Confidence intervals
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) ci boots(100) cl(0.90)
+
+// Check CI matrices
+foreach mat in qdiff_lower qdiff_upper cdiff_lower cdiff_upper {
+    matrix temp = e(`mat')
+    mata {
+        st_numscalar("dims_ok", rows(st_matrix("temp"))==100 & cols(st_matrix("temp"))==20)
+        assert(st_numscalar("dims_ok"))
+    }
+}
+
+
+*----------------------------------------------------------------------
+* Test 6: Permutation test
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) permutation
+assert e(pval) != .
+assert e(pval) >= 0 & e(pval) <= 1
+
+
+*----------------------------------------------------------------------
+* Test 7: Different grid sizes
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) m(50) g(50)
+mata {
+    st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==50 & rows(st_matrix("e(cdf_diff)"))==50)
+    assert(st_numscalar("dims_ok"))
+}
+
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) m(200) g(200)
+mata {
+    st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==200 & rows(st_matrix("e(cdf_diff)"))==200)
+    assert(st_numscalar("dims_ok"))
+}
+
+
+*----------------------------------------------------------------------
+* Test 8: Aggregation "quantileDiff"
+*----------------------------------------------------------------------
+
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff")  
+mata {
+    st_numscalar("has_content", !missing(st_matrix("e(summary_stats)")))
+    assert(st_numscalar("has_content"))
+}
+disco_plot
+
+
+*----------------------------------------------------------------------
+* Test 9: CDF differences
+*----------------------------------------------------------------------
+gen_data
+disco y id time, idtarget(1) t0(10) agg("cdfDiff") 
+mata {
+    st_numscalar("has_content", !missing(st_matrix("e(summary_stats)")))
+    assert(st_numscalar("has_content"))
+}
+disco_plot
+
+gen_data
+disco y id time, idtarget(1) t0(10) agg("cdf") 
+// TODO: fix - local gmin = `min' = local gmin =  ...
+disco_plot
+
+*----------------------------------------------------------------------
+* Tests 10-13: Disco_plot
+*----------------------------------------------------------------------
+
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) ci boots(100) // so we have some CI mats stored
+
+
+// Test 13: CDF plot with custom options
+quietly: disco_plot, title("Distribution Effects") ytitle("CDF") xtitle("Y") ///
+    color1("blue") color2("red") lwidth("thick")
+
+
+*----------------------------------------------------------------------
+* Test 14: Check amin and amax
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10)
+assert e(amin) < 0
+assert e(amax) > 0
+assert e(amin) != .
+assert e(amax) != .
+
+
+*----------------------------------------------------------------------
+* Tests 15-18: Error handling
+*----------------------------------------------------------------------
+gen_data
+rcof "noi disco y id time, idtarget(1) t0(10) agg(invalid)" == 198
+rcof "noi disco y id time, idtarget(1) t0(10) ci cl(1.5)" == 198
+rcof "noi disco y id time, idtarget(1) t0(10) m(0)" == 198
+rcof "noi disco y id time" == 198
+
+
+*----------------------------------------------------------------------
+* Test 19: Missing data
+*----------------------------------------------------------------------
+gen_data
+preserve
+replace y = . if _n == 1
+quietly: disco y id time, idtarget(1) t0(10)
+restore
+
+
+*----------------------------------------------------------------------
+* Test 20: Custom quantile range
+*----------------------------------------------------------------------
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) qmin(0.1) qmax(0.9)
+
+display "All tests completed successfully!"
 
 
 

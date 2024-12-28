@@ -39,10 +39,10 @@ program define disco_plot, eclass
     // set default agg if user didnt specify
     if missing(e(agg)) {
 		local agg = "quantileDiff"
-	} 
-	else {
-		local agg = e(agg)
+	} else{
+		
 	}
+	di("`agg'")
     local m = e(m)
     local g = e(g)
 	local doci = e(doci)

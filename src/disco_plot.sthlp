@@ -1,84 +1,137 @@
 {smcl}
 {* *! version 1.0.0 19dec2024}{...}
 {vieweralsosee "[ST] disco" "help disco"}{...}
-{vieweralsosee "[ST] disco_estat" "help disco_estat"}{...}
 {viewerjumpto "Syntax" "disco_plot##syntax"}{...}
 {viewerjumpto "Description" "disco_plot##description"}{...}
 {viewerjumpto "Options" "disco_plot##options"}{...}
 {viewerjumpto "Examples" "disco_plot##examples"}{...}
+{viewerjumpto "References" "disco_plot##references"}{...}
+{viewerjumpto "Author" "disco_plot##author"}{...}
 
 {title:Title}
 
 {phang}
-{bf:disco_plot} {hline 2} Generate plots after DiSCo (Distributional Synthetic Controls)
+{bf:disco_plot} {hline 2} Post-estimation plots for Distributional Synthetic Controls
 
 {marker description}
 {title:Description}
 
 {pstd}
-{cmd:disco_plot} creates visualizations of distributional treatment effects after {cmd:disco} 
-estimation. It can display quantile functions, CDFs, and their differences over time, with 
-optional confidence intervals.
+{cmd:disco_plot} creates visualizations after {cmd:disco} estimation. It can display quantile 
+functions, CDFs, and their differences over time, with optional confidence intervals. The command 
+automatically reads all necessary information from the stored results of the previous {cmd:disco} 
+estimation.
 
 {marker syntax}
 {title:Syntax}
 
 {p 8 17 2}
-{cmdab:disco_plot}{cmd:,} {opt agg(string)} {opt m(integer)} {opt g(integer)} {opt t_max(integer)} {opt doci(integer)} {opt cl(real)}
+{cmd:disco_plot} [{cmd:,} {it:options}]
 
 {synoptset 20 tabbed}{...}
 {synopthdr}
 {synoptline}
-{syntab:Required}
-{synopt:{opt agg(string)}}type of plot ("quantile", "quantileDiff", "cdf", or "cdfDiff"){p_end}
-{synopt:{opt m(integer)}}number of quantile points{p_end}
-{synopt:{opt g(integer)}}number of grid points for CDF{p_end}
-{synopt:{opt t_max(integer)}}maximum time period{p_end}
-{synopt:{opt doci(integer)}}whether to display confidence intervals (0/1){p_end}
-{synopt:{opt cl(real)}}confidence level (e.g., 95){p_end}
-{synoptline}
-{p2colreset}{...}
 
 {marker options}
 {title:Options}
 
-{dlgtab:Main}
+{dlgtab:Plot Type}
 
 {phang}
-{opt agg(string)} specifies the type of plot to generate. Options are:
+{opt agg(string)} type of plot to generate: (default: quantileDiff if not specified in disco)
+{p_end}
+{phang2}- {cmd:"quantile"}: plot treated vs synthetic quantile functions{p_end}
+{phang2}- {cmd:"quantileDiff"}: plot differences in quantiles{p_end}
+{phang2}- {cmd:"cdf"}: plot treated vs synthetic CDFs{p_end}
+{phang2}- {cmd:"cdfDiff"}: plot differences in CDFs{p_end}
 
-{p2colset 9 28 30 2}
-{p2col:"quantile"}plot treated vs synthetic quantile functions{p_end}
-{p2col:"quantileDiff"}plot differences in quantiles{p_end}
-{p2col:"cdf"}plot treated vs synthetic CDFs{p_end}
-{p2col:"cdfDiff"}plot differences in CDFs{p_end}
-
-{phang}
-{opt m(integer)} specifies the number of quantile points to use in the plot.
+{dlgtab:Graph Appearance}
 
 {phang}
-{opt g(integer)} specifies the number of grid points to use for CDF plots.
+{opt title(string)} title for the graph. Defaults vary by plot type.
 
 {phang}
-{opt t_max(integer)} specifies the maximum time period to plot.
+{opt ytitle(string)} y-axis title. Defaults vary by plot type.
 
 {phang}
-{opt doci(integer)} specifies whether to display confidence intervals (1) or not (0).
+{opt xtitle(string)} x-axis title. Defaults vary by plot type.
 
 {phang}
-{opt cl(real)} specifies the confidence level as a percentage (e.g., 95 for 95% confidence intervals).
+{opt color1(string)} color for first series (default: "blue").
+
+{phang}
+{opt color2(string)} color for second series in level plots (default: "red").
+
+{phang}
+{opt cicolor(string)} color for confidence intervals (default: "gs12").
+
+{phang}
+{opt lwidth(string)} line width (default: "medium").
+
+{phang}
+{opt lpattern(string)} line pattern for second series (default: "dash").
+
+{phang}
+{opt legend(string)} legend options. See {help legend_options}.
+
+{phang}
+{opt byopts(string)} options for by() graphs. See {help by_option}.
+
+{phang}
+{opt plotregion(string)} plot region options. See {help region_options}.
+
+{phang}
+{opt graphregion(string)} graph region options. See {help region_options}.
+
+{phang}
+{opt scheme(string)} scheme name. See {help scheme_option}.
 
 {marker examples}
 {title:Examples}
 
-{pstd}Plot quantile differences with confidence intervals:{p_end}
-{phang2}{cmd:. disco_plot, agg(quantileDiff) m(100) g(100) t_max(10) doci(1) cl(95)}{p_end}
+{pstd}Basic quantile difference plot after disco estimation:{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(10)}{p_end}
+{phang2}{cmd:. disco_plot}{p_end}
 
-{pstd}Plot CDFs without confidence intervals:{p_end}
-{phang2}{cmd:. disco_plot, agg(cdf) m(100) g(100) t_max(10) doci(0) cl(95)}{p_end}
+{pstd}CDF plot with custom styling:{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(10) agg("cdf")}{p_end}
+{phang2}{cmd:. disco_plot, color1(navy) color2(maroon) lwidth(thick)}{p_end}
 
-{pstd}Plot quantile functions:{p_end}
-{phang2}{cmd:. disco_plot, agg(quantile) m(100) g(100) t_max(10) doci(0) cl(95)}{p_end}
+{pstd}Quantile plot with confidence intervals and custom title:{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(10) ci}{p_end}
+{phang2}{cmd:. disco_plot, agg(quantile) title("Distribution Effects Over Time")}{p_end}
+
+{pstd}CDF differences with custom legend:{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(10) agg("cdfDiff")}{p_end}
+{phang2}{cmd:. disco_plot, legend(ring(0) pos(11) rows(2))}{p_end}
+
+{marker details}
+{title:Details}
+
+{pstd}
+The command automatically handles different types of plots based on the aggregation type specified 
+either in the original {cmd:disco} command or through the {cmd:agg()} option in {cmd:disco_plot}. 
+The default visualization changes based on this type:
+
+{phang2}For {cmd:quantileDiff} and {cmd:cdfDiff}:{p_end}
+{phang3}- Shows differences between treated and synthetic units{p_end}
+{phang3}- Includes confidence intervals if CI was specified in {cmd:disco}{p_end}
+{phang3}- Uses single line plots with optional confidence bands{p_end}
+
+{phang2}For {cmd:quantile} and {cmd:cdf}:{p_end}
+{phang3}- Shows levels for both treated and synthetic units{p_end}
+{phang3}- Uses dual line plots with different patterns{p_end}
+{phang3}- Includes appropriate legends{p_end}
+
+{pstd}
+All plots are created as small multiples using Stata's {cmd:by()} functionality, with one panel 
+per time period. This allows for easy visualization of how distributional effects evolve over time.
+
+{marker results}
+{title:Stored results}
+
+{pstd}
+{cmd:disco_plot} does not store results but creates graphs using the results stored by {cmd:disco}.
 
 {marker author}
 {title:Author}
@@ -87,3 +140,10 @@ optional confidence intervals.
 David Van Dijcke{break}
 University of Michigan, Ann Arbor{break}
 {browse "mailto:dvdijcke@umich.edu":dvdijcke@umich.edu}
+{p_end}
+
+{title:Version}
+
+{pstd}
+1.0.0 (December 2024)
+{p_end}

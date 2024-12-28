@@ -10,10 +10,13 @@ Main command files
 f disco.ado
 f disco.sthlp
 f disco_estat.ado
+f disco_estat.sthlp
 f disco_plot.ado
+f disco_plot.sthlp
 f quadprog.ado
 f ldisco.mlib
 f quadprog_mata_mac.plugin
 f quadprog_mata_linux.so
 f quadprog_mata_linux.plugin
 f quadprog_mata_win.plugin
+f gen_data.ado
