@@ -19,6 +19,7 @@
  * Author: David Van Dijcke
  * Version: 1.0.0
  * Date: December 2024
+ * TODO: agg option in disco_plot is not modifying currently
  *******************************************************************************/
 program define disco_plot, eclass
     version 18.0

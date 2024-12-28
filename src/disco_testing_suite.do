@@ -2,7 +2,7 @@
 * Install disco (only once, outside the tests)
 ************************************************************
 clear all
-net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src") replace
+net install disco, from("/Users/davidvandijcke/DiSCos_stata/src") replace
 
 ************************************************************
 * Now we run each test, calling gen_data prior to each test
@@ -252,6 +252,6 @@ display "All tests completed successfully!"
 * Test 21: Post-estimation table
 *----------------------------------------------------------------------
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff") 
-disco_estat summary
+quietly: disco y id time, idtarget(1) t0(10) agg("cdfDiff")
+disco_estat, summary
 
