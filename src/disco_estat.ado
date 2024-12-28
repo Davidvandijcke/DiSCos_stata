@@ -2,7 +2,7 @@
 
 // Modified disco_estat.ado
 program define disco_estat, rclass
-    version 18.0
+    version 16.0
     
     if "`e(cmd)'" != "disco" {
         error 301

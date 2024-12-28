@@ -57,7 +57,7 @@ Date: December 2024
 
 
 program define disco, eclass
-    version 18.0
+    version 16.0
 	
 
     
@@ -276,7 +276,6 @@ program define disco, eclass
 	ereturn scalar g = `g'
 	ereturn scalar t_max = `t_max'
 	ereturn local doci = `doci'
-	ereturn local agg = `'
     ereturn scalar N = _N
     
 

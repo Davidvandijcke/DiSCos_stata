@@ -1,5 +1,5 @@
 program define gen_data
-    version 18.0
+    version 16.0
 	
 	clear
 	

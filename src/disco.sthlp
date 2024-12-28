@@ -233,7 +233,7 @@ is useful when working with variables that have fixed support, such as categoric
 
 {phang} {help "disco_estat": disco_estat}: summarize aggregated statistics if specified with agg() option.{p_end}
 
-{phang}{cmd:disco_plot}: generate plots for quantiles or cdfs across time.{p_end}
+{phang} {help "disco_plot": disco_plot}: generate plots for quantiles or cdfs across time.{p_end}
 
 {marker references}
 {title:References}
