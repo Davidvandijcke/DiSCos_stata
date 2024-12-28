@@ -5,6 +5,22 @@ CXX = g++
 CXXFLAGS = -O2 -fPIC -Wall -std=c++11 -fms-extensions
 LDFLAGS = -fms-extensions -shared 
 
+ifeq ($(OS),Windows_NT)
+    CXXFLAGS += -D_WIN32 -D_WIN64
+    LDFLAGS += -Wl,--export-all-symbols
+endif
+
+ifeq ($(OS),Windows_NT)
+    CXXFLAGS += -m64  # Add this line to force 64-bit compilation
+endif
+
+
+ifeq ($(OS),Windows_NT)
+    detected_OS := Windows
+else
+    detected_OS := $(shell uname)
+endif
+
 # Stata directory (adjust for each platform)
 ifeq ($(OS),Windows_NT)  # Windows
     STATA_DIR ?= C:/Program Files/Stata17
@@ -31,6 +47,7 @@ ifeq ($(OS),Windows_NT)  # Windows
     SHARED_LIB_EXT = .dll
 endif
 
+
 # Plugin name
 PLUGIN_NAME = quadprog_mata$(SHARED_LIB_EXT)
 
@@ -46,14 +63,19 @@ $(PLUGIN_NAME): $(OBJECTS)
 
 # Compiling the C++ files
 quadprog_mata.o: quadprog_mata.cpp
-	$(CXX) $(CXXFLAGS) -I. -I$(STATA_DIR)/include -I$(QUADPROG_DIR) -c $<
+	$(CXX) $(CXXFLAGS) -I. -I"$(STATA_DIR)/include" -I"$(QUADPROG_DIR)" -c quadprog_mata.cpp
 
 QuadProg++.o: QuadProg++.cc
-	$(CXX) $(CXXFLAGS) -I. -I$(STATA_DIR)/include -I$(QUADPROG_DIR) -c $<
+	$(CXX) $(CXXFLAGS) -I. -I"$(STATA_DIR)/include" -I"$(QUADPROG_DIR)" -c QuadProg++.cc
 
-# Clean target
 clean:
+ifeq ($(detected_OS),Windows)
+	del /F /Q *.o *.dylib 2>NUL || exit 0
+else
 	rm -f $(OBJECTS) $(PLUGIN_NAME)
+endif
+
+
 
 # Install target (adjust for each platform)
 install: $(PLUGIN_NAME)

@@ -21,7 +21,7 @@ program define quadprog, rclass
     // Determine operating system and load appropriate plugin
     local os = c(os)
     if "`os'" == "Windows" {
-        local plugin "quadprog_mata"
+        local plugin "quadprog_mata_win"
     }
     else if "`os'" == "MacOSX" {
         local plugin "quadprog_mata_mac"
@@ -36,7 +36,7 @@ end
 // Determine operating system and load appropriate plugin
 local os = c(os)
 if "`os'" == "Windows" {
-	local plugin "quadprog_mata"
+	local plugin "quadprog_mata_win"
 }
 else if "`os'" == "MacOSX" {
 	local plugin "quadprog_mata_mac"

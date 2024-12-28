@@ -18,7 +18,6 @@
 #ifndef SYSTEM
 #define SYSTEM		STWIN32
 #endif
-#define SYSTEM LINUX
 
 typedef signed char	ST_sbyte ;
 typedef unsigned char	ST_ubyte ;

@@ -981,8 +981,8 @@ real scalar compute_summary_stats(string scalar agg, real vector sample_points,
             summary_stats[row, 3] = grid_points[i + 1]
 
             if (is_cdf) {
-                amin = st_numscalar("e(amin)")
-                amax = st_numscalar("e(amax)")
+                amin = st_numscalar("amin")
+                amax = st_numscalar("amax")
                 G = rows(cdf_diff)
                 grid = range(amin, amax, (amax - amin)/(G-1))'
                 idx = selectindex(grid :>= grid_points[i] :& grid :<= grid_points[i + 1])

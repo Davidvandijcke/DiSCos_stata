@@ -7,10 +7,11 @@
 {viewerjumpto "Examples" "disco##examples"}{...}
 {viewerjumpto "Method" "disco##method"}{...}
 {viewerjumpto "Stored results" "disco##results"}{...}
+{viewerjumpto "Additional commands" "disco##related"}{...}
 {viewerjumpto "References" "disco##references"}{...}
 {viewerjumpto "Author" "disco##author"}{...}
 
-{title:Title}
+{title:Distributional Synthetic Controls}
 
 {phang}
 {bf:disco} {hline 2} Distributional Synthetic Controls.
@@ -94,10 +95,12 @@ Please cite Gunsilius (2023) and Van Dijcke, Gunsilius, and Wright (2024) when u
 {opt cl(real)} confidence level for intervals. default is 0.95.
 
 {phang}
-{opt qmin(real)} minimum quantile for estimation range. default is 0.
+{opt qmin(real)} minimum quantile for estimation range. default is 0. Setting this to a value greater than 0
+restricts the estimation range to the interval [qmin, qmax], which can be useful to focus on a specific part of the distribution.
 
 {phang}
-{opt qmax(real)} maximum quantile for estimation range. default is 1.
+{opt qmax(real)} maximum quantile for estimation range. default is 1. Setting this to a value less than 1 restricts the estimation range. 
+
 
 {phang}
 {opt nosimplex} do not constrain weights to lie in a unit simplex. by default, weights are nonnegative 
@@ -108,7 +111,7 @@ and sum to one. specifying {cmd:nosimplex} allows weights to take any values tha
 
 {phang}
 {opt permutation} perform a permutation test by treating each control unit as a "placebo" treated unit 
-and computing test statistics. returns a p-value.
+and computing test statistics. Returns a p-value.
 
 {phang}
 {opt seed(integer)} set the random seed for reproducibility. default is -1 (no seed set).
@@ -118,31 +121,41 @@ and computing test statistics. returns a p-value.
 only pointwise intervals are computed.
 
 {phang}
-{opt agg(string)} specify the type of aggregation for summary statistics. one of:
+{opt agg(string)} specify the type of aggregation for summary statistics and plots. one of:
 {p_end}
 {phang2}- {cmd:"quantile"}: summarize estimated quantile functions{p_end}
 {phang2}- {cmd:"cdf"}: summarize estimated cdfs{p_end}
-{phang2}- {cmd:"quantilediff"}: summarize differences in quantiles between treated and synthetic{p_end}
-{phang2}- {cmd:"cdfdiff"}: summarize differences in cdfs between treated and synthetic{p_end}
+{phang2}- {cmd:"quantileDiff"}: summarize differences in quantiles between treated and synthetic{p_end}
+{phang2}- {cmd:"cdfDiff"}: summarize differences in cdfs between treated and synthetic{p_end}
+See {help "disco##related":Additional commands}. 
 
 {phang}
 {opt samples(numlist)} specify quantile or cdf points for summary statistics. for quantiles, these are in [0,1]. 
-for cdfs, these are values of the outcome variable.
+for cdfs, these are values of the outcome variable. If not specified, the default is to partition the support 
+(either [0,1] or the range of the outcome variable) into 4 equally spaced points and aggregate the treatment effects within 
+those intervals.
 
-{phang}
-{opt graph} produce graphical output of the results by time period.
 
 {marker examples}
 {title:Examples}
 
-{pstd}Basic usage with confidence intervals:{p_end}
-{phang2}{cmd:. disco y id time, idtarget(1) t0(3) m(50) g(100) ci boots(200) cl(0.90)}{p_end}
+{pstd}Basic usage with confidence intervals and synthetic data (try running this yourself):{p_end}
+{phang2}{cmd:. gen_data}{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(3) ci boots(200) cl(0.95)}{p_end}
 
 {pstd}Using mixture approach:{p_end}
 {phang2}{cmd:. disco outcome unit t, idtarget(2) t0(10) mixture ci}{p_end}
 
-{pstd}With permutation test and graphing:{p_end}
-{phang2}{cmd:. disco wage county year, idtarget(10) t0(2005) permutation seed(12345) graph}{p_end}
+{pstd}With permutation test:{p_end}
+{phang2}{cmd:. disco wage county year, idtarget(10) t0(2005) permutation seed(12345)}{p_end}
+
+{pstd} Post-estimation table and graph, see {help "disco##related":Additional commands}
+ :{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(3) ci boots(200) cl(0.95)}{p_end}
+{phang2}{cmd:. disco_estat}{p_end}
+{phang2}{cmd:. disco_plot}{p_end}
+
+
 
 {marker method}
 {title:Method and Formulation}
@@ -153,40 +166,27 @@ outcome distribution. Instead of matching average outcomes, we match entire quan
 functions or CDFs of control units to replicate the pre-treatment distribution of a 
 treated unit. Post-treatment differences then yield distributional treatment effects.
 
-{dlgtab:Quantile-based (2-Wasserstein) approach}
-
 {pstd}
 Consider a treated unit indexed by 1 and control units indexed by j=2,...,J+1 observed 
-over periods t=1,...,T, with T0 < T as the last pre-treatment period. Let Y_{j t} be 
-outcomes for unit j in period t. We want to estimate the counterfactual distribution 
-Y_{1 t, N} that would have prevailed for the treated unit in the absence of treatment.
+over periods t=1,...,T, with t0 < T as the first treatment period. Don't get confused! 
+Abadie and Gardeazabal (2003)  use T0 to denote the last pre-treatment period, so t0 = T0 + 1. 
+Let Y_{jt} be outcomes for unit j in period t. We want to estimate the counterfactual distribution 
+Y_{1t,N}, t>T0 that would have prevailed for the treated unit in the absence of treatment.
+
 
 {pstd}
-The key object is the quantile function of Y_{j t}, denoted F_{Y_{j t}}^{-1}(q). By 
-forming a weighted average of these quantile functions for the control units:
+The key object we want to estimate is the (unobserved) counterfactual quantile function of unit 1
+in the absence of treatment. The disco command does this by essentially estimating a regression of
+the treated units' quantile function before treatment on a weighted average of the untreated units' 
+quantile functions before treatment, where the weights are estimated to minimize the "sum of least squares" 
+between the quantile functions, and have to sum up to 1. The resulting weighted average 
+of quantile functions is the "synthetic" quantile function. The key assumption allowing the consistent estimation
+of treatment effects after treatment is that the weights, which were estimated using pre-treatment data only,
+remain "optimal" post-treatment, see the Appendix in Gunsilius (2023). 
 
-{phang}F_{Y_{1 t, N}}^{-1}(q) = ∑_{j=2}^{J+1} λ_j^* F_{Y_{j t}}^{-1}(q){p_end}
-
-{pstd}
-we obtain a synthetic control distribution for the treated unit. The optimal weights 
-λ_j^* are chosen to minimize the 2-Wasserstein distance between the treated 
-unit's pre-treatment quantile functions and a weighted combination of the controls' 
-pre-treatment quantile functions:
-
-{phang}λ_{t}^* = arg min_{λ ∈ Δ^{J}} ∫_{0}^{1} |F_{Y_{1 t}}^{-1}(q) - ∑_{j=2}^{J+1}λ_j F_{Y_{j t}}^{-1}(q)|^2 dq.{p_end}
-
-{dlgtab:CDF-based (1-Wasserstein) approach}
-
-{pstd}
-In some cases, it may be more natural to replicate the treated unit's distribution function 
-F_{Y_{1 t}}(y) itself rather than its quantile function. Instead of solving for weights 
-that match quantiles, one can find weights to match cumulative distribution functions (CDFs):
-
-{phang}λ_{t}^* = arg min_{λ ∈ Δ^{J}} ∫_{ℝ} |F_{Y_{1 t}}(y) - ∑_{j=2}^{J+1} λ_j F_{Y_{j t}}(y)| dy.{p_end}
-
-{pstd}
-This corresponds to using the 1-Wasserstein distance (or equivalently L^1-distance between 
-distributions). The 1-Wasserstein approach mixes entire distributions directly.
+As an alternative to the quantile-based approach, the mixture approach estimates the counterfactual
+distribution by estimating a weighted average of the untreated units' CDFs before treatment. This approach
+is useful when working with variables that have fixed support, such as categorical variables - see Van Dijcke, Gunsilius, and Wright (2024).
 
 {marker results}
 {title:Stored results}
@@ -194,37 +194,44 @@ distributions). The 1-Wasserstein approach mixes entire distributions directly.
 {pstd}
 {cmd:disco} stores the following in {cmd:e()}:
 
+
 {synoptset 20 tabbed}{...}
 {p2col 5 20 24 2: Scalars}{p_end}
+{synopt:{cmd:e(amin)}}minimum value of CDF support {p_end}
+{synopt:{cmd:e(amax)}}maximum value of CDF support {p_end}
+{synopt:{cmd:e(m)}}number of quantile points used{p_end}
+{synopt:{cmd:e(g)}}number of grid points for CDF{p_end}
+{synopt:{cmd:e(t_max)}}maximum time period{p_end}
 {synopt:{cmd:e(N)}}number of observations{p_end}
-{synopt:{cmd:e(t0)}}first treatment period{p_end}
-{synopt:{cmd:e(cl)}}confidence level used{p_end}
+{synopt:{cmd:e(pval)}}p-value from permutation test if specified{p_end}
 
 {p2col 5 20 24 2: Macros}{p_end}
+{synopt:{cmd:e(doci)}}indicator for confidence intervals{p_end}
+{synopt:{cmd:e(t0)}}first treatment period{p_end}
+{synopt:{cmd:e(cl)}}confidence level used{p_end}
 {synopt:{cmd:e(cmd)}}"disco"{p_end}
 {synopt:{cmd:e(cmdline)}}command as typed{p_end}
-{synopt:{cmd:e(agg)}}aggregation type, if specified{p_end}
 
 {p2col 5 20 24 2: Matrices}{p_end}
-{synopt:{cmd:e(weights)}}estimated synthetic control weights{p_end}
-{synopt:{cmd:e(quantile_diff)}}differences in quantiles by time{p_end}
-{synopt:{cmd:e(cdf_diff)}}differences in cdfs by time{p_end}
-{synopt:{cmd:e(quantile_synth)}}synthetic quantiles{p_end}
-{synopt:{cmd:e(quantile_t)}}treated unit quantiles{p_end}
-{synopt:{cmd:e(cdf_synth)}}synthetic cdfs{p_end}
-{synopt:{cmd:e(cdf_t)}}treated unit cdfs{p_end}
-{synopt:{cmd:e(summary_stats)}}summary statistics if agg option specified{p_end}
+{synopt:{cmd:e(cids)}}control unit IDs (1 x J-1){p_end} -- use these to match weights back to control units' names as they are in the same order
+{synopt:{cmd:e(weights)}}estimated synthetic control weights (1 x J-1){p_end}
+{synopt:{cmd:e(quantile_diff)}}differences in quantiles by time (M x T){p_end}
+{synopt:{cmd:e(cdf_diff)}}differences in CDFs by time (G x T){p_end}
+{synopt:{cmd:e(quantile_synth)}}synthetic quantiles (M x T){p_end}
+{synopt:{cmd:e(quantile_t)}}treated unit quantiles (M x T){p_end}
+{synopt:{cmd:e(cdf_synth)}}synthetic CDFs (G x T){p_end}
+{synopt:{cmd:e(cdf_t)}}treated unit CDFs (G x T){p_end}
 
 {pstd}If {cmd:ci} specified:{p_end}
-{synopt:{cmd:e(qdiff_lower)}}lower ci bounds for quantile differences{p_end}
-{synopt:{cmd:e(qdiff_upper)}}upper ci bounds for quantile differences{p_end}
-{synopt:{cmd:e(cdiff_lower)}}lower ci bounds for cdf differences{p_end}
-{synopt:{cmd:e(cdiff_upper)}}upper ci bounds for cdf differences{p_end}
+{synopt:{cmd:e(qdiff_lower)}}lower CI bounds for quantile differences (M x T){p_end}
+{synopt:{cmd:e(qdiff_upper)}}upper CI bounds for quantile differences (M x T){p_end}
+{synopt:{cmd:e(cdiff_lower)}}lower CI bounds for CDF differences (G x T){p_end}
+{synopt:{cmd:e(cdiff_upper)}}upper CI bounds for CDF differences (G x T){p_end}
 
 {marker related}
 {title:Additional Commands}
 
-{phang}{cmd:disco_estat}: summarize aggregated statistics if specified with agg() option.{p_end}
+{phang} {help "disco_estat": disco_estat}: summarize aggregated statistics if specified with agg() option.{p_end}
 
 {phang}{cmd:disco_plot}: generate plots for quantiles or cdfs across time.{p_end}
 
@@ -253,7 +260,7 @@ Gunsilius, F. 2023. "Distributional Synthetic Controls."
 
 {phang}
 Van Dijcke, D., Gunsilius, F., & Wright, A. L. 2024. "Return to Office and the Tenure Distribution."
-{browse "https://bfi.uchicago.edu/working-paper/2024-56/":University of Chicago, Becker Friedman Institute for Economics Working Paper, (2024-56).}
+{browse "https://bfi.uchicago.edu/working-paper/return-to-office-and-the-tenure-distribution/":University of Chicago, Becker Friedman Institute for Economics Working Paper, (2024-56).}
 {p_end}
 
 {marker author}

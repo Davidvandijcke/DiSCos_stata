@@ -31,9 +31,8 @@ Options:
     SEED(integer):     Set random seed
     NOUNIFORM:         Don't use uniform confidence bands
     AGG(string):       Type of aggregation for summary statistics
-                       ("quantile", "cdf", "quantileDiff", "cdfDiff")
+                       ("quantile", "cdf", "quantileDiff", "cdfDiff"). 
     SAMPLES(numlist):  Quantile points for summary statistics
-    GRAPH:             Generate plots of results
 
 Stored results:
     e(weights):        Synthetic control weights
@@ -79,8 +78,7 @@ program define disco, eclass
         SEED(integer -1) ///
         NOUNIForm ///
         AGG(string) ///
-        SAMPles(numlist) ///
-        GRaph]
+        SAMPles(numlist)]
     
 	
     // Input validation
@@ -221,30 +219,32 @@ program define disco, eclass
     }
 	//************************
 
-	
-	// Generate plots if requested
-    if "`graph'" != "" & "`agg'" != "" {
-        tempname qd qt qs cd cs qdl qdu cdl cdu
-        matrix `qd' = e(quantile_diff)
-        matrix `qt' = e(quantile_t)
-        matrix `qs' = e(quantile_synth)
-        matrix `cd' = e(cdf_diff)
-        matrix `cs' = e(cdf_synth)
-        
-        if `doci' == 1 {
-            matrix `qdl' = e(qdiff_lower)
-            matrix `qdu' = e(qdiff_upper)
-            matrix `cdl' = e(cdiff_lower)
-            matrix `cdu' = e(cdiff_upper)
-        }
-        
-        quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl') ///
-            quantile_diff(`qd') quantile_t(`qt') quantile_synth(`qs') ///
-            cdf_diff(`cd') cdf_synth(`cs') cdf_t(cdf_t) ///
-            qdiff_lower(`qdl') qdiff_upper(`qdu') cdiff_lower(`cdl') cdiff_upper(`cdu') ///
-            `options'
-    }
-	
+//	
+// 	// Generate plots if requested
+//     if "`graph'" != "" & "`agg'" != "" {
+//         tempname qd qt qs cd cs qdl qdu cdl cdu 
+//         matrix `qd' = quantile_diff
+//         matrix `qt' = quantile_t
+//         matrix `qs' = quantile_synth
+//         matrix `cd' = cdf_diff
+//         matrix `cs' = cdf_synth
+//
+// 		local amin = amin
+// 		local amax = amax
+//        
+//         if `doci' == 1 {
+//             matrix `qdl' = qdiff_lower
+//             matrix `qdu' = qdiff_upper
+//             matrix `cdl' = cdiff_lower
+//             matrix `cdu' = cdiff_upper
+//         }
+//         quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl') ///
+//             quantile_diff(`qd') quantile_t(`qt') quantile_synth(`qs') ///
+//             cdf_diff(`cd') cdf_synth(`cs') cdf_t(cdf_t) ///
+//             qdiff_lower(`qdl') qdiff_upper(`qdu') cdiff_lower(`cdl') cdiff_upper(`cdu') ///
+//             xmin(`amin') xmax(`amax') `options'
+//     }
+//	
     // Store results
     if `doci' == 1 {
         ereturn matrix qdiff_lower = qdiff_lower
@@ -272,6 +272,10 @@ program define disco, eclass
     ereturn local agg "`agg'"
     ereturn local cl = `cl'
     ereturn local t0 = `t0'
+	ereturn scalar m = `m'
+	ereturn scalar g = `g'
+	ereturn scalar t_max = `t_max'
+	ereturn local doci = `doci'
     ereturn scalar N = _N
     
 
