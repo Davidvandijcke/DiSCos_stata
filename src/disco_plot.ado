@@ -21,7 +21,7 @@
  * Date: December 2024
  *******************************************************************************/
 program define disco_plot, eclass
-    version 16.0
+    version 18.0
 
     // 2. Syntax parsing
     syntax[ , AGG(string) /// 

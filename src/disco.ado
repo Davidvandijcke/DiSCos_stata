@@ -57,7 +57,7 @@ Date: December 2024
 
 
 program define disco, eclass
-    version 16.0
+    version 18.0
 	
 
     
@@ -148,6 +148,10 @@ program define disco, eclass
         di as err "q_min must be >=0 and q_max <=1"
         exit 198
     }
+	if `cl' > 1 | `cl' < 0 {
+		di as err "cl must be >=0 and <=1"
+        exit 198
+	}
 	// Preserve dataset before Mata operations
     tempname base
     preserve
@@ -263,6 +267,10 @@ program define disco, eclass
 	ereturn matrix cids = cids // to match weights back to treated units
 	ereturn scalar amin = amin
 	ereturn scalar amax = amax
+	
+	if "`agg'" != "" {
+		ereturn matrix summary_stats = summary_stats
+	}
 	
 
     

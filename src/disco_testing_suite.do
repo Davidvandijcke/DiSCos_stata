@@ -252,6 +252,6 @@ display "All tests completed successfully!"
 * Test 21: Post-estimation table
 *----------------------------------------------------------------------
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) agg("cdfDiff")
-disco_estat, summary
+quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff") 
+disco_estat summary
 

@@ -199,11 +199,11 @@ quietly: disco y id time, idtarget(1) t0(10) agg("cdfDiff") // so we have some C
 disco_plot
 
 // Test 12: CDF plot
-quietly: disco y id time, idtarget(1) t0(10) agg("cdf_synth") // so we have some CI mats stored
+quietly: disco y id time, idtarget(1) t0(10) agg("cdf") // so we have some CI mats stored
 disco_plot
 
 // Test 13: quantile plot
-quietly: disco y id time, idtarget(1) t0(10) agg("cdfDiff") // so we have some CI mats stored
+quietly: disco y id time, idtarget(1) t0(10) agg("quantile") // so we have some CI mats stored
 disco_plot
 
 
@@ -252,6 +252,6 @@ display "All tests completed successfully!"
 * Test 21: Post-estimation table
 *----------------------------------------------------------------------
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) agg("cdfDiff")
-disco_estat, summary
+quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff") sampl
+disco_estat summary
 

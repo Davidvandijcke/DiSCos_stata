@@ -1,5 +1,5 @@
 program define quadprog, rclass
-    version 16.0
+    version 18.0
     args mG mg0 mCE mce0 mCI mci0 mresults
     
     // Remove matrix prefix if present

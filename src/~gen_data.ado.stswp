@@ -1,6 +1,8 @@
 program define gen_data
     version 18.0
 	
+	clear
+	
     * If you want the exact same data each time:
     set seed 12345
 
