@@ -267,7 +267,9 @@ program define disco, eclass
 	ereturn matrix cids = cids // to match weights back to treated units
 	ereturn scalar amin = amin
 	ereturn scalar amax = amax
-	ereturn matrix summary_stats
+	
+	if "`agg'" != "" {}
+	ereturn matrix summary_stats = summary_stats
 	
 
     
