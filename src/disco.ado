@@ -268,7 +268,8 @@ program define disco, eclass
 	ereturn scalar amin = amin
 	ereturn scalar amax = amax
 	
-	if "`agg'" != "" {
+	local valid_agg quantile cdf
+	if !`: list agg in valid_agg' & "`agg'" != "" {		
 		ereturn matrix summary_stats = summary_stats
 	}
 

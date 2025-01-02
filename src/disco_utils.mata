@@ -478,88 +478,6 @@ real scalar disco_permutation_test(real vector y, id, tt,
     return(pval)
 }
 
-// Compute CI bounds
-struct CI_out scalar compute_CI_bounds(real matrix quantile_diff_boot, cdf_diff_boot,
-                                     real scalar M, G, T_max, cl, uniform,
-                                     struct disco_out scalar main_run)
-{
-    struct CI_out scalar co
-    co.qdiff_lower = J(M, T_max, .)
-    co.qdiff_upper = J(M, T_max, .)
-    co.cdiff_lower = J(G, T_max, .)
-    co.cdiff_upper = J(G, T_max, .)
-
-    if(!uniform) {
-        real scalar alpha, lower_idx, upper_idx, idx
-        real vector vals
-
-        alpha = (1-cl)/2
-        lower_idx = max((1, ceil(alpha*cols(quantile_diff_boot))))
-        upper_idx = min((cols(quantile_diff_boot), ceil((1-alpha)*cols(quantile_diff_boot))))
-
-        real scalar t, idx_loop
-        for(t=1; t<=T_max; t++) {
-            for(idx_loop=1; idx_loop<=M; idx_loop++) {
-                vals = quantile_diff_boot[(t-1)*M + idx_loop,.]'
-                vals = sort(vals, 1)
-                co.qdiff_lower[idx_loop,t] = vals[lower_idx]
-                co.qdiff_upper[idx_loop,t] = vals[upper_idx]
-            }
-
-            real scalar idx_loop2
-            for(idx_loop2=1; idx_loop2<=G; idx_loop2++) {
-                vals = cdf_diff_boot[(t-1)*G + idx_loop2,.]'
-                vals = sort(vals, 1)
-                co.cdiff_lower[idx_loop2,t] = vals[lower_idx]
-                co.cdiff_upper[idx_loop2,t] = vals[upper_idx]
-            }
-        }
-    }
-    else {
-        real scalar q_crit, c_crit, m_i, g_i, base_val
-        // Need loop variables declared here
-        real scalar b, t2
-
-        real vector qmax_abs, cmax_abs
-        real matrix qdiff_mat, cdiff_mat, qdiff_err, cdiff_err
-
-        qmax_abs = J(cols(quantile_diff_boot), 1, .)
-        cmax_abs = J(cols(quantile_diff_boot), 1, .)
-
-        for(b=1; b<=cols(quantile_diff_boot); b++) {
-            qdiff_mat = rowshape(quantile_diff_boot[,b], M)
-            cdiff_mat = rowshape(cdf_diff_boot[,b], G)
-            
-            qdiff_err = qdiff_mat :- main_run.quantile_diff
-            cdiff_err = cdiff_mat :- main_run.cdf_diff
-
-            qmax_abs[b] = max(abs(vec(qdiff_err)))
-            cmax_abs[b] = max(abs(vec(cdiff_err)))
-        }
-
-        real vector tmp
-        tmp = sort(qmax_abs, 1)
-        q_crit = tmp[ceil((1-(1-cl)/2)*cols(quantile_diff_boot))]
-        tmp = sort(cmax_abs, 1)
-        c_crit = tmp[ceil((1-(1-cl)/2)*cols(quantile_diff_boot))]
-
-        for(t2=1; t2<=T_max; t2++) {
-            for(m_i=1; m_i<=M; m_i++) {
-                base_val = main_run.quantile_diff[m_i,t2]
-                co.qdiff_lower[m_i,t2] = base_val - q_crit
-                co.qdiff_upper[m_i,t2] = base_val + q_crit
-            }
-
-            for(g_i=1; g_i<=G; g_i++) {
-                base_val = main_run.cdf_diff[g_i,t2]
-                co.cdiff_lower[g_i,t2] = base_val - c_crit
-                co.cdiff_upper[g_i,t2] = base_val + c_crit
-            }
-        }
-    }
-
-    return(co)
-}
 
 // Bootstrap iteration
 struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
@@ -876,58 +794,7 @@ real scalar disco_ci_wrapper(real vector y, id, tt,
     return(0)
 }
 
-// Helper function
-real vector find_grid_indices(real scalar q_start, real scalar q_end, 
-                            real scalar grid_length) 
-{
-    real scalar idx_start, idx_end
-    if (q_start < 0 | q_end > 1) {
-        _error("Quantile values must be between 0 and 1")
-    }
 
-    idx_start = max((1, ceil(q_start * grid_length)))
-    idx_end = min((grid_length, floor(q_end * grid_length)))
-
-    return((idx_start \ idx_end))
-}
-
-// Compute mean effect
-real scalar compute_mean_effect(real matrix data, real scalar idx_start, 
-                              real scalar idx_end, real scalar t) 
-{
-    real vector range
-    range = data[|idx_start, t \ idx_end, t|]
-    if (anyof(range, .)) {
-        return(.)
-    }
-    return(mean(range))
-}
-
-// Compute bootstrap statistics
-real vector compute_boot_stats(real matrix boot_data, real scalar idx_start, 
-                             real scalar idx_end, real scalar t, 
-                             real scalar cl) 
-{
-    real vector boot_means, stats
-    real scalar b
-    boot_means = J(cols(boot_data), 1, .)
-    for(b=1; b<=cols(boot_data); b++) {
-        boot_means[b] = mean(boot_data[|idx_start, t, b \ idx_end, t, b|])
-    }
-
-    boot_means = select(boot_means, !missing(boot_means))
-    if (length(boot_means) == 0) {
-        return(J(3, 1, .))
-    }
-
-    real scalar se
-    se = sqrt(variance(boot_means))
-
-    real vector ci_bounds
-    ci_bounds = get_ci_bounds(boot_means, cl)
-
-    return((se \ ci_bounds))
-}
 
 // Compute summary stats
 real scalar compute_summary_stats(string scalar agg, real vector sample_points, 
@@ -1033,25 +900,4 @@ real scalar compute_summary_stats(string scalar agg, real vector sample_points,
 
     return(0)
 }
-
-// Compute CI bounds
-real vector get_ci_bounds(real vector boot_samples, real scalar cl) 
-{
-    real vector sorted, bounds
-    real scalar n, lower_idx, upper_idx
-
-    sorted = sort(boot_samples, 1)
-    n = length(sorted)
-
-    lower_idx = ceil((1-cl)/2 * n)
-    upper_idx = ceil((1-(1-cl)/2) * n)
-
-    if (lower_idx < 1) lower_idx = 1
-    if (upper_idx > n) upper_idx = n
-
-    bounds = sorted[lower_idx] \ sorted[upper_idx]
-
-    return(bounds)
-}
-
 end
