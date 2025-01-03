@@ -213,7 +213,7 @@ is useful when working with variables that have fixed support, such as categoric
 {synopt:{cmd:e(cmdline)}}command as typed{p_end}
 
 {p2col 5 20 24 2: Matrices}{p_end}
-{synopt:{cmd:e(cids)}}control unit IDs (1 x J-1){p_end} -- use these to match weights back to control units' names as they are in the same order
+{synopt:{cmd:e(cids)}}control unit IDs (1 x J-1) -- use these to match weights back to control units' names as they are in the same order{p_end}
 {synopt:{cmd:e(weights)}}estimated synthetic control weights (1 x J-1){p_end}
 {synopt:{cmd:e(quantile_diff)}}differences in quantiles by time (M x T){p_end}
 {synopt:{cmd:e(cdf_diff)}}differences in CDFs by time (G x T){p_end}
@@ -233,7 +233,7 @@ is useful when working with variables that have fixed support, such as categoric
 
 {phang} {help "disco_estat": disco_estat}: summarize aggregated statistics if specified with agg() option.{p_end}
 
-{phang}{cmd:disco_plot}: generate plots for quantiles or cdfs across time.{p_end}
+{phang} {help "disco_plot": disco_plot}: generate plots for quantiles or cdfs across time.{p_end}
 
 {marker references}
 {title:References}

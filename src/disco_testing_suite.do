@@ -4,6 +4,8 @@
 clear all
 net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src") replace
 
+net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/dev/src/") replace
+
 ************************************************************
 * Now we run each test, calling gen_data prior to each test
 ************************************************************
@@ -156,10 +158,9 @@ mata {
 gen_data
 quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff")  
 mata {
-    st_numscalar("has_content", !missing(st_matrix("e(summary_stats)")))
+    st_numscalar("has_content", !(eltype(st_matrix("e(summary_stats)")) == ""))
     assert(st_numscalar("has_content"))
 }
-disco_plot
 
 
 *----------------------------------------------------------------------
@@ -168,15 +169,14 @@ disco_plot
 gen_data
 disco y id time, idtarget(1) t0(10) agg("cdfDiff") 
 mata {
-    st_numscalar("has_content", !missing(st_matrix("e(summary_stats)")))
+    st_numscalar("has_content", !(eltype(st_matrix("e(summary_stats)")) == "" ))
     assert(st_numscalar("has_content"))
 }
-disco_plot
+
 
 gen_data
 disco y id time, idtarget(1) t0(10) agg("cdf") 
 // TODO: fix - local gmin = `min' = local gmin =  ...
-disco_plot
 
 *----------------------------------------------------------------------
 * Tests 10-13: Disco_plot
@@ -252,6 +252,6 @@ display "All tests completed successfully!"
 * Test 21: Post-estimation table
 *----------------------------------------------------------------------
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) agg("cdfDiff")
-disco_estat, summary
+quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff") 
+disco_estat summary
 

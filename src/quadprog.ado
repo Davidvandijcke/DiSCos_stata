@@ -24,7 +24,13 @@ program define quadprog, rclass
         local plugin "quadprog_mata_win"
     }
     else if "`os'" == "MacOSX" {
-        local plugin "quadprog_mata_mac"
+		local machine = c(machine_type)
+		if "`machine'" == "Macintosh (Intel 64-bit)" {
+			local plugin "quadprog_mata_mac_intel"
+		}
+		else {
+			local plugin "quadprog_mata_mac"
+		}
     }
     else if "`os'" == "Unix" {
         local plugin "quadprog_mata_linux"
@@ -39,7 +45,13 @@ if "`os'" == "Windows" {
 	local plugin "quadprog_mata_win"
 }
 else if "`os'" == "MacOSX" {
-	local plugin "quadprog_mata_mac"
+	local machine = c(machine_type)
+	if "`machine'" == "Macintosh (Intel 64-bit)" {
+		local plugin "quadprog_mata_mac_intel"
+	}
+	else {
+		local plugin "quadprog_mata_mac"
+	}
 }
 else if "`os'" == "Unix" {
 	local plugin "quadprog_mata_linux"

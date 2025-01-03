@@ -148,6 +148,10 @@ program define disco, eclass
         di as err "q_min must be >=0 and q_max <=1"
         exit 198
     }
+	if `cl' < 0 | `cl' > 1 {
+		di as err "cl must be >=0 and <=1"
+        exit 198
+	}
 	// Preserve dataset before Mata operations
     tempname base
     preserve
@@ -264,6 +268,9 @@ program define disco, eclass
 	ereturn scalar amin = amin
 	ereturn scalar amax = amax
 	
+	if !inlist("`agg'", "quantile", "cdf") & "`agg'" != "" {
+		ereturn matrix summary_stats = summary_stats
+	}
 
     
     // Store metadata
