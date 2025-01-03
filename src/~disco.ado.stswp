@@ -264,12 +264,12 @@ program define disco, eclass
     ereturn matrix quantile_t = quantile_t
     ereturn matrix cdf_synth = cdf_synth
     ereturn matrix cdf_t = cdf_t
-	ereturn matrix cids = cids // to match weights back to treated units
-	ereturn scalar amin = amin
-	ereturn scalar amax = amax
-	
+ereturn matrix cids = cids // to match weights back to treated units
+ereturn scalar amin = amin
+ereturn scalar amax = amax
+
 if !inlist("`agg'", "quantile", "cdf") & "`agg'" != "" {
-    ereturn matrix summary_stats = summary_stats
+	ereturn matrix summary_stats = summary_stats
 }
 
     

@@ -39,12 +39,11 @@ program define disco_plot, eclass
     }
     // set default agg if user didnt specify
 	if "`agg'" == "" {
-		if missing(e(agg)) {
-			local agg = "quantileDiff"
-		} 
-		else {
-			local agg = e(agg)
-		}
+    if missing(e(agg)) {
+		local agg = "quantileDiff"
+	} 
+	else {
+		local agg = e(agg)
 	}
     local m = e(m)
     local g = e(g)
