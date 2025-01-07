@@ -8,7 +8,7 @@
 {viewerjumpto "References" "disco_plot##references"}{...}
 {viewerjumpto "Author" "disco_plot##author"}{...}
 
-{title:Title}
+{title:disco_plot}
 
 {phang}
 {bf:disco_plot} {hline 2} Post-estimation plots for Distributional Synthetic Controls

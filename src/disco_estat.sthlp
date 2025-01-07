@@ -7,7 +7,7 @@
 {viewerjumpto "Examples" "disco_estat##examples"}{...}
 {viewerjumpto "Stored results" "disco_estat##results"}{...}
 
-{title:Title}
+{title:disco_estat}
 
 {phang}
 {bf:disco_estat} {hline 2} Post-estimation statistics for DiSCo (Distributional Synthetic Controls)

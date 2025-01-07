@@ -230,7 +230,7 @@ assert e(amax) != .
 gen_data
 rcof "noi disco y id time, idtarget(1) t0(10) agg(invalid)" == 198
 rcof "noi disco y id time, idtarget(1) t0(10) ci cl(1.5)" == 198
-rcof "noi disco y id time, idtarget(1) t0(10) g(0)" == 198
+rcof "noi disco y id time, idtarget(1) t0(10) " == 198
 rcof "noi disco y id time" == 198
 
 
