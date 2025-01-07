@@ -498,7 +498,7 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
             } else {
                 // Solve from precomputed CDF
                 w_temp = disco_mixture_from_cdf(Cc, Tc, simplex)
-				w = w_temp'
+				w = w
             }
 
             weights_store[t_loop, .]  = w

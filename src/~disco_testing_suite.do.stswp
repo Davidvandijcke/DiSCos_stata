@@ -46,7 +46,7 @@ mata {
 * Test 2: Mixture approach with simplex
 *----------------------------------------------------------------------
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) mixture
+disco y id time, idtarget(1) t0(10) mixture
 
 // Check weights
 matrix w_mix = e(weights)
@@ -112,7 +112,7 @@ mata {
 * Test 5: Confidence intervals
 *----------------------------------------------------------------------
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) ci boots(100) cl(0.90)
+disco y id time, idtarget(1) t0(10) ci boots(100) cl(0.90) 
 
 // Check CI matrices
 foreach mat in qdiff_lower qdiff_upper cdiff_lower cdiff_upper {
@@ -144,9 +144,9 @@ mata {
 }
 
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) m(200) g(200)
+quietly: disco y id time, idtarget(1) t0(10) m(1000) g(100) ci boots(100)
 mata {
-    st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==200 & rows(st_matrix("e(cdf_diff)"))==200)
+    st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==100 & rows(st_matrix("e(cdf_diff)"))==100)
     assert(st_numscalar("dims_ok"))
 }
 

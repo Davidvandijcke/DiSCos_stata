@@ -1,1614 +1,3 @@
-=== Content of __000000.dta ===
-<stata_dta><header><release>118</release><byteorder>LSF</byteorder><K>
-</K><N> N
-</N><label>
-</label><timestamp>
-17 Dec 2024 15:12</timestamp></header><map>
-</map><variable_types>
-</variable_types><varnames>id_col
-time_col
-y_col
-t_col
-</varnames><sortlist>
-</sortlist><formats>%9.0g
-%9.0g
-%9.0g
-%9.0g
-</formats><value_label_names>
-</value_label_names><variable_labels>
-</variable_labels><characteristics></characteristics><data>
-@ q7?
-@A!z~?
-`AB/-
-pA#@f?
-@@&I^>
-0Ah]
-@@Im
-A?^x?
-0AF'
-A<2w
-@r?H?
-@@',
- A&,
-0AQ+C>
-`AnT
-`Al{9>
-pAr$
-`Ak$
-AST:?
-@tSr
-@A0z
-@gLO?
-A*s1
-0Ae[
-`AHc
-0AL56=
-Ao*,
- AKC
-PApK
-A~-2?
-?e&2
-?/*`?
-?td[
-@K#Y
-@^~M
-@rLN
-@<S;
-@uI}>
-@m|c=
-@@bR
-@@iJ
-@@Jw
-@@s=
-@@:N
-@@6)
-@i:\
-@3:M
-@t=:
-@QJh?
-A/"?
-A*GW
-AP~+
-Ahou?
-AU!
-AeH|?
-AZk&<
-AO&;?
-AamK
- A\O
- A+>
- A)Kv?
- A\i
- AV;;
- A\5
- Ak\
-0A[7
-0AIe
-0AMiO?
-0APl
-0A%6
-0AM#
-0Avx
-0Aor$
-@A:>
-@A:l
-@Ad${
-@AwT
-@Ame
-@A@5
-@AsC
-PAIN
-PA^x
-PA8Jh
-PAeS`
-PA)%
-PA!$
-PAbs
-`A]Oc>
-`ACd
-`Asb
-`A{j
-`A_N
-`A)H
-`A!M
-`AMj)
-pA#@
-pA'-
-pATs
-pABRn
-pACK+?
-pA~b
-pAW
-A\R_>
-A_w:=
-Af`W>
-Acz??
-Atsq?
-AYvS
-AR*6=
-A:A!?
-AOTW
-A|'(@
-ASp/
-AaA]
-?djB
-@OiO
-@@dvQ?
-@@T_?
-@@ib
-@@8i
-@@"C
-@@+t
-@KM9
-@cs 
-@""}>
-@@x3?
-@v2]
-@6D+
-@]l(?
-@o%k
-@rL
-@a(e?
-@hG)
-A=-^
-A9||=
-AMa%?
- A#IM
- A.'
- A1I
- AL:b?
-0As:
-0AYC
-0AgK
-0A |
-0A0h
-0AJkq
-0ARD
-0As|w
-0Avt
-0Adn
-0A0x>?
-0At6
-0A/\
-0A5s&@
-0Am|
-@AX{
-@AlK
-@A;Y
-@AdO
-@Auy
-PA:C
-PAH'
-PAl|
-PA12D
-PAaku
-PA.`b?
-`A)j
-`Al`
-`AW\
-`AC<
-pAi\s?
-pAxb
-pA|`
-pAR1q
-pA%\
-pAYG'
-pAgx
-pAN)
-pA7d
-AoUu?
-A`.?
-A{ <
-A4gY?
-A(^\
-AQaH?
-As[p
-ATx2?
-Aw}/
-A:6L
-?~8i?
-@}-W
-@4aW
-@@on
-@@$~@
-@@'y'?
-@@>$
-@@i5
-@@8s
-@@xO
-@@%yx>
-@D)P@
-@v8`?
-@Dfx
-@pDP>
-@dzi?
-@4X&?
-@a*h
-@%y^?
-@rlr?
-A{tw?
-AdzL?
-AioU?
-A4t{>
-Ao|Z
-AMr;?
-AAkz?
- A*`
- A7&
- AI9I
- AhE
- A`V
- AH+
- AeN
- A17
- A#7??
-0A%``?
-0AG)
-0ALr
-0A9Nr?
-0AXh
-0AJS
-0A?.
-0Au&
-0AG,
-0A<S
-@AWRx?
-@AQr
-@ADz
-@A|-@
-@Ax,
-@A\(l
-@A`{
-@A5\%>
-@AMZ
-@ARj
-@AjN
-PAoA\
-PA4P
-PAy3
-PAm,
-PAyr9
-PA(z
-PA""
-PA!cd>
-`AY38
-`A}@
-`AFY8
-`ASd
-pApC
-pAO'
-pA4(
-pA%>
-pA6y
-pAxd2
-pA$9g?
-pAmp
-pAaj)?
-A7CA?
-A}OL
-AdHW
-ANJD?
-A%?b>
-A@<T@
-ACy??
-Aja
-A1{!
-A\\2
-Ab!s?
-AFsM?
-?--8
-@d0L>
-@24]
-@@;V
-@@fH
-@@Z 
-@@`H
-@@)2k
-@s=h?
-@oX:
-@%[M
-@M6i
-@J}m
-@%/L?
-AdWh
- AW<
- A~>
- Ayj
- A9F
- A_7
- AD0e
- A@4O
- A5G
- AmF>
-0AHe
-0Aq,
-0AMle?
-0Aa_
-0An1
-0A/v&
-0A!;
-@A_]$
-@Ad$
-@A9Q
-@A3:
-@Akr
-@Ax#
-PAcU<?
-PA/E
-PAv]
-PA]o
-PAW&
-`ACq
-`AeC*>
-`A!@
-`A#ud?
-`AV?
-pAosC?
-pA$"
-pA|d
-pApj-?
-pAwA
-pA!<=>
-pA6uW?
-A)Hz?
-A~c#
-AU=M?
-A~]7?
-AS3U?
-AON[?
-A*kl
-A%zf
-AtK%?
-A&+x
-A<Y,
-AKIL
-A?CR>
-?X*%
-?Ok 
-?}>->
-?!r=
-@@vR
-@@X
-@@(&
-@@V&2@
-@@/y
-@@lW
-@@ 8
-@R2P
-@7I
-@t(`
-@Kl@?
-@uK7?
-@Zpe?
-@9*f?
-@zr|
-@2B1
-A|n~
- Afq
- A&B
- A'W
- AF=
- AX/
- Ay4
- Afw;=
- A8G5?
-0A5s!
-0AGb
-0AXA
-0AK+
-0A?=
-0A-h*
-0A "
-0AQS
-@AKC
-@A"}
-@A:
-@A:S
-@AvUV?
-@AGM
-PAQeo>
-PApN
-PA*x
-PASmt
-PA$3
-`A66W
-`AE%
-`AUe
-`A=H?>
-`Aw.
-`Az$
-`Arz
-`AN"
-`A7Y
-`Asf
-`A5F
-`A$~
-pAI%
-pA3=
-pA4V
-pA<g
-pAkZ5?
-pAVF
-pA3w
-pAGp
-pAWE
-pAgC
-A;!G?
-Ac>;?
-A`%:
-AK|Z
-A*!#
-A9_$
-AL9\?
-A2XV
-A;q7
-A7 *
-AhI0?
-A.#i
-?-)!
-?%.k
-?Ka7
-?wK1
-@sTV
-@Q(T>
-@>PX?
-@@nr
-@@z.
-@@'Z
-@@$(
-@@Pg
-@@I+
-@@=2`
-@@Xx%
-@@6D
-@@m@
-@@6<%?
-@Q%i>
-@mK,?
-@`wF?
-@aZH
-@4^>
-@eSY
-Aw*q
-ANYf
-A|0^
- AS\
- AO~S
- AE6
- AV2?
-0AL0
-0ArCV>
-0A'_
-0AXP9?
-0Amb>
-0Aux @
-0AHS
-0An4
-0A^;_
-@AcaX?
-@Azp
-@A+n
-PAs3
-PA/>
-PA9\
-PABg
-PA`7
-PA(l
-PA8mQ
-PAA 
-PA9[
-PA44|?
-`AMg
-`A.F
-`A&6
-`A,K
-`A&^
-pA.J
-pAY2[>
-pA-,#
-pARuF?
-pAfpk
-pA<zF?
-pArh
-pAW7@
-pABq
-Ar3<?
-AlX
-A:JH?
-Aw@$
-A=
-AAb`?
-Au@e?
-A-W=
-AiwR>
-AJxx
-Ak_?
-AS<Y?
-A PU
-Afoo>
-AB.j
-A1|3>
-A\f$
-ADw1>
-?g|J?
-?VSU?
-@"h%?
-@1D?
-@@C,!>
-@@Qe
-@@Ugh
-@@Yn
-@@>W
-@@88^?
-@@H:V
-@@w1
-@@Ki
-@@|*
-@l{V
-@b1p
-@0PA
-@8aA?
-@%$p?
-@x'j
-@oH*
-@c`r
-@>1r
-AOxY>
-AK<6>
-Aneb?
- A('
- A>r
- A0(
- A#b
- A=,a?
- AJ2/
- AT|
- APE:?
- A0H
-0As\*
-0A=pN>
-0AGG
-0AM2
-0A[4#
-0A7"
-@A2F
-@ANp
-@AF
-@A0Y
-@AG,
-@AgIC>
-@AwR
-@A%ex
-@AQ.
-@ATY
-@APmF?
-PA:[
-PAH57
-PA"a
-PA'W
-PAE!
-`Ao8
-`A>0
-`AJB
-`ADn]?
-`AB"
-`Arm
-`A&-
-`AxXZ?
-`ATz
-pA3w
-pA!@s
-pAC{
-pA81
-pAe;0
-pAx7
-pAPqy
-pAU(N>
-AW21>
-AV21?
-AW|2?
-A0^t
-A7O|
-A{U:?
-A$zO
-A5Er
-A=h,?
-A<Db?
-AlQ2?
-?4U`
-?/Zr
-?qC~
-?nhW?
-?2@G?
-@U$9
-@@1n
-@@;l
-@@7Z
-@@2U
-@@*H
-@@H~
-@@M(
-@@u*
-@!{,?
-@4XQ
-@-?,>
-@{yx?
-@Fdf?
-@zj1@
-@NH[?
-@f4/
-@V-t>
-A'GV
-A5ko?
-A 0 ?
- A!)8?
- A\~
- Afg,
- A)c
- Aa)q=
- AQ^
- AqIj?
- AdV
- Ael#?
-0A [
-0Ar6
-0A>kx
-0ACp
-0A0d
-0A>)
-0Ag$(?
-@A7l
-@Avhl
-@AMh
-@A,I
-PAL3
-PAc;N>
-PAXr
-PAR"
-PAZ9W
-PAeY
-PAUv1=
-PA,L5?
-PA~O0?
-PA4`
-`AVg
-`Az+U?
-`A_]
-pARfL?
-pAp5
-pAK6
-pAG)Q?
-pA#8
-pAX81
-pAtu
-AHNc?
-A)F)
-AG#
-A[(o?
-A~PN
-A^UR?
-AYu(
-A$!`
-AP1)
-AXP.
-AvhS?
-A?B}
-?S[B
-?^@:
-?[VE
-@Z\??
-@h!x
-@-lO
-@@'M
-@@<F
-@@c(E
-@@])
-@@`Y>>
-@e!V=
-@dPP
-@t a
-ANd%?
-AAr_?
-A_/M?
-A}G<
- Aq]^=
- A:]
- ABu
- A%`
- A!}G
-0A=k
-0AU
-0A/S@>
-0AQ2
-0A]n
-0A7M
-@A%'
-@A(i
-@Az:
-@A+)g?
-@AWb
-@AS*
-PA7.
-PAC|?
-PAk5
-PA&M
-PA\W
-`Ak+l>
-`A1K
-`AWG
-`A/?
-`AA[
-`A&w
-`ARZ
-pA9ou
-pAsR
-pA0j
-pA!S
-pAhh*
-pA-M
-pAhgI
-pAl%K?
-AC@Y
-A@U?
-A\- @
-AJGu?
-AjcV
-Amu|>
-A"<
-AXA7
-A2e_
-AXuu
-A[76
-AppD
-A2af
-A0y\?
-A&vS
-ASFm?
-?H|1@
-@@n<
-@@9V
-@@k@
-@@,G\?
-@@9#
-@@m>
-@@ET}?
-@"!x>
-@6b^
-@0F;
-@/:L
-@Qj>
-@XNE?
-@8qG?
-@A.L
-@%DG?
-@v}G
-@g!?
-@fW3@
-@EYK?
-AxE1
-AqXd?
-AlT,?
-A3Ps
-AE-:>
-A?vl
-Af4]
-AFU
-AH$E>
-ArnZ
- A9,
- AF"
- A{-
- A+@<
- ATs/
- AM,
- A@%b
-0AVd
-0A{*
-0A{F
-0A|
-0A79
-0AyN
-0AYNL
-0A}e
-@AVI
-@A0f
-@Ahu
-@A&>
-PAb?
-PAd 
-PA:k
-PA0aO?
-PA$@
-PA[~
-PAju
-PA[N
-PABc
-PA.r
-`A@Z
-`ABgP
-`A,8
-`AD
-`A|e
-`A'r
-`A7~N
-`ADf
-pA'2A
-pA6j
-pA!&
-pA>;
-A|pX?
-A!\O
-A0X4?
-ATZh=
-Aj_[
-AXPf
-AfAv
-A Cq
-A2EL?
-A|k"?
-Au8e
-Ak4x
-A`m1
-A^4)
-AGi
-A<zM?
-?uE8?
-?cqI?
-?<9Y?
-@t&B>
-@W'E
-@@_yZ=
-@@yw
-@|6V
-@<:O>
-@H</
-@R+&?
-@lI$?
-@VO9
-@t:@
-@FtM
-@{6>
-@#A-
-@Ucl>
-@^17?
-@lq`
-AURB
-A;MD
-Ad9G?
- Ak&
- A]w
- AVQ1
- AK%u>
- AO<
- AOS
- AgNv?
- AW"
- AL8
-0AjgI
-0AU^c
-0AdD
-0Arf
-0A^6
-0Ale
-0Al-
-@AZrZ?
-@Az5
-@ADh
-@A`)P
-@An8
-PA.>
-PA=JT
-PA$b?
-PAz_,?
-PAGV
-PA{}
-`A;"3?
-`A2M/
-`AM-
-`AY2
-`A;!
-pA;C
-pAD)
-pA y
-pAn.=
-pA,r
-pAA9
-pAWa
-pANUk?
-pAYJ
-A`5C
-AFN}?
-AGR;
-A;<)
-AHZ[
-AI!F?
-A!<W>
-?`WF
-@_f9
-@@X"
-@@tkW
-@@Bq{?
-@@hq
-@@$IM
-@@1<1?
-@@n+
-@@R5$>
-@@P,:
-@ACT?
-@SAb?
-@c8v
-@H?g
-@7u7?
-@=d/
-@Lg2
-@Jm|
-@rRy?
-@/xH?
-@tUm
-A4@G>
-A6>m?
-A0;[
-AH$
-A0E#
- A!v
- A`J
- Aqz
- Am
- Aor
- A+m
- Av:
-0AF[
-0A{{
-0AZ])?
-0Aa9
-0A06
-0Ak"
-0A7!
-0AJ+
-0A8S
-@Ag"
-@A"~
-@A"\
-@Am^?
-@A1x->
-@AWJ
-@A#h
-@Anh
-@Ax6
-@AG$
-PAf4
-PAsR
-PAsr
-PAzN*
-PATg
-PAkp
-`A-_p
-`AAp:
-`A39
-`A@*
-`AAvk>
-`A^2[>
-`AG5D>
-pA[M
-pAux
-pAim 
-pAcQ
-pABc
-pAdk
-pA2i
-pAjL
-pA;|
-pAQS0
-AfCl?
-Ar1v
-Ak>i
-As;1>
-AagH
-AFdi
-Acyj
-A_I"
-Ak%[
-AR#B
-?~EP
-?H8C>
-@Kr8
-@$]o
-@Z{ 
-@@jMY
-@@;H
-@@[M
-@@x5
-@@(W
-@@k u
-@M&<
-@`o|
-@(@I
-@gk8?
-@r="
-@KYo?
-@<wS?
-@gev?
-@!I!
-A\O.?
-A5:R
-A|R{
-AHo 
-A;d'?
- AN=
- A9c&
- A4F
- A`/
-0A.,O>
-0A'#
-0A\kT>
-0A3N
-0A}F
-0AY:
-0AU1
-0AM3
-@A{9
-@A w6
-@Akn
-@A^d
-@A;R
-@A+b\?
-PAbh
-PAL0
-PApn
-PA[F
-PABc
-PAs88
-PAeUp
-PAAG
-`ATj
-`A!c
-`A<Z)?
-`Al/
-`A;=O?
-`AyAp
-`A9V
-pA;`
-pA~Q
-pAA`M?
-pA*D
-pAW*2
-pAB
-Ao>o
-AzSp=
-A9AW
-A;xl
-A@Qp
-AKN*
-A.=Z
-A<q1
-AO-P
-A'Lv?
-AM>R?
-Au!I
-?"Hf
-?8+I?
-?F]t?
-@&}u=
-@$Y6>
-@/6 >
-@@y}
-@@c1
-@@|.
-@@AV
-@@jd\>
-@@J5P
-@@(
-@QhV
-@G@d
-@\4!@
-@{ug
-@F/^?
-@{{5
-@F^0
-@(TU?
-@<1(=
-A+^n>
-AE6:
-Az(#
-AtRa?
-Ah]x?
-Ab)K?
-As%I
-A`7*
- An!
- A6E
- A`l
-0AY/
-0ACF\
-0ABw
-0A/dp>
-@A>6h?
-@A/AA
-@AcW
-@A'P
-@A&y
-PAu#
-PA@P
-PARuw?
-PARD
-PA7[?>
-`Abj
-`AIPW>
-`A*%
-`Av]
-`AVq
-pA9oP?
-pA.m
-pArs
-pAp\
-pAa
-pAAz
-pA>W
-pALr
-pA%a
-pAT#
-AdMu
-AY7C
-Aul]
-AHsx?
-Auy1>
-A/'z>
-A),(?
-A#0o?
-A*]A?
-A=?}
-A!2p
-AZLi
-A&Vu?
-?*@B?
-@v$8>
-@@&:
-@@L7+
-@@R]
-@@,4
-@@-\
-@@Cw
-@@OE
-@@\%9=
-@+)U?
-@P~u
-@ugj?
-@o(&
-@J<A<
-@Q($
-A"#V<
-Appi
-AQO6
-Az:i?
-AJ:c
-A2!
- A/!
- APuf
- AdzK
- Agp5?
-0AMu.
-0ApRc
-0Ac1
-0Atg:
-0A@W
-0ADJ
-@AVs`?
-@A}/
-@Ac$
-@A7F
-@Avp
-@A3W?
-@Aea
-@AcT
-PAp3(>
-PANG
-PA]Ws?
-PA]`?
-PA_,
-`AVw#
-`AD4
-`Ad@F
-`A,X
-`A{h
-`AfG
-`Ab6
-`AWb
-`A ]
-pAMI
-pA0T
-pA%s
-pANU
-pAa
-pA:I
-pAo3!>
-pA@h
-pAiSd
-AyeQ
-A-8C>
-A1x^
-A0m.
-Ag>3
-Ajn
-?4Bw?
-?Mw_?
-? $??
-?gD"?
-?,Z,
-? 5F
-??e2>
-@O T
-@\yM
-@)5 =
-@@}e
-@@Xh6>
-@@m=(
-@@z|s
-@@Y?
-@@{-
-@@Gk
-@@(S
-@@PZ
-@;zD
-@J\8>
-@<1W?
-@G%Y
-@XG!?
-@8`t?
-@LGW>
-@X?.
-@(6}?
-@fEn
-@cA4?
-@tc
-A2q`
-AYc(
-AlT,
-A?2_?
-A7-_
-AN.N?
-AqAC
- AfKX
- AvP
- A =
- A0y
- Ab8
- Az?
- Al62?
-0ACT
-0ADu
-0Azq
-0A;f
-0Ak5:?
-0Adc
-0AP(
-@A227?
-@Ae4
-@AF6|
-@A2a
-@AwB
-@AD3
-PA`x"?
-PA;l
-PA^a
-PAAf
-`Ark
-`A<3Q?
-`A8G
-`Ao>&?
-`AkET
-`ASu
-`AQ3
-pA{<n>
-AmI*?
-A@Q\?
-A$Jy
-Atn{=
-AN#0?
-A&^.
-A,* ?
-AeY6?
-A=D#?
-?DS_>
-@U!_
-@@e6
-@@1lG
-@@7t
-@@TN
-@@jtS>
-@@e B>
-@g=9?
-@n-l?
-@Y@j
-@,Tj
-@3Ht
-@p?O>
-A)/8
-A{J]
-A6{=?
-A=#~
-A<_E?
-AM+7?
- Alu
- ANE
- A@J
- Aq`
- A\c
- A.x
- AFu
- A<w-
- Awz
-0A$H
-0AzX
-0AGM
-0A%~
-0A a
-0A?]
-0A3{$>
-@Al=(
-@Ax{
-@AG8
-@Adt
-@AzZ
-@AC-
-PAXT
-PAK}v
-PA^>
-PA}U
-PAR[]
-PA;+
-PA9.
-`Af&Y
-`A32_?
-`AsJ
-`A'^*
-`AP0
-`A==]
-`Adz
-pA}D
-pA"F
-AL96
-A`$)
-Ack#?
-A&r4>
-A3NB
-A<DG?
-AU9'
-A`0k
-A0#0?
-?sb+>
-?,]>
-@#-h
-@@DI
-@@CK
-@@*4
-@@H2
-@@?1
-@@#:u
-@@5
-@@1<
-@2R~
-@v2,?
-@=aZ?
-@uk7?
-@*@g?
-@ekN
-@2]x
-A[-B
-A(-z
-Ag{o
-AP]K>
- A&)
- A?&
- A=c
- A!@
-0A&r
-0AC*M?
-0A]v
-0AIv
-0A{(v?
-0A\G
-0A6
-0A]n
-@A<8
-@Ayw1
-@A0o
-@Ar/
-@ASg
-@AiL
-@AB>
-@A!m
-@A.e
-PA@O
-PA_;J
-`Ab0
-`Aqr
-`Al}b?
-`A7k
-`A)p
-`A28
-`Ar1g?
-`A(?
-pAvU/?
-pAd@
-pA&k
-pA+`
-pAI2
-pAZA
-pAqd
-ANY5?
-AgI>
-AV,h?
-Axch>
-A#qb
-Ap(/
-Ai:a?
-AzYj?
-AC9`?
-Ax<u:
-AMl;
-A)/x?
-APhY
-?:)C
-?8+_
-@wb*?
-@d&4>
-@6*)?
-@@Jl 
-@@mR
-@@({
-@@g,&
-@@)m
-@@o*
-@@qJ
-@B6?
-@N%z
-@o=<
-@ku)@
-@:Q=
-@F':>
-@j{"?
-@Y6=
-A"7A
-ABg"
-Afo>?
-AKLZ=
-Asb)?
-A(It?
-AXD/
-Am,@=
-A8k,
-AyW)>
-A]\n>
- A-|
- A\w
- AK9
- AZ/
- AJSA?
- A_P 
- A**S>
-0APl
-0A,{
-0A-K
-0ATJ
-0AF=;
-0AQz
-0AG`j>
-@AVY
-@AQ!U
-@Aos
-@A([
-@A&p
-@An)
-@Am9V
-@ArZ
-PAl!6?
-PA1b
-PAA|
-PATW
-PAI+
-PAm`
-PA&q
-`A./
-`A>gM?
-`A'j'?
-`AD.5
-pACk
-pA# 
-pA/4
-pAb/
-pA|^
-pAU?
-pA;'u?
-pA:$^?
-pARSV
-AVA+>
-Ac/z>
-A3ah
-A006
-AYkt
-AKAg
-A@(
-AlaX>
-A~(}>
-A^i^
-Am97
-AEW2>
-?\B\
-?`s8?
-?>*e
-@q0l?
-@@m=
-@@w=e?
-@@GL
-@@,2
-@@#u
-@@@-
-@+>:?
-@>t0?
-@3dX?
-@^Sc
-@'6'
-@O^b
-@|J@
-@rg~
-@cld=
-@=Pe>
-@&8u>
-@}|5
-@Io)?
-AG)X
-ADuO
-A"5B
- AUr
- As^
- A3r
- Aod
- AL%
- A_X
- AlU
-0A&W
-0ATK>=
-0Av5
-0A]$
-0A~|
-@A+4
-@A1o!@
-@AK9
-@Aq'7?
-@Amm
-@A0W
-PAZ9%?
-PAp6L?
-PA^f
-PAKw
-PA'U
-PA;r
-PA=X
-PAz1
-PATU
-PA+~,>
-PAv"
-`AU($
-`A/3
-`A=3&=
-`Agfk
-`AQ4S
-`A]i
-pA0B
-pA+v
-pAq-
-A^su
-AX{w?
-A=>O
-Ae|w>
-ATT?
-ApfJ?
-A;^@
-APZ9?
-A</data><strls></strls><value_labels></value_labels></stata_dta>
-
-
-
 === Content of build_disco_mlib.do ===
 clear all
 
@@ -1708,7 +97,7 @@ Required input:
     t0:         First treatment period
 
 Options:
-    M(integer):         Number of quantile points (default: 100)
+    M(integer):         Number of quantile points (default: 100) -- should be simulation points! 
     G(integer):         Number of grid points (default: 100)
     CI:                 Compute confidence intervals
     BOOTS(integer):     Number of bootstrap replications (default: 300)
@@ -1879,7 +268,25 @@ program define disco, eclass
         tt = st_data(.,"t_col")
         target_id = `idtarget'
         
+		
         // Run main DiSCo analysis
+		printf("Input dimensions:\n")
+		printf("y: %g x %g\n", rows(y), cols(y))
+		printf("id: %g x %g\n", rows(id), cols(id))
+		printf("tt: %g x %g\n", rows(tt), cols(tt))
+
+		// Print parameters
+		printf("\nParameters:\n")
+		printf("target_id: %g\n", target_id)
+		printf("T0: %g\n", T0)
+		printf("T_max: %g\n", T_max)
+		printf("M: %g\n", M)
+		printf("G: %g\n", G)
+		printf("q_min: %g\n", q_min)
+		printf("q_max: %g\n", q_max)
+		printf("simplex: %g\n", simplex)
+		printf("mixture: %g\n", mixture)
+			
         rc = disco_wrapper(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
         
         // Permutation test if requested
@@ -1906,7 +313,7 @@ program define disco, eclass
             sample_points = strtoreal(tokens(samples_str))
 			quantile_diff_mata = st_matrix("quantile_diff")
 			cdf_diff_mata = st_matrix("cdf_diff")
-           
+			           
             rc3 = compute_summary_stats("`agg'", sample_points, T0, T_max, quantile_diff_mata,
 			cdf_diff_mata, `doci', cl)
         };
@@ -2378,7 +785,7 @@ end
 {viewerjumpto "Examples" "disco_estat##examples"}{...}
 {viewerjumpto "Stored results" "disco_estat##results"}{...}
 
-{title:Title}
+{title:disco_estat}
 
 {phang}
 {bf:disco_estat} {hline 2} Post-estimation statistics for DiSCo (Distributional Synthetic Controls)
@@ -2476,11 +883,13 @@ program define disco_plot, eclass
         exit 198
     }
     // set default agg if user didnt specify
-    if missing(e(agg)) {
-		local agg = "quantileDiff"
-	} 
-	else {
-		local agg = e(agg)
+	if "`agg'" == "" {
+		if missing(e(agg)) {
+			local agg = "quantileDiff"
+		} 
+		else {
+			local agg = e(agg)
+		}
 	}
     local m = e(m)
     local g = e(g)
@@ -2666,7 +1075,7 @@ end
 {viewerjumpto "References" "disco_plot##references"}{...}
 {viewerjumpto "Author" "disco_plot##author"}{...}
 
-{title:Title}
+{title:disco_plot}
 
 {phang}
 {bf:disco_plot} {hline 2} Post-estimation plots for Distributional Synthetic Controls
@@ -2954,9 +1363,9 @@ mata {
 }
 
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) m(200) g(200)
+quietly: disco y id time, idtarget(1) t0(10) m(1000) g(100) ci boots(100)
 mata {
-    st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==200 & rows(st_matrix("e(cdf_diff)"))==200)
+    st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==100 & rows(st_matrix("e(cdf_diff)"))==100)
     assert(st_numscalar("dims_ok"))
 }
 
@@ -3016,6 +1425,10 @@ disco_plot
 quietly: disco y id time, idtarget(1) t0(10) agg("quantile") // so we have some CI mats stored
 disco_plot
 
+// Test 13.1 different plot than specified
+gen_data
+quietly: disco y id time, idtarget(1) t0(10) agg("quantile") // so we have some CI mats stored
+disco_plot, agg("quantileDiff")
 
 
 
@@ -3158,14 +1571,14 @@ real vector disco_quantile_points(real vector X, real vector p) {
 //   X: Input vector
 //   M: Number of quantile points
 //   q_min, q_max: Range for quantile computation
-real vector disco_quantile(real vector X, real scalar M, real scalar q_min, real scalar q_max) {
+real vector disco_quantile(real vector X, real scalar G, real scalar q_min, real scalar q_max) {
     real vector p
     real scalar j, p_j
     
-    p = J(M,1,.)
+    p = J(G,1,.)
     real scalar j2
-    for (j2=1; j2<=M; j2++) {
-        p_j = q_min + (q_max - q_min)*(j2-1)/(M-1)
+    for (j2=1; j2<=G; j2++) {
+        p_j = q_min + (q_max - q_min)*(j2-1)/(G-1)
         p[j2] = p_j
     }
     
@@ -3370,14 +1783,15 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
     st_numscalar("amin", amin)
     st_numscalar("amax", amax)
 
-    quantile_diff = J(M,T_max,.)
+    quantile_diff = J(G,T_max,.)
     cdf_diff = J(G,T_max,.)
     weights_store = J(T0-1,J_sc,.)
     period_weights = J(T_max,J_sc,.)
-    Q_target_all = J(M,T_max,.)
-    Q_synth_all = J(M,T_max,.)
+    Q_target_all = J(G,T_max,.)
+    Q_synth_all = J(G,T_max,.)
     C_target_all = J(G,T_max,.)
     C_synth_all = J(G,T_max,.)
+	
 
     real scalar t_loop
     for (t_loop=1; t_loop<=T_max; t_loop++) {
@@ -3385,23 +1799,25 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
         idt = select(id, tt:==t_loop)
         target_data = select(yt, idt:==target_id)
         controls_data = .
+		
+				
+		real scalar ci2_loop
+		for (ci2_loop=1; ci2_loop<=J_sc; ci2_loop++) {
+			cd = select(yt, idt:==cids[ci2_loop])
+			if (ci2_loop==1) {
+				controls_data = cd
+			}
+			else {
+				controls_data = controls_data, cd
+			}
+		}
 
-        real scalar ci2_loop
-        for (ci2_loop=1; ci2_loop<=J_sc; ci2_loop++) {
-            cd = select(yt, idt:==cids[ci2_loop])
-            if (ci2_loop==1) {
-                controls_data = cd
-            }
-            else {
-                controls_data = controls_data, cd
-            }
-        }
-
-        Tq = disco_quantile(target_data,M,q_min,q_max)
+        Tq = disco_quantile(target_data,G,q_min,q_max)
         Tc = cdf_builder(target_data,grid)
 
         if (t_loop<=T0-1) {
             if (mixture==0) {
+
                 w = disco_solve_weights(controls_data, target_data, M, q_min, q_max, "", 7, simplex)
             } else {
                 w_temp = disco_mixture_weights(controls_data, target_data, M, simplex)
@@ -3422,6 +1838,8 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
     for (t2_loop=T0; t2_loop<=T_max; t2_loop++) {
         period_weights[t2_loop,.] = W_avg'
     }
+	
+
 
     real scalar t_loop2
     for (t_loop2=1; t_loop2<=T_max; t_loop2++) {
@@ -3443,10 +1861,10 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
 
         if (mixture==0) {
             real matrix Cq2
-            Cq2 = J(M,J_t,.)
+            Cq2 = J(G,J_t,.)
             real scalar ci6_loop
             for (ci6_loop=1; ci6_loop<=J_t; ci6_loop++) {
-                Cq2[,ci6_loop] = disco_quantile(controls_data[,ci6_loop],M,q_min,q_max)
+                Cq2[,ci6_loop] = disco_quantile(controls_data[,ci6_loop],G,q_min,q_max)
             }
             Q_synth = Cq2*w
             Q_synth_sorted = sort(Q_synth, 1)
@@ -3455,7 +1873,7 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
             real scalar gg2_loop
             for (gg2_loop=1; gg2_loop<=G; gg2_loop++) {
                 pos = sum(Q_synth_sorted:<=grid[gg2_loop])
-                C_synth[gg2_loop] = pos/M
+                C_synth[gg2_loop] = pos/G
             }
         } else {
             real matrix Cc2
@@ -3465,11 +1883,11 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
                 Cc2[,ci7_loop] = cdf_builder(controls_data[,ci7_loop],grid)
             }
             C_synth = Cc2*w
-            Q_synth = J(M,1,.)
+            Q_synth = J(G,1,.)
 
             real scalar m2_loop
-            for (m2_loop=1; m2_loop<=M; m2_loop++) {
-                p = (m2_loop-1)/(M-1)
+            for (m2_loop=1; m2_loop<=G; m2_loop++) {
+                p = (m2_loop-1)/(G-1)
                 gg3 = 1
                 while (gg3<G && C_synth[gg3]<p) {
                     gg3++
@@ -3570,14 +1988,14 @@ struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
     indices_t = ceil(runiform(t_len,1):*t_len)
     mytar = target_data[indices_t]
 
-    out.target_q = disco_quantile(mytar, M, q_min, q_max)
+    out.target_q = disco_quantile(mytar, G, q_min, q_max)
     out.target_cdf = cdf_builder(mytar, grid)
 
     uid = get_unique(idt)
     cids = select(uid, uid:!=target_id)
     J = length(cids)
 
-    mycon_q = J(M, J, .)
+    mycon_q = J(G, J, .)
     mycon_cdf = J(G, J, .)
 
     for (ci=1; ci<=J; ci++) {
@@ -3586,7 +2004,7 @@ struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
         indices_c = ceil(runiform(c_len,1):*c_len)
         mycon = cd[indices_c]
 
-        mycon_q[,ci] = disco_quantile(mycon, M, q_min, q_max)
+        mycon_q[,ci] = disco_quantile(mycon, G, q_min, q_max)
         mycon_cdf[,ci] = cdf_builder(mycon, grid)
     }
 
@@ -3632,12 +2050,12 @@ struct boot_out bootCounterfactuals(struct iter_out vector iter_results,
 
     J = cols(iter_results[1].controls_q)
 
-    quantile_diff = J(M,T_max,.)
+    quantile_diff = J(G,T_max,.)
     cdf_diff = J(G,T_max,.)
     real matrix quantile_synth, cdf_synth, quantile_t, cdf_t
-    quantile_synth = J(M,T_max,.)
+    quantile_synth = J(G,T_max,.)
     cdf_synth = J(G,T_max,.)
-    quantile_t = J(M,T_max,.)
+    quantile_t = J(G,T_max,.)
     cdf_t = J(G,T_max,.)
 
     weights_all = J(T0-1,J,.)
@@ -3663,14 +2081,14 @@ struct boot_out bootCounterfactuals(struct iter_out vector iter_results,
             C_synth = J(G,1,0)
             real scalar gg_loop
             for (gg_loop=1; gg_loop<=G; gg_loop++) {
-                C_synth[gg_loop] = sum(Q_synth_sorted:<=grid[gg_loop])/M
+                C_synth[gg_loop] = sum(Q_synth_sorted:<=grid[gg_loop])/G
             }
         } else {
             C_synth = mycon_cdf*W_avg
-            Q_synth = J(M,1,.)
+            Q_synth = J(G,1,.)
             real scalar m2_loop
-            for (m2_loop=1; m2_loop<=M; m2_loop++) {
-                p = (m2_loop-1)/(M-1)
+            for (m2_loop=1; m2_loop<=G; m2_loop++) {
+                p = (m2_loop-1)/(G-1)
                 gg3 = 1
                 while (gg3<=G & C_synth[gg3]<p) gg3++
                 Q_synth[m2_loop] = grid[gg3>G ? G : gg3]
@@ -3714,11 +2132,11 @@ struct CI_out scalar disco_bootstrap_CI(real vector y, real vector id, real vect
     main_run = disco_full_run(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
 
     N = length(y)
-    quantile_diff_boot = J(M*T_max, boots, .)
+    quantile_diff_boot = J(G*T_max, boots, .)
     cdf_diff_boot = J(G*T_max, boots, .)
-    quantile_synth_boot = J(M*T_max, boots, .)
+    quantile_synth_boot = J(G*T_max, boots, .)
     cdf_synth_boot = J(G*T_max, boots, .)
-    quantile_t_boot = J(M*T_max, boots, .)
+    quantile_t_boot = J(G*T_max, boots, .)
     cdf_t_boot = J(G*T_max, boots, .)
 
     real scalar b_loop
@@ -3740,16 +2158,16 @@ struct CI_out scalar disco_bootstrap_CI(real vector y, real vector id, real vect
         cdf_t_boot[,b_loop] = vec(bo.cdf_t)
     }
 
-    qdiff_lower = J(M,T_max,.)
-    qdiff_upper = J(M,T_max,.)
+    qdiff_lower = J(G,T_max,.)
+    qdiff_upper = J(G,T_max,.)
     cdiff_lower = J(G,T_max,.)
     cdiff_upper = J(G,T_max,.)
 
     if (uniform==0) {
         real scalar t_loop2, idx_loop3
         for (t_loop2=1; t_loop2<=T_max; t_loop2++) {
-            for (idx_loop3=1; idx_loop3<=M; idx_loop3++) {
-                vals = quantile_diff_boot[(t_loop2-1)*M + idx_loop3,.]'
+            for (idx_loop3=1; idx_loop3<=G; idx_loop3++) {
+                vals = quantile_diff_boot[(t_loop2-1)*G + idx_loop3,.]'
                 tmp = sort(vals, 1)
 
                 alpha = (1-cl)/2
@@ -3782,7 +2200,7 @@ struct CI_out scalar disco_bootstrap_CI(real vector y, real vector id, real vect
         for (b2_loop=1; b2_loop<=boots; b2_loop++) {
             real matrix qdiff_mat, cdiff_mat, qdiff_err, cdiff_err
 
-            qdiff_mat = rowshape(quantile_diff_boot[,b2_loop], M)
+            qdiff_mat = rowshape(quantile_diff_boot[,b2_loop], G)
             cdiff_mat = rowshape(cdf_diff_boot[,b2_loop], G)
 
             qdiff_err = qdiff_mat - main_run.quantile_diff
@@ -3799,7 +2217,7 @@ struct CI_out scalar disco_bootstrap_CI(real vector y, real vector id, real vect
 
         real scalar t_loop3, m_i2, g_i2, base_val2
         for (t_loop3=1; t_loop3<=T_max; t_loop3++) {
-            for (m_i2=1; m_i2<=M; m_i2++) {
+            for (m_i2=1; m_i2<=G; m_i2++) {
                 base_val2 = main_run.quantile_diff[m_i2,t_loop3]
                 qdiff_lower[m_i2,t_loop3] = base_val2 - q_crit
                 qdiff_upper[m_i2,t_loop3] = base_val2 + q_crit
@@ -8422,307 +6840,6 @@ quadprog matrix(G) matrix(g0) matrix(CE) matrix(ce0) matrix(CI) matrix(ci0) matr
 
 // Check the results matrix
 matrix list results
-
-
-
-=== Content of ~disco.ado.stswp ===
-/*
-Distributional Synthetic Controls (DiSCo)
-Implementation based on Gunsilius (2023) and Van Dijcke, Gunsilius, and Wright (2024)
-
-This command implements the DiSCo method for estimating counterfactual distributions
-using synthetic controls. It allows for both quantile-based and mixture-based approaches,
-with options for confidence intervals, permutation tests, and summary statistics.
-
-Syntax:
-    disco varlist(3) [if] [in], idtarget(integer) t0(integer) [options]
-
-Required input:
-    varlist:    Three variables in order:
-                1. Outcome variable (numeric)
-                2. Unit ID variable (numeric)
-                3. Time period variable (integer)
-    idtarget:   ID of the treated unit
-    t0:         First treatment period
-
-Options:
-    M(integer):         Number of quantile points (default: 100)
-    G(integer):         Number of grid points (default: 100)
-    CI:                 Compute confidence intervals
-    BOOTS(integer):     Number of bootstrap replications (default: 300)
-    CL(real):          Confidence level (default: 0.95)
-    QMIN(real):        Minimum quantile for estimation (default: 0)
-    QMAX(real):        Maximum quantile for estimation (default: 1)
-    NOSIMPLEX:         Don't constrain weights to unit simplex
-    MIXTURE:           Use mixture of distributions approach
-    PERMUTATION:       Perform permutation test
-    SEED(integer):     Set random seed
-    NOUNIFORM:         Don't use uniform confidence bands
-    AGG(string):       Type of aggregation for summary statistics
-                       ("quantile", "cdf", "quantileDiff", "cdfDiff"). 
-    SAMPLES(numlist):  Quantile points for summary statistics
-
-Stored results:
-    e(weights):        Synthetic control weights
-    e(quantile_diff):  Quantile differences
-    e(cdf_diff):       CDF differences
-    e(quantile_synth): Synthetic control quantiles
-    e(quantile_t):     Target unit quantiles
-    e(cdf_synth):      Synthetic control CDFs
-    e(cdf_t):          Target unit CDFs
-    e(summary_stats):  Summary statistics (if agg specified)
-    
-    If CI specified:
-    e(qdiff_lower):    Lower bound for quantile differences
-    e(qdiff_upper):    Upper bound for quantile differences
-    e(cdiff_lower):    Lower bound for CDF differences
-    e(cdiff_upper):    Upper bound for CDF differences
-
-Author: David Van Dijcke
-Version: 1.0.0
-Date: December 2024
-*/
-
-
-program define disco, eclass
-    version 18.0
-	
-
-    
-    // Syntax parsing
-    syntax varlist(min=3 max=3) [if] [in], ///
-        idtarget(integer) ///
-        T0(integer) ///
-        [M(integer 100) ///
-        G(integer 100) ///
-        CI ///
-        BOOTS(integer 300) ///
-        CL(real 0.95) ///
-        QMIN(real 0) ///
-        QMAX(real 1) ///
-        NOSIMPlex ///
-        MIXture ///
-        PERMutation ///
-        SEED(integer -1) ///
-        NOUNIForm ///
-        AGG(string) ///
-        SAMPles(numlist)]
-    
-	
-    // Input validation
-    if !inlist("`agg'", "", "quantile", "cdf", "quantileDiff", "cdfDiff") {
-        di as error "agg() must be one of: quantile, cdf, quantileDiff, cdfDiff"
-        exit 198
-    }
-	
-// 	// load mata objects
-// 	mata mata mlib index
-    
-    // Mark the estimation sample
-    marksample touse, novarlist
-    
-    // Extract variable names from varlist
-    local y_col : word 1 of `varlist'
-    local id_col : word 2 of `varlist'
-    local time_col : word 3 of `varlist'
-    
-    // Check for missing values
-    markout `touse' `y_col' `time_col'
-    markout `touse' `id_col', strok
-    
-    // Initialize optional arguments
-    if ("`m'"=="") local m = 100
-    if ("`g'"=="") local g = 100
-    if ("`boots'"=="") local boots = 300
-    if ("`cl'"=="") local cl = 0.95
-    if ("`qmin'"=="") local qmin = 0
-    if ("`qmax'"=="") local qmax = 1
-    if ("`seed'"=="") local seed = -1
-    if ("`samples'"=="") local samples "0.25 0.5 0.75"
-    
-    // Check required numeric options
-    if missing(`t0') {
-        di as err "t0() is required"
-        exit 198
-    }
-    if missing(`idtarget') {
-        di as err "idtarget() is required"
-        exit 198
-    }
-
-    // Set flags based on options
-    local simplex_flag = 1
-    local mixture_flag = 0
-    local permutation_flag = 0
-    local doci = 0
-    local uniform_flag = 0
-
-    if "`nosimplex'" != "" local simplex_flag = 0
-    if "`mixture'" != "" local mixture_flag = 1
-    if "`permutation'" != "" local permutation_flag = 1
-    if "`ci'" != "" local doci = 1
-    if "`nouniform'" != "" local uniform_flag = 0
-    
-    // Additional validation checks
-    if `m' < 1 {
-        di as err "M must be >=1"
-        exit 198
-    }
-    if `g' < 2 {
-        di as err "G must be >=2"
-        exit 198
-    }
-    if `qmin' < 0 | `qmax' > 1 {
-        di as err "q_min must be >=0 and q_max <=1"
-        exit 198
-    }
-	if `cl' < 0 | `cl' > 1 {
-		di as err "cl must be >=0 and <=1"
-        exit 198
-	}
-	// Preserve dataset before Mata operations
-    tempname base
-    preserve
-    quietly: keep if `touse'
-    
-    // Identify time range in data
-    quietly levelsof `time_col', local(times)
-    local min_time : word 1 of `times'
-    local max_time : word `=wordcount("`times'")' of `times'
-    gen t_col = `time_col' - `min_time' + 1
-    local t_max = `max_time' - `min_time' + 1
-    local t0_col = `t0' - `min_time' + 1
-    
-
-    
-    //************************
-    // Main analysis in Mata
-    mata {
-        // Store options in Mata variables
-        M = `m'
-        G = `g'
-        T0 = `t0_col'
-        T_max = `t_max'
-        q_min = `qmin'
-        q_max = `qmax'
-        cl = `cl'
-        nboots = `boots'
-        simplex = `simplex_flag'
-        mixture = `mixture_flag'
-        uniform = `uniform_flag'
-        
-        // Load data into Mata
-        y = st_data(.,"`y_col'")
-        id = st_data(.,"`id_col'")
-        tt = st_data(.,"t_col")
-        target_id = `idtarget'
-        
-        // Run main DiSCo analysis
-        rc = disco_wrapper(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
-        
-        // Permutation test if requested
-        if (`permutation_flag'==1) {
-            pval = disco_permutation_test(y,id,tt,target_id,T0,T_max,M,G,q_min,q_max,simplex,mixture)
-            st_local("pval", strofreal(pval))
-        };
-        
-        // Confidence intervals if requested
-        if (`doci'==1) {
-            rc2 = disco_ci_wrapper(y, id, tt, target_id, T0, T_max, M, G,
-                                q_min, q_max, simplex, mixture,
-                                nboots, cl, uniform)
-            st_local("rc2", strofreal(rc2))
-        };
-        
-        // Summary statistics if requested
-		if (anyof(("quantile", "cdf"), "`agg'")) {
-				printf("Levels requested so no summary stats table produced.")
-		}
-        else if ("`agg'" != "") {
-
-            samples_str = "`samples'"
-            sample_points = strtoreal(tokens(samples_str))
-			quantile_diff_mata = st_matrix("quantile_diff")
-			cdf_diff_mata = st_matrix("cdf_diff")
-           
-            rc3 = compute_summary_stats("`agg'", sample_points, T0, T_max, quantile_diff_mata,
-			cdf_diff_mata, `doci', cl)
-        };
-    }
-	//************************
-
-//	
-// 	// Generate plots if requested
-//     if "`graph'" != "" & "`agg'" != "" {
-//         tempname qd qt qs cd cs qdl qdu cdl cdu 
-//         matrix `qd' = quantile_diff
-//         matrix `qt' = quantile_t
-//         matrix `qs' = quantile_synth
-//         matrix `cd' = cdf_diff
-//         matrix `cs' = cdf_synth
-//
-// 		local amin = amin
-// 		local amax = amax
-//        
-//         if `doci' == 1 {
-//             matrix `qdl' = qdiff_lower
-//             matrix `qdu' = qdiff_upper
-//             matrix `cdl' = cdiff_lower
-//             matrix `cdu' = cdiff_upper
-//         }
-//         quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl') ///
-//             quantile_diff(`qd') quantile_t(`qt') quantile_synth(`qs') ///
-//             cdf_diff(`cd') cdf_synth(`cs') cdf_t(cdf_t) ///
-//             qdiff_lower(`qdl') qdiff_upper(`qdu') cdiff_lower(`cdl') cdiff_upper(`cdu') ///
-//             xmin(`amin') xmax(`amax') `options'
-//     }
-//	
-    // Store results
-    if `doci' == 1 {
-        ereturn matrix qdiff_lower = qdiff_lower
-        ereturn matrix qdiff_upper = qdiff_upper
-        ereturn matrix cdiff_lower = cdiff_lower
-        ereturn matrix cdiff_upper = cdiff_upper
-    }
-    
-    ereturn matrix weights = weights
-    ereturn matrix quantile_diff = quantile_diff
-    ereturn matrix cdf_diff = cdf_diff
-    ereturn matrix quantile_synth = quantile_synth
-    ereturn matrix quantile_t = quantile_t
-    ereturn matrix cdf_synth = cdf_synth
-    ereturn matrix cdf_t = cdf_t
-ereturn matrix cids = cids // to match weights back to treated units
-ereturn scalar amin = amin
-ereturn scalar amax = amax
-
-if !inlist("`agg'", "quantile", "cdf") & "`agg'" != "" {
-	ereturn matrix summary_stats = summary_stats
-}
-
-    
-    // Store metadata
-    ereturn local cmd "disco"
-    ereturn local cmdline `"disco `0'"'
-    ereturn local agg "`agg'"
-    ereturn local cl = `cl'
-    ereturn local t0 = `t0'
-	ereturn scalar m = `m'
-	ereturn scalar g = `g'
-	ereturn scalar t_max = `t_max'
-	ereturn local doci = `doci'
-    ereturn scalar N = _N
-    
-
-    // Display permutation test results if requested
-    if `permutation_flag' {
-        di _n as txt "Permutation test p-value: " as res %5.3f `pval'
-		ereturn scalar pval = `pval'
-    } 
-	else {
-		ereturn scalar pval = .
-	}
-end
 
 
 

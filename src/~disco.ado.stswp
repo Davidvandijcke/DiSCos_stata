@@ -18,7 +18,7 @@ Required input:
     t0:         First treatment period
 
 Options:
-    M(integer):         Number of quantile points (default: 100)
+    M(integer):         Number of quantile points (default: 100) -- should be simulation points! 
     G(integer):         Number of grid points (default: 100)
     CI:                 Compute confidence intervals
     BOOTS(integer):     Number of bootstrap replications (default: 300)
@@ -189,7 +189,9 @@ program define disco, eclass
         tt = st_data(.,"t_col")
         target_id = `idtarget'
         
+		
         // Run main DiSCo analysis
+			
         rc = disco_wrapper(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
         
         // Permutation test if requested
@@ -202,7 +204,7 @@ program define disco, eclass
         if (`doci'==1) {
             rc2 = disco_ci_wrapper(y, id, tt, target_id, T0, T_max, M, G,
                                 q_min, q_max, simplex, mixture,
-                                nboots, cl, uniform)
+                                nboots, cl, uniform, st_matrix("quantile_diff"), st_matrix("cdf_diff")
             st_local("rc2", strofreal(rc2))
         };
         
@@ -216,7 +218,7 @@ program define disco, eclass
             sample_points = strtoreal(tokens(samples_str))
 			quantile_diff_mata = st_matrix("quantile_diff")
 			cdf_diff_mata = st_matrix("cdf_diff")
-           
+			           
             rc3 = compute_summary_stats("`agg'", sample_points, T0, T_max, quantile_diff_mata,
 			cdf_diff_mata, `doci', cl)
         };
@@ -264,13 +266,13 @@ program define disco, eclass
     ereturn matrix quantile_t = quantile_t
     ereturn matrix cdf_synth = cdf_synth
     ereturn matrix cdf_t = cdf_t
-ereturn matrix cids = cids // to match weights back to treated units
-ereturn scalar amin = amin
-ereturn scalar amax = amax
+	ereturn matrix cids = cids // to match weights back to treated units
+	ereturn scalar amin = amin
+	ereturn scalar amax = amax
 
-if !inlist("`agg'", "quantile", "cdf") & "`agg'" != "" {
-	ereturn matrix summary_stats = summary_stats
-}
+	if !inlist("`agg'", "quantile", "cdf") & "`agg'" != "" {
+		ereturn matrix summary_stats = summary_stats
+	}
 
     
     // Store metadata
