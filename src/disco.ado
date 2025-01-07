@@ -18,8 +18,7 @@ Required input:
     t0:         First treatment period
 
 Options:
-    M(integer):         Number of quantile points (default: 100) -- should be simulation points! 
-    G(integer):         Number of grid points (default: 100)
+    G(integer):         Number of grid points to evaluate quantile function/cdf (default: 100)
     CI:                 Compute confidence intervals
     BOOTS(integer):     Number of bootstrap replications (default: 300)
     CL(real):          Confidence level (default: 0.95)
@@ -103,8 +102,7 @@ program define disco, eclass
     markout `touse' `id_col', strok
     
     // Initialize optional arguments
-    if ("`m'"=="") local m = 100
-    if ("`g'"=="") local g = 100
+    if ("`g'"=="") local g = 1000
     if ("`boots'"=="") local boots = 300
     if ("`cl'"=="") local cl = 0.95
     if ("`qmin'"=="") local qmin = 0
@@ -137,10 +135,6 @@ program define disco, eclass
 	
     
     // Additional validation checks
-    if `m' < 1 {
-        di as err "M must be >=1"
-        exit 198
-    }
     if `g' < 2 {
         di as err "G must be >=2"
         exit 198
@@ -172,7 +166,6 @@ program define disco, eclass
     // Main analysis in Mata
     mata {
         // Store options in Mata variables
-        M = `m'
         G = `g'
         T0 = `t0_col'
         T_max = `t_max'
@@ -193,17 +186,17 @@ program define disco, eclass
 		
         // Run main DiSCo analysis
 			
-        rc = disco_wrapper(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+        rc = disco_wrapper(y, id, tt, target_id, T0, T_max, G, q_min, q_max, simplex, mixture)
         
         // Permutation test if requested
         if (`permutation_flag'==1) {
-            pval = disco_permutation_test(y,id,tt,target_id,T0,T_max,M,G,q_min,q_max,simplex,mixture)
+            pval = disco_permutation_test(y,id,tt,target_id,T0,T_max, G,q_min,q_max,simplex,mixture)
             st_local("pval", strofreal(pval))
         };
         
         // Confidence intervals if requested
         if (`doci'==1) {
-            rc2 = disco_ci_wrapper(y, id, tt, target_id, T0, T_max, M, G,
+            rc2 = disco_ci_wrapper(y, id, tt, target_id, T0, T_max, G,
                                 q_min, q_max, simplex, mixture,
                                 nboots, cl, uniform, st_matrix("quantile_diff"), st_matrix("cdf_diff"))
             st_local("rc2", strofreal(rc2))
@@ -282,7 +275,6 @@ program define disco, eclass
     ereturn local agg "`agg'"
     ereturn local cl = `cl'
     ereturn local t0 = `t0'
-	ereturn scalar m = `m'
 	ereturn scalar g = `g'
 	ereturn scalar t_max = `t_max'
 	ereturn local doci = `doci'

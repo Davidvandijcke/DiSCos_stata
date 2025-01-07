@@ -4,7 +4,7 @@
 clear all
 net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src") replace
 
-net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/dev/src/") replace
+// net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/dev/src/") replace
 
 ************************************************************
 * Now we run each test, calling gen_data prior to each test
@@ -137,14 +137,14 @@ assert e(pval) >= 0 & e(pval) <= 1
 * Test 7: Different grid sizes
 *----------------------------------------------------------------------
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) m(50) g(50)
+quietly: disco y id time, idtarget(1) t0(10)  g(50)
 mata {
     st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==50 & rows(st_matrix("e(cdf_diff)"))==50)
     assert(st_numscalar("dims_ok"))
 }
 
 gen_data
-quietly: disco y id time, idtarget(1) t0(10) m(1000) g(100) ci boots(100)
+quietly: disco y id time, idtarget(1) t0(10) g(100) ci boots(100)
 mata {
     st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==100 & rows(st_matrix("e(cdf_diff)"))==100)
     assert(st_numscalar("dims_ok"))
@@ -230,7 +230,7 @@ assert e(amax) != .
 gen_data
 rcof "noi disco y id time, idtarget(1) t0(10) agg(invalid)" == 198
 rcof "noi disco y id time, idtarget(1) t0(10) ci cl(1.5)" == 198
-rcof "noi disco y id time, idtarget(1) t0(10) m(0)" == 198
+rcof "noi disco y id time, idtarget(1) t0(10) g(0)" == 198
 rcof "noi disco y id time" == 198
 
 

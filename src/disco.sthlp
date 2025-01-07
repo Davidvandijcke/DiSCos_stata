@@ -80,10 +80,7 @@ Please cite Gunsilius (2023) and Van Dijcke, Gunsilius, and Wright (2024) when u
 {dlgtab:Optional}
 
 {phang}
-{opt m(integer)} number of quantile points used for quantile-based estimation. default is 100.
-
-{phang}
-{opt g(integer)} number of grid points for cdf estimation. default is 100.
+{opt g(integer)} number of grid points for quantile cdf estimation. default is 1000.
 
 {phang}
 {opt ci} compute bootstrap confidence intervals for distributional effects.
@@ -199,8 +196,7 @@ is useful when working with variables that have fixed support, such as categoric
 {p2col 5 20 24 2: Scalars}{p_end}
 {synopt:{cmd:e(amin)}}minimum value of CDF support {p_end}
 {synopt:{cmd:e(amax)}}maximum value of CDF support {p_end}
-{synopt:{cmd:e(m)}}number of quantile points used{p_end}
-{synopt:{cmd:e(g)}}number of grid points for CDF{p_end}
+{synopt:{cmd:e(g)}}number of grid points used to evaluate quantile and cdf{p_end}
 {synopt:{cmd:e(t_max)}}maximum time period{p_end}
 {synopt:{cmd:e(N)}}number of observations{p_end}
 {synopt:{cmd:e(pval)}}p-value from permutation test if specified{p_end}
@@ -215,16 +211,16 @@ is useful when working with variables that have fixed support, such as categoric
 {p2col 5 20 24 2: Matrices}{p_end}
 {synopt:{cmd:e(cids)}}control unit IDs (1 x J-1) -- use these to match weights back to control units' names as they are in the same order{p_end}
 {synopt:{cmd:e(weights)}}estimated synthetic control weights (1 x J-1){p_end}
-{synopt:{cmd:e(quantile_diff)}}differences in quantiles by time (M x T){p_end}
+{synopt:{cmd:e(quantile_diff)}}differences in quantiles by time (G x T){p_end}
 {synopt:{cmd:e(cdf_diff)}}differences in CDFs by time (G x T){p_end}
-{synopt:{cmd:e(quantile_synth)}}synthetic quantiles (M x T){p_end}
-{synopt:{cmd:e(quantile_t)}}treated unit quantiles (M x T){p_end}
+{synopt:{cmd:e(quantile_synth)}}synthetic quantiles (G x T){p_end}
+{synopt:{cmd:e(quantile_t)}}treated unit quantiles (G x T){p_end}
 {synopt:{cmd:e(cdf_synth)}}synthetic CDFs (G x T){p_end}
 {synopt:{cmd:e(cdf_t)}}treated unit CDFs (G x T){p_end}
 
 {pstd}If {cmd:ci} specified:{p_end}
-{synopt:{cmd:e(qdiff_lower)}}lower CI bounds for quantile differences (M x T){p_end}
-{synopt:{cmd:e(qdiff_upper)}}upper CI bounds for quantile differences (M x T){p_end}
+{synopt:{cmd:e(qdiff_lower)}}lower CI bounds for quantile differences (G x T){p_end}
+{synopt:{cmd:e(qdiff_upper)}}upper CI bounds for quantile differences (G x T){p_end}
 {synopt:{cmd:e(cdiff_lower)}}lower CI bounds for CDF differences (G x T){p_end}
 {synopt:{cmd:e(cdiff_upper)}}upper CI bounds for CDF differences (G x T){p_end}
 

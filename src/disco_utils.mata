@@ -101,142 +101,7 @@ real vector disco_quantile(real vector X, real scalar G, real scalar q_min, real
     return(disco_quantile_points(X,p))
 }
 
-// Solve for optimal weights using quadratic programming
-// Parameters:
-//   controls: Matrix of control variables
-//   target: Target vector to match
-//   M: Number of quantile points
-//   q_min, q_max: Range for quantile computation
-//   simplex: Whether to constrain weights to be non-negative
-real vector disco_solve_weights(real matrix controls,
-                              real vector target,
-                              real scalar M, q_min, q_max,
-                              string scalar qmethod,
-                              real scalar qtype, simplex)
-{
-    real scalar J, i, sc
-    real matrix controls_s, C_in, G, CE, CI
-    real vector target_s, p, g0, ce0, ci0, w, res
-    
-    J = cols(controls)
-    
-    p = J(M,1,.)
-    real scalar i2
-    for (i2=1; i2<=M; i2++) {
-        p[i2] = q_min + (q_max - q_min)*(i2-1)/(M-1)
-    }
 
-    real matrix Cq
-    Cq = J(M,J,.)
-    real scalar i3
-    for (i3=1; i3<=J; i3++) {
-        Cq[,i3] = disco_quantile_points(controls[,i3], p)
-    }
-    target_s = disco_quantile_points(target, p)
-
-    C_in = Cq
-    G = 2*(C_in' * C_in)
-    g0 = -2*(C_in' * target_s)
-
-    CE = J(J,1,1)
-    ce0 = (-1)
-
-    if (simplex==1) {
-        CI = I(J)
-        ci0 = J(J,1,0)
-    } else {
-        CI = J(J,1,1)
-        ci0 = (-1e20)
-    }
-
-    res = solve_quadprog(G, g0, CE, ce0, CI, ci0)
-    w = res[1..J]
-
-    return(w)
-}
-
-// Compute mixture weights using linear programming
-// Parameters:
-//   controls: Matrix of control variables
-//   target: Target vector to match
-//   M: Number of mixture points
-//   simplex: Whether to constrain weights to be non-negative
-real vector disco_mixture_weights(real matrix controls, real vector target, real scalar M, simplex) {
-    real scalar i, J, n, grid_min, grid_max, ss, val, g, total_vars
-    
-    real vector alldata, grid_rand, target_cdf, w, sol
-    real matrix control_cdf, c, ecmat, lowerbd, upperbd
-    real vector bec
-
-    n = length(target)
-    J = cols(controls)
-
-    alldata = target
-    real scalar i4
-    for (i4=1; i4<=J; i4++) {
-        alldata = alldata \ controls[,i4]
-    }
-
-    grid_min = min(alldata)
-    grid_max = max(alldata)
-    grid_rand = runiform(M,1)*(grid_max - grid_min) + J(M,1, grid_min)
-
-    target_cdf = cdf_at_points(target, grid_rand)
-    control_cdf = J(M,J,.)
-    real scalar i5
-    for (i5=1; i5<=J; i5++) {
-        control_cdf[,i5] = cdf_at_points(controls[,i5], grid_rand)
-    }
-
-    total_vars = J + 2*M
-
-    c = J(1, total_vars, 0)
-    c[1,(J+1)..(J+M)] = J(1,M,1)
-    c[1,(J+M+1)..(J+2*M)] = J(1,M,1)
-
-    ecmat = J(M+1, total_vars, 0)
-    bec = J(M+1,1,0)
-
-    ecmat[1,1..J] = J(1,J,1)
-    bec[1] = 1
-
-    real scalar g2
-    for (g2=1; g2<=M; g2++) {
-        ecmat[1+g2,1..J] = control_cdf[g2,.]
-        ecmat[1+g2,J+g2] = -1
-        ecmat[1+g2,J+M+g2] = 1
-        bec[1+g2] = target_cdf[g2]
-    }
-
-    lowerbd = J(1,total_vars,.)
-    upperbd = J(1,total_vars,.)
-
-    if (simplex==1) {
-        lowerbd[1,1..J] = J(1,J,0)
-    }
-    lowerbd[1,(J+1)..(J+M)] = J(1,M,0)
-    lowerbd[1,(J+M+1)..(J+2*M)] = J(1,M,0)
-
-    class LinearProgram scalar q
-    q = LinearProgram()
-    q.setCoefficients(c)
-    q.setMaxOrMin("min")
-    q.setEquality(ecmat,bec)
-    q.setBounds(lowerbd,upperbd)
-
-    val = q.optimize()
-    if (q.errorcode()!=0) {
-        w = J(J,1,1/J)
-        return(w)
-    }
-
-    sol = q.parameters()
-    w = sol[1..J]'
-    ss = sum(w)
-    if (abs(ss-1)>1e-8) w = w/ss
-
-    return(w)
-}
 
 // Compute CDF values at specified grid points
 real vector cdf_builder(real vector x, real vector grid) {
@@ -276,7 +141,7 @@ real vector cdf_at_points(real vector x, real vector grid) {
 // ------------------------------------------------------------
 // 1. Quadratic-Programming Weights from PRE-COMPUTED Quantiles
 // ------------------------------------------------------------
-real vector disco_weights_from_quantiles(real matrix control_quantiles, real vector target_quantiles, real scalar simplex)
+real vector disco_solve_weights(real matrix control_quantiles, real vector target_quantiles, real scalar simplex)
 {
     real scalar J
     real matrix Gm, CE, CI, C_in
@@ -313,7 +178,7 @@ real vector disco_weights_from_quantiles(real matrix control_quantiles, real vec
 // ------------------------------------------------------
 // 2. Linear-Programming Weights from PRE-COMPUTED CDFs
 // ------------------------------------------------------
-real vector disco_mixture_from_cdf(
+real vector disco_mixture_weights(
         real matrix control_cdf,  // G x J matrix of each control's CDF
         real vector target_cdf,   // G x 1 vector of target's CDF
         real scalar simplex       // 1 => simplex constraints, 0 => no constraints
@@ -412,7 +277,7 @@ real vector disco_mixture_from_cdf(
 // Main DISCO function
 struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
                               real scalar target_id, real scalar T0, real scalar T_max, 
-                              real scalar M, real scalar G, real scalar q_min, real scalar q_max,
+                              real scalar G, real scalar q_min, real scalar q_max,
                               real scalar simplex, real scalar mixture) 
 {
     real vector uid, cids, yt, idt, target_data, cd, w, w_temp, W_avg, 
@@ -494,10 +359,10 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
         if (t_loop <= T0-1) {
             if (mixture == 0) {
                 // Solve from precomputed quantiles
-                w = disco_weights_from_quantiles(Cq, Tq, simplex)
+                w = disco_solve_weights(Cq, Tq, simplex)
             } else {
                 // Solve from precomputed CDF
-                w_temp = disco_mixture_from_cdf(Cc, Tc, simplex)
+                w_temp = disco_mixture_weights(Cc, Tc, simplex)
 				w = w_temp'
             }
 
@@ -610,10 +475,10 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
 
 // Compute ratio
 real scalar disco_compute_ratio(real vector y, id, tt, 
-                              real scalar target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture) 
+                              real scalar target_id, T0, T_max, G, q_min, q_max, simplex, mixture) 
 {
     struct disco_out scalar rr
-    rr = disco_full_run(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+    rr = disco_full_run(y, id, tt, target_id, T0, T_max, G, q_min, q_max, simplex, mixture)
     
     real scalar pre_dist, pre_count, post_dist, post_count, dist_t, ratio, t
     pre_dist = pre_count = post_dist = post_count = 0
@@ -638,10 +503,10 @@ real scalar disco_compute_ratio(real vector y, id, tt,
 
 // Permutation test
 real scalar disco_permutation_test(real vector y, id, tt,
-                                 real scalar target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture) 
+                                 real scalar target_id, T0, T_max, G, q_min, q_max, simplex, mixture) 
 {
     real scalar actual_ratio, pval, rj, J, count, j
-    actual_ratio = disco_compute_ratio(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+    actual_ratio = disco_compute_ratio(y, id, tt, target_id, T0, T_max, G, q_min, q_max, simplex, mixture)
     
     real vector uid, cids
     uid = get_unique(id)
@@ -651,7 +516,7 @@ real scalar disco_permutation_test(real vector y, id, tt,
     count = 0
     real scalar j_loop
     for (j_loop=1; j_loop<=J; j_loop++) {
-        rj = disco_compute_ratio(y, id, tt, cids[j_loop], T0, T_max, M, G, q_min, q_max, simplex, mixture)
+        rj = disco_compute_ratio(y, id, tt, cids[j_loop], T0, T_max, G, q_min, q_max, simplex, mixture)
         if (rj>=actual_ratio) count = count + 1
     }
 
@@ -660,7 +525,7 @@ real scalar disco_permutation_test(real vector y, id, tt,
 }
 
 struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
-                            real scalar target_id, t, T0, M, G,
+                            real scalar target_id, t, T0, G,
                             real vector grid,
                             real scalar q_min, q_max, simplex, mixture) 
 {
@@ -717,11 +582,11 @@ struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
     if (t <= T0) {
         if (mixture == 0) {
             // Quantile-based solver with precomputed quantiles
-            out.weights = disco_weights_from_quantiles(mycon_q, out.target_q, simplex)
+            out.weights = disco_solve_weights(mycon_q, out.target_q, simplex)
         } 
         else {
             // Mixture-based solver with precomputed CDF
-            out.weights = disco_mixture_from_cdf(mycon_cdf, out.target_cdf, simplex)
+            out.weights = disco_mixture_weights(mycon_cdf, out.target_cdf, simplex)
         }
     }
 
@@ -737,7 +602,7 @@ struct iter_out disco_CI_iter(real vector y, real vector id, real vector tt,
 
 // Compute bootstrap counterfactuals
 struct boot_out bootCounterfactuals(struct iter_out vector iter_results,
-                                  real scalar T0, T_max, M, G,
+                                  real scalar T0, T_max, G,
                                   real vector grid,
                                   real scalar mixture) 
 {
@@ -810,7 +675,7 @@ struct boot_out bootCounterfactuals(struct iter_out vector iter_results,
 
 // Bootstrap CI
 struct CI_out scalar disco_bootstrap_CI(real vector y, real vector id, real vector tt,
-                                      real scalar target_id, T0, T_max, M, G,
+                                      real scalar target_id, T0, T_max, G,
                                       real scalar q_min, q_max, simplex, mixture, boots, cl, uniform,
 									  real matrix quantile_diff, cdf_diff) 
 {
@@ -843,11 +708,11 @@ struct CI_out scalar disco_bootstrap_CI(real vector y, real vector id, real vect
         real scalar t_loop
         for (t_loop=1; t_loop<=T_max; t_loop++) {
             struct iter_out scalar out
-            out = disco_CI_iter(y, id, tt, target_id, t_loop, T0, M, G, grid, q_min, q_max, simplex, mixture)
+            out = disco_CI_iter(y, id, tt, target_id, t_loop, T0, G, grid, q_min, q_max, simplex, mixture)
             iter_results[t_loop] = out
         }
 
-        bo = bootCounterfactuals(iter_results, T0, T_max, M, G, grid, mixture)
+        bo = bootCounterfactuals(iter_results, T0, T_max, G, grid, mixture)
 
         quantile_diff_boot[,b_loop] = vec(bo.quantile_diff)
         cdf_diff_boot[,b_loop] = vec(bo.cdf_diff)
@@ -942,10 +807,10 @@ struct CI_out scalar disco_bootstrap_CI(real vector y, real vector id, real vect
 
 // Wrapper for main DISCO
 real scalar disco_wrapper(real vector y, id, tt,
-                         real scalar target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture) 
+                         real scalar target_id, T0, T_max, G, q_min, q_max, simplex, mixture) 
 {
     struct disco_out scalar results
-    results = disco_full_run(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
+    results = disco_full_run(y, id, tt, target_id, T0, T_max, G, q_min, q_max, simplex, mixture)
 
     st_matrix("weights", results.weights')
     st_matrix("quantile_diff", results.quantile_diff)
@@ -959,23 +824,15 @@ real scalar disco_wrapper(real vector y, id, tt,
     return(0)
 }
 
-// Wrapper for permutation test
-real scalar disco_permutation_wrapper(string scalar y_name, id_name, tt_name,
-                                    real scalar target_id, T0, T_max, M, G,
-                                    real scalar q_min, q_max, simplex, mixture)
-{
-    return(0)
-}
-
 // Wrapper for CI
 real scalar disco_ci_wrapper(real vector y, id, tt,
-                           real scalar target_id, T0, T_max, M, G,
+                           real scalar target_id, T0, T_max, G,
                            real scalar q_min, q_max, simplex, mixture, boots, cl, uniform, 
 						   real matrix quantile_diff, real matrix cdf_diff)
 {
     struct CI_out scalar results
 
-    results = disco_bootstrap_CI(y, id, tt, target_id, T0, T_max, M, G,
+    results = disco_bootstrap_CI(y, id, tt, target_id, T0, T_max, G,
                                q_min, q_max, simplex, mixture,
                                boots, cl, uniform, quantile_diff, cdf_diff)
 

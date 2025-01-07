@@ -46,6 +46,7 @@ program define disco_plot, eclass
 			local agg = e(agg)
 		}
 	}
+    local m = e(m)
     local g = e(g)
 	local doci = e(doci)
 	local cl = e(cl)
