@@ -4,7 +4,7 @@
 [![GitHub last commit](https://img.shields.io/github/last-commit/Davidvandijcke/DiSCos_stata.svg)](https://github.com/Davidvandijcke/DiSCos_stata/commits/main)
 ![GitHub issues](https://img.shields.io/github/issues/Davidvandijcke/DiSCos_stata)
 
-🕺 Let's get DiSCo-ing with distributions! This package implements Distributional Synthetic Controls (DiSCo) in Stata, following the methodology developed in Gunsilius (2023). While traditional synthetic controls focus on matching means, DiSCo takes it to the next level by matching entire distributions.
+🕺 Let's get DiSCo-ing with distributions! This package implements Distributional Synthetic Controls (DiSCo) in Stata, following the methodology developed in [Gunsilius (2023)](https://onlinelibrary.wiley.com/doi/full/10.3982/ECTA18260). While traditional synthetic controls focus on matching means, DiSCo takes it to the next level by matching entire distributions.
 
 ## 🚀 Features
 
