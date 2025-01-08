@@ -13,6 +13,8 @@ f disco_estat.ado
 f disco_estat.sthlp
 f disco_plot.ado
 f disco_plot.sthlp
+f disco_weight.ado
+f disco_weight.sthlp
 f quadprog.ado
 f ldisco.mlib
 f quadprog_mata_mac.plugin

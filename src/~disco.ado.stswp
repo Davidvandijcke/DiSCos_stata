@@ -253,14 +253,12 @@ program define disco, eclass
         ereturn matrix cdiff_upper = cdiff_upper
     }
     
-    ereturn matrix weights = weights
     ereturn matrix quantile_diff = quantile_diff
     ereturn matrix cdf_diff = cdf_diff
     ereturn matrix quantile_synth = quantile_synth
     ereturn matrix quantile_t = quantile_t
     ereturn matrix cdf_synth = cdf_synth
     ereturn matrix cdf_t = cdf_t
-	ereturn matrix cids = cids // to match weights back to treated units
 	ereturn scalar amin = amin
 	ereturn scalar amax = amax
 
@@ -289,4 +287,10 @@ program define disco, eclass
 	else {
 		ereturn scalar pval = .
 	}
+	
+	ereturn matrix weights = weights
+	eretrun matrix c
+
+	
+
 end

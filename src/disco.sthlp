@@ -210,8 +210,8 @@ is useful when working with variables that have fixed support, such as categoric
 
 {p2col 5 20 24 2: Matrices}{p_end}
 {synopt:{cmd:e(cids)}}control unit IDs (1 x J-1) -- use these to match weights back to control units' names as they are in the same order{p_end}
-{synopt:{cmd:e(weights)}}estimated synthetic control weights (1 x J-1){p_end}
-{synopt:{cmd:e(quantile_diff)}}differences in quantiles by time (G x T){p_end}
+{synopt:{cmd:e(weights)}}estimated synthetic control weights (J-1 x 1) {p_end}
+{synopt:{cmd:e(quantile_diff)}}differences in quantiles by time (G x T){p_end} 
 {synopt:{cmd:e(cdf_diff)}}differences in CDFs by time (G x T){p_end}
 {synopt:{cmd:e(quantile_synth)}}synthetic quantiles (G x T){p_end}
 {synopt:{cmd:e(quantile_t)}}treated unit quantiles (G x T){p_end}
