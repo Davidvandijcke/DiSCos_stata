@@ -1,5 +1,7 @@
 # DiSCo: Distributional Synthetic Controls for Stata <img src="files/logo.png" align="right" alt="" width="155" />
 
+⚠️ UNDER DEVELOPMENT; PLEASE REFRAIN FROM USE
+
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/Davidvandijcke/DiSCos_stata)](https://github.com/Davidvandijcke/DiSCos_stata/releases)
 [![GitHub last commit](https://img.shields.io/github/last-commit/Davidvandijcke/DiSCos_stata.svg)](https://github.com/Davidvandijcke/DiSCos_stata/commits/main)
 ![GitHub issues](https://img.shields.io/github/issues/Davidvandijcke/DiSCos_stata)
