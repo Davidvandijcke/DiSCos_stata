@@ -527,7 +527,7 @@ struct iter_out disco_CI_iter(
     struct iter_out scalar out
     real vector yt, idt, target_data, indices_t, mytar, target_qM, target_cdfM
     real vector uid, cids, cd, indices_c, mycon
-    real matrix mycon_qM, mycon_cdfM, mycon_qG, mycon_cdfG
+    real matrix mycon_qM, mycon_cdfM, mycon_qG, mycon_cdfG, weights_mix
     real scalar t_len, c_len, J, ci2
 
     //----------------------------------------------------------
@@ -575,7 +575,7 @@ struct iter_out disco_CI_iter(
         mycon_cdfG[, ci2] = cdf_builder(mycon, gridG)
     }
 
-	    out.controls_qM   = mycon_qM
+	out.controls_qM   = mycon_qM
     out.controls_cdfM = mycon_cdfM
     out.controls_qG   = mycon_qG
     out.controls_cdfG = mycon_cdfG
@@ -591,7 +591,8 @@ struct iter_out disco_CI_iter(
             out.weights = disco_solve_weights(mycon_qM, target_qM, simplex)
         } else {
             // mixture-based weighting
-            out.weights = disco_mixture_weights(mycon_cdfM, target_cdfM, simplex)
+            weights_mix = disco_mixture_weights(mycon_cdfM, target_cdfM, simplex)
+			out.weights = weights_mix'
         }
     }
 
@@ -630,6 +631,8 @@ struct boot_out bootCounterfactuals(
     //---------------------------------------------------------
     // This code expects each iter_results[t].controls_qM is MxJ, controls_qG is GxJ
     J = cols(iter_results[1].controls_qM)
+	
+
 
     quantile_diff  = J(G, T_max, .)
     cdf_diff       = J(G, T_max, .)
@@ -681,9 +684,11 @@ struct boot_out bootCounterfactuals(
             for (m2_loop=1; m2_loop<=G; m2_loop++) {
                 p   = (m2_loop-1)/(G-1)
                 gg3 = 1
-                while (gg3<=G & C_synth[gg3]<p) gg3++
+                while (gg3<G & C_synth[gg3]<p) gg3++
                 if (gg3>G) gg3=G
                 Q_synth[m2_loop] = gridG[gg3]
+				m2_loop
+				gg3
             }
         }
 
