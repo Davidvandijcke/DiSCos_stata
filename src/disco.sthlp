@@ -136,21 +136,25 @@ those intervals.
 {marker examples}
 {title:Examples}
 
-{pstd}Basic usage with confidence intervals and synthetic data (try running this yourself):{p_end}
+{pstd}Basic usage with confidence intervals and synthetic data (do run):{p_end}
 {phang2}{cmd:. gen_data}{p_end}
 {phang2}{cmd:. disco y id time, idtarget(1) t0(3) ci boots(200) cl(0.95)}{p_end}
 
-{pstd}Using mixture approach:{p_end}
+{pstd}Using mixture approach (don't run):{p_end}
 {phang2}{cmd:. disco outcome unit t, idtarget(2) t0(10) mixture ci}{p_end}
 
-{pstd}With permutation test:{p_end}
+{pstd}With permutation test (don't run):{p_end}
 {phang2}{cmd:. disco wage county year, idtarget(10) t0(2005) permutation seed(12345)}{p_end}
 
-{pstd} Post-estimation table and graph, see {help "disco##related":Additional commands}
- :{p_end}
+{pstd} Post-estimation tables and graphs, see {help "disco##related":Additional commands}
+ (do run) {p_end}
+ {phang2}{cmd:. gen_data}{p_end}
 {phang2}{cmd:. disco y id time, idtarget(1) t0(3) ci boots(200) cl(0.95)}{p_end}
-{phang2}{cmd:. disco_estat}{p_end}
+{phang2}{cmd:. disco_estat summary}{p_end}
 {phang2}{cmd:. disco_plot}{p_end}
+{phang2}{cmd:. gen str_id = "control " + string(id) }{p_end}
+{phang2}{cmd:. disco_weight id str_id }{p_end}
+
 
 
 
@@ -230,6 +234,9 @@ is useful when working with variables that have fixed support, such as categoric
 {phang} {help "disco_estat": disco_estat}: summarize aggregated statistics if specified with agg() option.{p_end}
 
 {phang} {help "disco_plot": disco_plot}: generate plots for quantiles or cdfs across time.{p_end}
+
+{phang} {help "disco_weight": disco_weight}: match control unit names to weights and obtain table with largest weights.{p_end}
+
 
 {marker references}
 {title:References}

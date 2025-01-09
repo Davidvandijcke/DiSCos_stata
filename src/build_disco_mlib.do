@@ -1,4 +1,5 @@
 clear all
+cd "/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src"
 
 mata:
 mata clear

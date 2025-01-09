@@ -2,6 +2,9 @@
 * Install disco (only once, outside the tests)
 ************************************************************
 clear all
+mata: mata clear
+cd "/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src"
+
 net install disco, from("/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src") replace
 
 // net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/dev/src/") replace
@@ -112,7 +115,10 @@ mata {
 * Test 5: Confidence intervals
 *----------------------------------------------------------------------
 gen_data
-disco y id time, idtarget(1) t0(10) ci boots(100) cl(0.90) 
+// mata: mata clear
+// do disco_utils.mata
+disco y id time, idtarget(1) t0(10) ci boots(34) cl(0.90) 
+disco_plot
 
 // Check CI matrices
 foreach mat in qdiff_lower qdiff_upper cdiff_lower cdiff_upper {
@@ -258,4 +264,19 @@ display "All tests completed successfully!"
 gen_data
 quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff") 
 disco_estat summary
+
+
+*----------------------------------------------------------------------
+* Test 22: weight function
+*----------------------------------------------------------------------
+gen_data
+gen str_id = "control " + string(id)
+disco y id time, idtarget(1) t0(3) ci boots(100) cl(0.95) agg("quantileDiff")
+disco_estat summary
+disco_plot
+disco_weight id str_id
+disco_weight id str_id, n(10) round(0.01)
+
+
+
 
