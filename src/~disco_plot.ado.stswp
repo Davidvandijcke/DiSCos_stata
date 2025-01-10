@@ -128,7 +128,7 @@ program define disco_plot, eclass
                    ytitle("`ytitle'") xtitle("`xtitle'") ///
                    `xrange_opt' `yrange_opt' ///
                    legend(label(1 "`cl_txt'% CIs") label(2 "Estimates") `legend') ///
-                   `plotregion' `graphregion' `scheme'
+                   plotregion(`plotregion') graphregion(`graphregion') scheme(`scheme')
         }
         else {
             quietly: set obs `g'
@@ -144,7 +144,7 @@ program define disco_plot, eclass
                    ytitle("`ytitle'") xtitle("`xtitle'") ///
                    `xrange_opt' `yrange_opt' ///
                    legend(off) ///
-                   `plotregion' `graphregion' `scheme'
+                   plotregion(`plotregion') graphregion(`graphregion') scheme(`scheme')
         }
     }
     else if "`agg'" == "quantile" {
@@ -169,7 +169,7 @@ program define disco_plot, eclass
                ytitle("`ytitle'") xtitle("`xtitle'") ///
                `xrange_opt' `yrange_opt' ///
                legend(order(1 "Observed" 2 "Synthetic") ring(0) pos(1) `legend') ///
-               `plotregion' `graphregion' `scheme'
+               plotregion(`plotregion') graphregion(`graphregion') scheme(`scheme')
     }
     else if inlist("`agg'", "cdf", "cdfDiff") {
         // Defaults
@@ -197,11 +197,11 @@ program define disco_plot, eclass
                 twoway (rarea cdiff_lower cdiff_upper grid_val, color(`cicolor')) ///
                        (line cdf_diff grid_val, lcolor(`color1') lwidth(`lwidth')), ///
                        `hline_opt' `vline_opt' ///
-						                       `xrange_opt' `yrange_opt' ///
+						`xrange_opt' `yrange_opt' ///
                        by(time, note("") title("`title'") `byopts') ///
                        ytitle("`ytitle'") xtitle("`xtitle'") ///
                        legend(label(1 "`cl_txt'% CIs") label(2 "Estimates") `legend') ///
-                       `plotregion' `graphregion' `scheme'
+                       plotregion(`plotregion') graphregion(`graphregion') scheme(`scheme')
             }
             else {
                 quietly: set obs `g'
@@ -217,7 +217,7 @@ program define disco_plot, eclass
                        by(time, note("") title("`title'") `byopts') ///
                        ytitle("`ytitle'") xtitle("`xtitle'") ///
                        legend(off) ///
-                       `plotregion' `graphregion' `scheme'
+                       plotregion(`plotregion') graphregion(`graphregion') scheme(`scheme')
             }
         }
         // cdf (levels)
@@ -236,7 +236,7 @@ program define disco_plot, eclass
                    by(time, note("") title("`title'") `byopts') ///
                    ytitle("`ytitle'") xtitle("`xtitle'") ///
                    legend(order(1 "Observed" 2 "Synthetic") ring(0) pos(1) `legend') ///
-                   `plotregion' `graphregion' `scheme'
+                   plotregion(`plotregion') graphregion(`graphregion') `scheme'
         }
     }
 

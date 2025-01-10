@@ -78,7 +78,7 @@ program define disco, eclass
         SEED(integer -1) ///
         NOUNIForm ///
         AGG(string) ///
-        SAMPles(numlist)]  ///
+        SAMPles(numlist)  ///
         GRIDCAT(varname)]
     
 	
