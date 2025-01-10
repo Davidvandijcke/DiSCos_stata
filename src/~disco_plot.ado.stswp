@@ -197,7 +197,7 @@ program define disco_plot, eclass
                 twoway (rarea cdiff_lower cdiff_upper grid_val, color(`cicolor')) ///
                        (line cdf_diff grid_val, lcolor(`color1') lwidth(`lwidth')), ///
                        `hline_opt' `vline_opt' ///
-						`xrange_opt' `yrange_opt' ///
+						                       `xrange_opt' `yrange_opt' ///
                        by(time, note("") title("`title'") `byopts') ///
                        ytitle("`ytitle'") xtitle("`xtitle'") ///
                        legend(label(1 "`cl_txt'% CIs") label(2 "Estimates") `legend') ///

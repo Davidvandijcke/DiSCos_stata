@@ -96,6 +96,8 @@ real vector disco_quantile_points(real vector X, real vector p)
     return(out)
 }
 
+
+
 // -----------------------------------------------------------------------------
 // Compute quantiles at a user-chosen number of points (Npoints)
 real vector disco_quantile(real vector X, real scalar Npoints, 
@@ -687,8 +689,7 @@ struct boot_out bootCounterfactuals(
                 while (gg3<G & C_synth[gg3]<p) gg3++
                 if (gg3>G) gg3=G
                 Q_synth[m2_loop] = gridG[gg3]
-				m2_loop
-				gg3
+
             }
         }
 

@@ -56,7 +56,7 @@ real vector get_unique(real vector x)
 // Compute quantiles at arbitrary probabilities p using type=7 interpolation
 real vector disco_quantile_points(real vector X, real vector p) 
 {
-    real scalar N, i, prob, alpha, floor_alpha, gamma, idx
+    real scalar N, i, m, j, gamma
     real vector Xs, out
     
     N = length(X)
@@ -64,32 +64,26 @@ real vector disco_quantile_points(real vector X, real vector p)
         out = J(length(p),1,.)
         return(out)
     }
-
+    
     Xs  = sort(X,1)
     out = J(length(p),1,.)
-
+    
     for (i=1; i<=length(p); i++) {
-        prob = p[i]
-        if (prob<=0) {
-            out[i] = Xs[1]
-        }
-        else if (prob>=1) {
-            out[i] = Xs[N]
-        } 
+        if (p[i] < 0) out[i] = Xs[1]
+        else if (p[i] > 1) out[i] = Xs[N] 
         else {
-            alpha       = (N-1)*prob + 1
-            floor_alpha = floor(alpha)
-            gamma       = alpha - floor_alpha
-
-            if (floor_alpha<1) {
+            m = 1 - p[i]  // Following R type 7 formula
+            j = floor((N-1)*p[i] + 1)
+            gamma = (N-1)*p[i] + 1 - j
+            
+            if (j < 1) {
                 out[i] = Xs[1]
-            } 
-            else if (floor_alpha>=N) {
+            }
+            else if (j >= N) {
                 out[i] = Xs[N]
-            } 
+            }
             else {
-                idx = floor_alpha
-                out[i] = Xs[idx]*(1-gamma) + Xs[idx+1]*gamma
+                out[i] = (1-gamma)*Xs[j] + gamma*Xs[j+1]
             }
         }
     }
