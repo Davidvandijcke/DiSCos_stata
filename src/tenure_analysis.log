@@ -1,0 +1,25 @@
+--------------------------------------------------------------------------------------------------------------
+      name:  <unnamed>
+       log:  /Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/stata_repo/src/ten
+> ure_analysis.log
+  log type:  text
+ opened on:   8 Jan 2025, 14:51:17
+
+. 
+. // load and inspect data
+. use "tenure_anonymized.dta", clear 
+file tenure_anonymized.dta not found
+r(601);
+
+end of do-file
+
+r(601);
+
+. do "/var/folders/zs/20zk30ss1dq_90y7_2t9wgvc0000gn/T//SD72560.000000"
+
+. 
+. cd "$dataOut"
+/Users/davidvandijcke/University of Michigan Dropbox/David Van Dijcke/Flo_GSRA/sj_replication/data/out
+
+. 
+. capture log close

@@ -48,6 +48,10 @@ estimation.
 {dlgtab:Graph Appearance}
 
 {phang}
+{opt categorical} specify if outcome variable is categorical and a CDF plot is requested in {cmd: agg}. 
+ If specified, a bar plot is created instead of a line plot.
+
+{phang}
 {opt title(string)} title for the graph. Defaults vary by plot type.
 
 {phang}
@@ -85,6 +89,18 @@ estimation.
 
 {phang}
 {opt scheme(string)} scheme name. See {help scheme_option}.
+
+{phang}
+{opt hline(real)} y coordinate for dashed grey horizontal line.  See {help added_line_options}.
+
+{phang}
+{opt vline(real)} x coordinate for dashed grey vertical line.  See {help added_line_options}.
+
+{phang}
+{opt xrange(numlist)} numlist of size 2 to set the x range.  See {help axis scale options}.
+
+{phang}
+{opt yrange(numlist)} numlist of size 2 to set the y range.  See {help axis scale options}.
 
 {marker examples}
 {title:Examples}
