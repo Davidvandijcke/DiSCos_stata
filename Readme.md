@@ -47,6 +47,7 @@ After installation, access the help files in Stata:
 help disco
 help disco_estat
 help disco_plot
+help disco_weight
 ```
 
 ## 🎪 In Development
