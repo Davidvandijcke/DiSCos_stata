@@ -48,6 +48,10 @@ estimation.
 {dlgtab:Graph Appearance}
 
 {phang}
+{opt categorical} specify if outcome variable is categorical and a CDF plot is requested in {cmd: agg}. 
+ If specified, a bar plot is created instead of a line plot.
+
+{phang}
 {opt title(string)} title for the graph. Defaults vary by plot type.
 
 {phang}

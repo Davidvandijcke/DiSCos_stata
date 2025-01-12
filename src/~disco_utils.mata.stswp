@@ -409,7 +409,7 @@ struct disco_out disco_full_run(real vector y, real vector id, real vector tt,
             for (m2_loop=1; m2_loop<=G; m2_loop++) {
                 p    = (m2_loop-1)/(G-1)
                 gg3  = 1
-                while (gg3 < G  &  C_synth[gg3] < p) gg3++
+                while (gg3 < length(C_synth)  &  C_synth[gg3] < p) gg3++
                 if (gg3>G) gg3 = G
                 Q_synth[m2_loop] = gridG[gg3]
             }
@@ -686,7 +686,7 @@ struct boot_out bootCounterfactuals(
             for (m2_loop=1; m2_loop<=G; m2_loop++) {
                 p   = (m2_loop-1)/(G-1)
                 gg3 = 1
-                while (gg3<G & C_synth[gg3]<p) gg3++
+                while (gg3<length(C_synth) & C_synth[gg3]<p) gg3++
                 if (gg3>G) gg3=G
                 Q_synth[m2_loop] = gridG[gg3]
 
@@ -972,170 +972,110 @@ real scalar disco_ci_wrapper(real vector y, id, tt,
 
     return(0)
 }
-// -----------------------------------------------------------------------------
-// Compute summary stats (Now using G rows for both quantile_diff and cdf_diff)
-// -----------------------------------------------------------------------------
+// Compute summary stats
 real scalar compute_summary_stats(string scalar agg, real vector sample_points, 
-                                  real scalar T0, real scalar T_max, 
-                                  real matrix quantile_diff,
-                                  real matrix cdf_diff, 
-                                  real scalar CI, real scalar cl) 
+                                real scalar T0, real scalar T_max, real matrix quantile_diff,
+                                real matrix cdf_diff, real scalar CI, real scalar cl) 
 {
-    // -----------------------------------------------------
-    // 1. Preliminary checks and declarations
-    // -----------------------------------------------------
-    real scalar is_cdf, n_intervals, row, G, t, i
-    real scalar amin, amax
-    real vector grid_points, grid_points_temp, grid, idx
-    real matrix summary_stats, diff_lower, diff_upper
-
-    // valid aggregator checks
     if (!anyof(("quantile", "cdf", "quantileDiff", "cdfDiff"), agg)) {
-        errprintf("Invalid aggregation type in compute_summary_stats\n")
+        errprintf("Invalid aggregation type\n")
         return(1)
     }
 
-    // figure out if we are dealing with cdf or quantile
-    is_cdf = (agg=="cdf" | agg=="cdfDiff")
+    real scalar is_cdf
+    is_cdf = (agg == "cdf" | agg == "cdfDiff")
 
-    // read the min and max from Stata scalars
-    amin = st_numscalar("amin")
-    amax = st_numscalar("amax")
-
-    // In your final stored results, quantile_diff and cdf_diff each have G rows
-    // So let's define G using whichever matrix we have (they are both G x T).
-    // Here we can just use rows(cdf_diff) or rows(quantile_diff); they must match.
-    // We'll pick cdf_diff for convenience:
-    G = rows(cdf_diff)
-
-    // -----------------------------------------------------
-    // 2. Build the user-specified grid_points from sample_points
-    // -----------------------------------------------------
-    // We'll interpret sample_points as either probabilities in [0,1] or actual scale
-    // for is_cdf we assume the scale is same as y, for quantile we assume [0,1].
-    // but ultimately, in your final code, you said you always do G for both. 
-    // So let's keep the old logic where cdf => scale of y, else => [0,1].
+    real vector grid_points
     if (is_cdf) {
-        // If sample_points are in [0,1], scale them up to [amin,amax]
+        real scalar amin, amax
+        amin = st_numscalar("amin")
+        amax = st_numscalar("amax")
+
+        real vector grid_points_temp
         if (max(sample_points) <= 1 & min(sample_points) >= 0) {
             grid_points_temp = amin :+ sample_points :* (amax - amin)
-            if (min(grid_points_temp) > amin) {
-                grid_points = amin \ grid_points_temp'
-            }
-            else {
-                grid_points = grid_points_temp'
-            }
-            if (max(grid_points_temp) < amax) {
-                grid_points = grid_points \ amax
-            }
-        } 
-        else {
+            if (min(grid_points_temp) > amin) grid_points = amin \ grid_points_temp'
+            else grid_points = grid_points_temp'
+            if (max(grid_points_temp) < amax) grid_points = grid_points \ amax
+        } else {
             grid_points = sort(sample_points', 1)
         }
-    } 
-    else {
-        // "quantile"/"quantileDiff" => sample_points presumably in [0,1].
+    } else {
         grid_points = sort(sample_points', 1)
-        if (min(grid_points) > 0) {
-            grid_points = 0 \ grid_points
-        }
-        if (max(grid_points) < 1) {
-            grid_points = grid_points \ 1
-        }
+        if (min(grid_points) > 0) grid_points = 0 \ grid_points
+        if (max(grid_points) < 1) grid_points = grid_points \ 1
     }
 
-    // number of intervals is length(grid_points)-1
+    real scalar n_intervals
     n_intervals = length(grid_points) - 1
 
-    // set up the summary_stats matrix
-    // We'll store one row per (time x interval). You have 7 columns by design.
+    real matrix summary_stats
     summary_stats = J(n_intervals * (T_max - T0 + 1), 7, .)
 
+    real scalar row, G, M, t, i
     row = 1
 
-    // -----------------------------------------------------
-    // 3. Construct the underlying "grid" for your final results
-    //    Both cdf_diff and quantile_diff are GxT => define a "grid" of length G.
-    // -----------------------------------------------------
+    real vector grid, idx, prob_grid
 
-    // If G=1 or amax==amin, range() can fail => handle that:
-    if (G>1 & amax>amin) {
-        grid = range(amin, amax, (amax - amin)/(G-1))'
-    }
-    else {
-        // corner case: degenerate distribution => just replicate amin
-        grid = J(G,1, amin)
-    }
-
-    // -----------------------------------------------------
-    // 4. Loop over time periods t = T0..T_max
-    //    then sub-intervals i = 1..n_intervals
-    // -----------------------------------------------------
     for(t = T0; t <= T_max; t++) {
         for(i = 1; i <= n_intervals; i++) {
-
-            // columns are:
-            //   1 => time
-            //   2 => start of interval
-            //   3 => end of interval
-            //   4 => mean difference over that slice
-            //   5 => half the approximate CI width / 1.96
-            //   6 => CI lower
-            //   7 => CI upper
-
             summary_stats[row, 1] = t
             summary_stats[row, 2] = grid_points[i]
             summary_stats[row, 3] = grid_points[i + 1]
 
-            // build index of the grid rows that fall inside [grid_points[i], grid_points[i+1]]
-            // e.g. if grid= <g1,g2,...,gG>, we want those g's in [start,end]
-            idx = selectindex(grid :>= grid_points[i] :& grid :<= grid_points[i + 1])
+            if (is_cdf) {
+                amin = st_numscalar("amin")
+                amax = st_numscalar("amax")
+                G = rows(cdf_diff)
+                grid = range(amin, amax, (amax - amin)/(G-1))'
+                idx = selectindex(grid :>= grid_points[i] :& grid :<= grid_points[i + 1])
+            } else {
+                M = rows(quantile_diff)
+                prob_grid = range(0, 1, 1/(M-1))'
+                idx = selectindex(prob_grid :>= grid_points[i] :& prob_grid :<= grid_points[i + 1])
+            }
 
-            if (length(idx)>0) {
+            if (length(idx) > 0) {
                 if (is_cdf) {
-                    // cdf_diff is GxT => so cdf_diff[idx, t] is the slice
                     summary_stats[row, 4] = mean(cdf_diff[idx, t])
-                }
-                else {
-                    // quantile_diff is also GxT => so quantile_diff[idx, t] is the slice
+                } else {
                     summary_stats[row, 4] = mean(quantile_diff[idx, t])
                 }
             }
 
-            // if the user asked for confidence intervals, read the stored c/l from Stata
             if (CI) {
+                real matrix diff_lower, diff_upper
                 if (is_cdf) {
                     diff_lower = st_matrix("cdiff_lower")
                     diff_upper = st_matrix("cdiff_upper")
-                } 
-                else {
+                } else {
                     diff_lower = st_matrix("qdiff_lower")
                     diff_upper = st_matrix("qdiff_upper")
                 }
 
-                if (length(idx)>0) {
-                    real scalar avg_lower, avg_upper
-                    avg_lower = mean(diff_lower[idx, t])
-                    avg_upper = mean(diff_upper[idx, t])
-
-                    summary_stats[row, 6] = avg_lower
-                    summary_stats[row, 7] = avg_upper
-                    // approximate standard error from half-CI / 1.96
-                    summary_stats[row, 5] = (avg_upper - avg_lower)/(2*1.96)
+                if (length(idx) > 0) {
+                    if (is_cdf) {
+                        summary_stats[row, 4] = mean(cdf_diff[idx, t])
+                        summary_stats[row, 6] = mean(diff_lower[idx, t])
+                        summary_stats[row, 7] = mean(diff_upper[idx, t])
+                        summary_stats[row, 5] = (summary_stats[row, 7] - summary_stats[row, 6])/(2*1.96)
+                    } else {
+                        summary_stats[row, 4] = mean(quantile_diff[idx, t])
+                        summary_stats[row, 6] = mean(diff_lower[idx, t])
+                        summary_stats[row, 7] = mean(diff_upper[idx, t])
+                        summary_stats[row, 5] = (summary_stats[row, 7] - summary_stats[row, 6])/(2*1.96)
+                    }
                 }
             }
 
-            row = row + 1
+            row++
         }
     }
 
-    // store the final matrix in Stata
     st_matrix("summary_stats", summary_stats)
+
     return(0)
 }
-
-end
-
 ********************************************************************************
 *** END MATA CODE
 ********************************************************************************

@@ -188,6 +188,9 @@ remain "optimal" post-treatment, see the Appendix in Gunsilius (2023).
 As an alternative to the quantile-based approach, the mixture approach estimates the counterfactual
 distribution by estimating a weighted average of the untreated units' CDFs before treatment. This approach
 is useful when working with variables that have fixed support, such as categorical variables - see Van Dijcke, Gunsilius, and Wright (2024).
+In that case, make sure to set the {cmd: g} and {cmd: m} options to reflect the number of points in your support, e.g.
+if your variable takes values on the integers from 1--10, set {cmd: g(10)} and {cmd: m(10)}. This expects that your 
+categorical variable is evenly spaced (if it is not, normalize it to be so -- this does not affect the results).
 
 {marker results}
 {title:Stored results}

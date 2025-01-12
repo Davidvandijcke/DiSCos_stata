@@ -10,7 +10,7 @@ program define disco_weight, rclass
     // Syntax: disco_weight id_var name_var [, n(#) format(str) frame(str) round(#)]
     syntax varlist(min=2 max=2) [, N(integer 5) Format(string) FRAMe(string) Round(real 0.0001)]
     
-	quietly {
+	quiety
     // Parse variables
     tokenize `varlist'
     local id_var "`1'"
@@ -48,7 +48,6 @@ program define disco_weight, rclass
         qui keep in 1/`n'
         replace weight = round(weight, `round')
     }
-	}
     
     // Display results
     di _n as txt "Top `n' weights:"
