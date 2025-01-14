@@ -70,6 +70,12 @@ Also check out the R version of DiSCo: [![CRAN](https://www.r-pkg.org/badges/ver
 If you use this package, please cite:
 
 ```bibtex
+@article{gunsilius2025disco,
+  title        = {disco: Distributional Synthetic Controls},
+  author       = {Gunsilius, Florian and Van Dijcke, David},
+  journal      = {Manuscript},
+  year         = {2025}
+}
 @article{gunsilius2023distributional,
   title={Distributional Synthetic Controls},
   author={Gunsilius, Florian F},
