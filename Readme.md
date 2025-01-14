@@ -50,6 +50,8 @@ help disco_plot
 help disco_weight
 ```
 
+For more detailed information, see the accompanying article at https://arxiv.org/abs/2501.07550. 
+
 ## 🎪 In Development
 
 This package is actively being developed! Future releases may include (depending on my mood and the weather):
