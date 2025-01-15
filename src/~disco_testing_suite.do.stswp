@@ -4,7 +4,7 @@
 clear all
 mata: mata clear
 
-net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/main/src/") replace
+net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/dev/src/") replace
 
 ************************************************************
 * Now we run each test, calling gen_data prior to each test
