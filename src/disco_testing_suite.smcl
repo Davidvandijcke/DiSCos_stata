@@ -1,0 +1,676 @@
+{smcl}
+{com}{sf}{ul off}{txt}
+{com}. 
+. net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/main/src/") replace
+checking {hilite:disco} consistency and verifying not already installed...
+all files already exist and are up to date.
+{txt}
+{com}. 
+. ************************************************************
+. * Now we run each test, calling gen_data prior to each test
+. ************************************************************
+. 
+. *----------------------------------------------------------------------
+. * Test 1: Basic disco without options
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) 
+{txt}
+{com}. 
+. // Check return values
+. assert e(cmd) == "disco"
+{txt}
+{com}. assert e(t0) == "10"
+{txt}
+{com}. assert e(cl) == ".95"
+{txt}
+{com}. assert e(N) > 0
+{txt}
+{com}. 
+. // Check matrix dimensions
+. matrix w = e(weights)
+{txt}
+{com}. mata {c -(}
+>     st_numscalar("dims_ok", cols(st_matrix("w"))==19 & rows(st_matrix("w"))==1)
+>     assert(st_numscalar("dims_ok"))
+> {c )-}
+{res}{txt}
+{com}. 
+. // Check weights sum to 1 (standard approach with simplex)
+. mata {c -(}
+>     st_numscalar("sum_w", sum(st_matrix("w")))
+>     assert(abs(st_numscalar("sum_w") - 1) < 1e-8)
+> {c )-}
+{res}{txt}
+{com}. 
+. // Check non-negativity constraint
+. mata {c -(}
+>     st_numscalar("min_w", min(st_matrix("w")))
+>     assert(st_numscalar("min_w") >= -1e-8)
+> {c )-}
+{res}{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 2: Mixture approach with simplex
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. disco y id time, idtarget(1) t0(10) mixture
+{res}{txt}
+{com}. 
+. // Check weights
+. matrix w_mix = e(weights)
+{txt}
+{com}. mata {c -(}
+>     st_numscalar("sum_w_mix", sum(st_matrix("w_mix")))
+>     st_numscalar("min_w_mix", min(st_matrix("w_mix")))
+>     assert(abs(st_numscalar("sum_w_mix") - 1) < 1e-8)
+>     assert(st_numscalar("min_w_mix") >= -1e-8)
+> {c )-}
+{res}{txt}
+{com}. 
+. // Check matrix dimensions and content
+. foreach mat in weights quantile_diff cdf_diff quantile_synth cdf_synth quantile_t cdf_t cids {c -(}
+{txt}  2{com}.     matrix temp = e(`mat')
+{txt}  3{com}.     mata {c -(}
+{txt}  4{com}.         st_numscalar("has_content", !missing(st_matrix("temp")[1,1]))
+{txt}  5{com}.         assert(st_numscalar("has_content"))
+{txt}  6{com}.     {c )-}
+{txt}  7{com}. {c )-}
+{res}{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 3: Standard approach without simplex
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) nosimplex
+{txt}
+{com}. 
+. // Check weights
+. matrix w_nosimplex = e(weights)
+{txt}
+{com}. mata {c -(}
+>     st_numscalar("sum_w_nosimplex", sum(st_matrix("w_nosimplex")))
+>     assert(abs(st_numscalar("sum_w_nosimplex") - 1) < 1e-8)
+> {c )-}
+{res}{txt}
+{com}. 
+. // Should allow negative weights
+. mata {c -(}
+>     st_numscalar("min_w_nosimplex", min(st_matrix("w_nosimplex")))
+>     st_numscalar("has_neg", st_numscalar("min_w_nosimplex") < 0)
+>     assert(st_numscalar("has_neg") == 1)
+> {c )-}
+{res}{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 4: Mixture approach without simplex
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) mixture nosimplex
+{txt}
+{com}. 
+. // Check weights
+. matrix w_mix_nosimplex = e(weights)
+{txt}
+{com}. mata {c -(}
+>     st_numscalar("sum_w_mix_nosimplex", sum(st_matrix("w_mix_nosimplex")))
+>     assert(abs(st_numscalar("sum_w_mix_nosimplex") - 1) < 1e-8)
+> {c )-}
+{res}{txt}
+{com}. 
+. mata {c -(}
+>     st_numscalar("min_w_mix_nosimplex", min(st_matrix("w_mix_nosimplex")))
+>     st_numscalar("has_neg_mix", st_numscalar("min_w_mix_nosimplex") < 0)
+>     assert(st_numscalar("has_neg_mix") == 1)
+> {c )-}
+{res}{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 5: Confidence intervals
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. // mata: mata clear
+. // do disco_utils.mata
+. disco y id time, idtarget(1) t0(10) ci boots(34) cl(0.90) 
+{res}{txt}
+{com}. disco_plot
+{res}{txt}
+{com}. 
+. // Check CI matrices
+. foreach mat in qdiff_lower qdiff_upper cdiff_lower cdiff_upper {c -(}
+{txt}  2{com}.     matrix temp = e(`mat')
+{txt}  3{com}.     mata {c -(}
+{txt}  4{com}.         st_numscalar("dims_ok", rows(st_matrix("temp"))==100 & cols(st_matrix("temp"))==20)
+{txt}  5{com}.         assert(st_numscalar("dims_ok"))
+{txt}  6{com}.     {c )-}
+{txt}  7{com}. {c )-}
+{res}{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 6: Permutation test
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) permutation
+{txt}
+{com}. assert e(pval) != .
+{txt}
+{com}. assert e(pval) >= 0 & e(pval) <= 1
+{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 7: Different grid sizes
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10)  g(50)
+{txt}
+{com}. mata {c -(}
+>     st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==50 & rows(st_matrix("e(cdf_diff)"))==50)
+>     assert(st_numscalar("dims_ok"))
+> {c )-}
+{res}{txt}
+{com}. 
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) g(100) ci boots(100)
+{txt}
+{com}. mata {c -(}
+>     st_numscalar("dims_ok", rows(st_matrix("e(quantile_diff)"))==100 & rows(st_matrix("e(cdf_diff)"))==100)
+>     assert(st_numscalar("dims_ok"))
+> {c )-}
+{res}{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 8: Aggregation "quantileDiff"
+. *----------------------------------------------------------------------
+. 
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff")  
+{txt}
+{com}. mata {c -(}
+>     st_numscalar("has_content", !(eltype(st_matrix("e(summary_stats)")) == ""))
+>     assert(st_numscalar("has_content"))
+> {c )-}
+{res}{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 9: CDF differences
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. disco y id time, idtarget(1) t0(10) agg("cdfDiff") 
+{res}{txt}
+{com}. mata {c -(}
+>     st_numscalar("has_content", !(eltype(st_matrix("e(summary_stats)")) == "" ))
+>     assert(st_numscalar("has_content"))
+> {c )-}
+{res}{txt}
+{com}. 
+. 
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. disco y id time, idtarget(1) t0(10) agg("cdf") 
+{res}{txt}Levels requested so no summary stats table produced.
+{com}. // TODO: fix - local gmin = `min' = local gmin =  ...
+. 
+. *----------------------------------------------------------------------
+. * Tests 10-13: Disco_plot
+. *----------------------------------------------------------------------
+. 
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) ci boots(100) // so we have some CI mats stored
+{txt}
+{com}. 
+. 
+. // Test 10: CDF plot with custom options
+. quietly: disco_plot, title("Distribution Effects") ytitle("CDF") xtitle("Y") ///
+>     color1("blue") color2("red") lwidth("thick")
+{txt}
+{com}.         
+.         
+. // with cdfDiff option
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. 
+. // Test 11: CDF diff plot with custom options
+. quietly: disco y id time, idtarget(1) t0(10) agg("cdfDiff") // so we have some CI mats stored
+{txt}
+{com}. disco_plot
+{res}{txt}
+{com}. 
+. // Test 12: CDF plot
+. quietly: disco y id time, idtarget(1) t0(10) agg("cdf") // so we have some CI mats stored
+{txt}
+{com}. disco_plot
+{res}{txt}
+{com}. 
+. // Test 13: quantile plot
+. quietly: disco y id time, idtarget(1) t0(10) agg("quantile") // so we have some CI mats stored
+{txt}
+{com}. disco_plot
+{res}{txt}
+{com}. 
+. // Test 13.1 different plot than specified
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) agg("quantile") // so we have some CI mats stored
+{txt}
+{com}. disco_plot, agg("quantileDiff")
+{res}{txt}
+{com}. 
+. 
+. 
+. *----------------------------------------------------------------------
+. * Test 14: Check amin and amax
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10)
+{txt}
+{com}. assert e(amin) < 0
+{txt}
+{com}. assert e(amax) > 0
+{txt}
+{com}. assert e(amin) != .
+{txt}
+{com}. assert e(amax) != .
+{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Tests 15-18: Error handling
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. rcof "noi disco y id time, idtarget(1) t0(10) agg(invalid)" == 198
+{err}agg() must be one of: quantile, cdf, quantileDiff, cdfDiff
+{txt}
+{com}. rcof "noi disco y id time, idtarget(1) t0(10) ci cl(1.5)" == 198
+{err}cl must be >=0 and <=1
+{txt}
+{com}. rcof "noi disco y id time, idtarget(1) t0(10) g(0)" == 198
+{err}G must be >=2
+{txt}
+{com}. rcof "noi disco y id time" == 198
+{err}option {bf}idtarget(){sf} required
+{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 19: Missing data
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. preserve
+{txt}
+{com}. replace y = . if _n == 1
+{txt}(1 real change made, 1 to missing)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10)
+{txt}
+{com}. restore
+{txt}
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 20: Custom quantile range
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) qmin(0.1) qmax(0.9)
+{txt}
+{com}. 
+. display "All tests completed successfully!"
+{res}All tests completed successfully!
+{txt}
+{com}. 
+. *----------------------------------------------------------------------
+. * Test 21: Post-estimation table
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. quietly: disco y id time, idtarget(1) t0(10) agg("quantileDiff") 
+{txt}
+{com}. disco_estat summary
+
+{txt}Summary of quantile effects
+{hline 80}
+Time period   Range                    Effect     Std. Err.    [.95% Conf. Interval]
+{hline 80}
+       10    0.00-0.25    {res}   -2.791            .            .          .{txt}*
+       10    0.25-0.50    {res}   -2.301            .            .          .{txt}*
+       10    0.50-0.75    {res}   -0.684            .            .          .{txt}*
+       10    0.75-1.00    {res}    1.719            .            .          .{txt}*
+       11    0.00-0.25    {res}   -0.853            .            .          .{txt}*
+       11    0.25-0.50    {res}    0.840            .            .          .{txt}*
+       11    0.50-0.75    {res}    2.523            .            .          .{txt}*
+       11    0.75-1.00    {res}    4.039            .            .          .{txt}*
+       12    0.00-0.25    {res}   -0.678            .            .          .{txt}*
+       12    0.25-0.50    {res}    2.220            .            .          .{txt}*
+       12    0.50-0.75    {res}    3.769            .            .          .{txt}*
+       12    0.75-1.00    {res}    3.685            .            .          .{txt}*
+       13    0.00-0.25    {res}   -1.661            .            .          .{txt}*
+       13    0.25-0.50    {res}   -0.476            .            .          .{txt}*
+       13    0.50-0.75    {res}    1.402            .            .          .{txt}*
+       13    0.75-1.00    {res}    2.654            .            .          .{txt}*
+       14    0.00-0.25    {res}   -1.584            .            .          .{txt}*
+       14    0.25-0.50    {res}    1.313            .            .          .{txt}*
+       14    0.50-0.75    {res}    2.393            .            .          .{txt}*
+       14    0.75-1.00    {res}    3.216            .            .          .{txt}*
+       15    0.00-0.25    {res}   -2.040            .            .          .{txt}*
+       15    0.25-0.50    {res}   -0.668            .            .          .{txt}*
+       15    0.50-0.75    {res}    0.968            .            .          .{txt}*
+       15    0.75-1.00    {res}    2.456            .            .          .{txt}*
+       16    0.00-0.25    {res}   -0.722            .            .          .{txt}*
+       16    0.25-0.50    {res}    0.814            .            .          .{txt}*
+       16    0.50-0.75    {res}    1.558            .            .          .{txt}*
+       16    0.75-1.00    {res}    3.589            .            .          .{txt}*
+       17    0.00-0.25    {res}   -0.322            .            .          .{txt}*
+       17    0.25-0.50    {res}    1.064            .            .          .{txt}*
+       17    0.50-0.75    {res}    2.113            .            .          .{txt}*
+       17    0.75-1.00    {res}    4.036            .            .          .{txt}*
+       18    0.00-0.25    {res}   -0.390            .            .          .{txt}*
+       18    0.25-0.50    {res}   -0.795            .            .          .{txt}*
+       18    0.50-0.75    {res}   -0.528            .            .          .{txt}*
+       18    0.75-1.00    {res}    2.050            .            .          .{txt}*
+       19    0.00-0.25    {res}    0.146            .            .          .{txt}*
+       19    0.25-0.50    {res}    1.245            .            .          .{txt}*
+       19    0.50-0.75    {res}    1.897            .            .          .{txt}*
+       19    0.75-1.00    {res}    3.579            .            .          .{txt}*
+       20    0.00-0.25    {res}   -1.271            .            .          .{txt}*
+       20    0.25-0.50    {res}    0.466            .            .          .{txt}*
+       20    0.50-0.75    {res}    1.715            .            .          .{txt}*
+       20    0.75-1.00    {res}    2.525            .            .          .{txt}*
+{hline 80}
+* denotes significance at .95% confidence level
+
+{com}. 
+. 
+. *----------------------------------------------------------------------
+. * Test 22: weight function
+. *----------------------------------------------------------------------
+. gen_data
+{txt}{p}
+Number of observations ({bf:_N}) was 0,
+now 20.
+{p_end}
+(380 observations created)
+(19,600 observations created)
+(550 real changes made)
+
+{com}. gen str_id = "control " + string(id)
+{txt}
+{com}. disco y id time, idtarget(1) t0(3) ci boots(100) cl(0.95) agg("quantileDiff")
+{res}{txt}
+{com}. disco_estat summary
+
+{txt}Summary of quantile effects
+{hline 80}
+Time period   Range                    Effect     Std. Err.    [.95% Conf. Interval]
+{hline 80}
+        3    0.00-0.25    {res}   -0.651        1.399       -3.393      2.090{txt}
+        3    0.25-0.50    {res}    0.097        1.399       -2.645      2.839{txt}
+        3    0.50-0.75    {res}   -0.194        1.399       -2.935      2.548{txt}
+        3    0.75-1.00    {res}   -0.454        1.399       -3.196      2.288{txt}
+        4    0.00-0.25    {res}   -0.192        2.335       -4.769      4.385{txt}
+        4    0.25-0.50    {res}    0.514        2.335       -4.063      5.091{txt}
+        4    0.50-0.75    {res}    0.557        2.335       -4.020      5.134{txt}
+        4    0.75-1.00    {res}    0.417        2.335       -4.160      4.994{txt}
+        5    0.00-0.25    {res}   -0.313        1.693       -3.631      3.005{txt}
+        5    0.25-0.50    {res}   -0.276        1.693       -3.594      3.042{txt}
+        5    0.50-0.75    {res}   -0.042        1.693       -3.360      3.276{txt}
+        5    0.75-1.00    {res}    0.003        1.693       -3.315      3.321{txt}
+        6    0.00-0.25    {res}   -0.361        1.776       -3.842      3.120{txt}
+        6    0.25-0.50    {res}   -0.817        1.776       -4.298      2.664{txt}
+        6    0.50-0.75    {res}   -0.417        1.776       -3.898      3.064{txt}
+        6    0.75-1.00    {res}    0.489        1.776       -2.992      3.970{txt}
+        7    0.00-0.25    {res}    0.221        2.391       -4.466      4.907{txt}
+        7    0.25-0.50    {res}   -0.144        2.391       -4.831      4.543{txt}
+        7    0.50-0.75    {res}    0.139        2.391       -4.547      4.826{txt}
+        7    0.75-1.00    {res}    0.756        2.391       -3.930      5.443{txt}
+        8    0.00-0.25    {res}    0.344        1.463       -2.524      3.212{txt}
+        8    0.25-0.50    {res}   -0.573        1.463       -3.441      2.295{txt}
+        8    0.50-0.75    {res}   -0.466        1.463       -3.334      2.402{txt}
+        8    0.75-1.00    {res}   -0.103        1.463       -2.971      2.765{txt}
+        9    0.00-0.25    {res}    0.816        2.310       -3.711      5.343{txt}
+        9    0.25-0.50    {res}    0.179        2.310       -4.348      4.706{txt}
+        9    0.50-0.75    {res}   -0.197        2.310       -4.724      4.329{txt}
+        9    0.75-1.00    {res}    0.119        2.310       -4.408      4.646{txt}
+       10    0.00-0.25    {res}   -2.691        2.149       -6.904      1.521{txt}
+       10    0.25-0.50    {res}   -2.574        2.149       -6.787      1.638{txt}
+       10    0.50-0.75    {res}   -0.886        2.149       -5.099      3.326{txt}
+       10    0.75-1.00    {res}    1.666        2.149       -2.547      5.878{txt}
+       11    0.00-0.25    {res}   -0.745        2.719       -6.075      4.584{txt}
+       11    0.25-0.50    {res}    0.768        2.719       -4.561      6.097{txt}
+       11    0.50-0.75    {res}    2.754        2.719       -2.575      8.083{txt}
+       11    0.75-1.00    {res}    4.192        2.719       -1.137      9.521{txt}
+       12    0.00-0.25    {res}   -0.955        2.088       -5.048      3.138{txt}
+       12    0.25-0.50    {res}    1.927        2.088       -2.166      6.021{txt}
+       12    0.50-0.75    {res}    3.429        2.088       -0.664      7.522{txt}
+       12    0.75-1.00    {res}    3.618        2.088       -0.475      7.711{txt}
+       13    0.00-0.25    {res}   -1.729        1.974       -5.597      2.140{txt}
+       13    0.25-0.50    {res}   -0.312        1.974       -4.181      3.556{txt}
+       13    0.50-0.75    {res}    1.482        1.974       -2.386      5.351{txt}
+       13    0.75-1.00    {res}    2.602        1.974       -1.266      6.471{txt}
+       14    0.00-0.25    {res}   -1.425        2.530       -6.384      3.534{txt}
+       14    0.25-0.50    {res}    1.664        2.530       -3.295      6.623{txt}
+       14    0.50-0.75    {res}    2.759        2.530       -2.200      7.718{txt}
+       14    0.75-1.00    {res}    3.543        2.530       -1.416      8.503{txt}
+       15    0.00-0.25    {res}   -1.600        2.404       -6.312      3.112{txt}
+       15    0.25-0.50    {res}   -0.313        2.404       -5.025      4.399{txt}
+       15    0.50-0.75    {res}    1.275        2.404       -3.437      5.987{txt}
+       15    0.75-1.00    {res}    2.796        2.404       -1.916      7.508{txt}
+       16    0.00-0.25    {res}   -1.062        1.835       -4.660      2.535{txt}
+       16    0.25-0.50    {res}    0.286        1.835       -3.312      3.883{txt}
+       16    0.50-0.75    {res}    1.312        1.835       -2.285      4.909{txt}
+       16    0.75-1.00    {res}    3.506        1.835       -0.091      7.103{txt}
+       17    0.00-0.25    {res}   -0.389        2.914       -6.100      5.323{txt}
+       17    0.25-0.50    {res}    0.886        2.914       -4.825      6.598{txt}
+       17    0.50-0.75    {res}    2.003        2.914       -3.709      7.714{txt}
+       17    0.75-1.00    {res}    3.975        2.914       -1.736      9.686{txt}
+       18    0.00-0.25    {res}   -0.443        2.450       -5.246      4.360{txt}
+       18    0.25-0.50    {res}   -0.502        2.450       -5.305      4.300{txt}
+       18    0.50-0.75    {res}   -0.251        2.450       -5.054      4.551{txt}
+       18    0.75-1.00    {res}    2.123        2.450       -2.680      6.925{txt}
+       19    0.00-0.25    {res}    0.266        2.779       -5.180      5.713{txt}
+       19    0.25-0.50    {res}    1.052        2.779       -4.394      6.499{txt}
+       19    0.50-0.75    {res}    1.497        2.779       -3.950      6.944{txt}
+       19    0.75-1.00    {res}    3.333        2.779       -2.114      8.780{txt}
+       20    0.00-0.25    {res}   -0.868        2.227       -5.232      3.496{txt}
+       20    0.25-0.50    {res}    1.019        2.227       -3.345      5.383{txt}
+       20    0.50-0.75    {res}    2.054        2.227       -2.310      6.418{txt}
+       20    0.75-1.00    {res}    2.683        2.227       -1.681      7.047{txt}
+{hline 80}
+* denotes significance at .95% confidence level
+
+{com}. disco_plot
+{res}{txt}
+{com}. disco_weight id str_id
+
+{txt}Top 5 weights:
+{hline 50}
+
+  {c TLC}{hline 12}{c TT}{hline 8}{c TRC}
+  {c |} {res}      name {txt}{c |} {res}weight {txt}{c |}
+  {c LT}{hline 12}{c +}{hline 8}{c RT}
+  {c |} {res}control 14 {txt}{c |} {res}  .346 {txt}{c |}
+  {c |} {res}control 12 {txt}{c |} {res}  .156 {txt}{c |}
+  {c |} {res} control 4 {txt}{c |} {res} .1231 {txt}{c |}
+  {c |} {res}control 11 {txt}{c |} {res} .0882 {txt}{c |}
+  {c |} {res} control 2 {txt}{c |} {res} .0762 {txt}{c |}
+  {c BLC}{hline 12}{c BT}{hline 8}{c BRC}
+
+{com}. disco_weight id str_id, n(10) round(0.01)
+
+{txt}Top 10 weights:
+{hline 50}
+
+  {c TLC}{hline 12}{c TT}{hline 8}{c TRC}
+  {c |} {res}      name {txt}{c |} {res}weight {txt}{c |}
+  {c LT}{hline 12}{c +}{hline 8}{c RT}
+  {c |} {res}control 14 {txt}{c |} {res}   .35 {txt}{c |}
+  {c |} {res}control 12 {txt}{c |} {res}   .16 {txt}{c |}
+  {c |} {res} control 4 {txt}{c |} {res}   .12 {txt}{c |}
+  {c |} {res}control 11 {txt}{c |} {res}   .09 {txt}{c |}
+  {c |} {res} control 2 {txt}{c |} {res}   .08 {txt}{c |}
+  {c LT}{hline 12}{c +}{hline 8}{c RT}
+  {c |} {res}control 17 {txt}{c |} {res}   .05 {txt}{c |}
+  {c |} {res} control 3 {txt}{c |} {res}   .05 {txt}{c |}
+  {c |} {res}control 16 {txt}{c |} {res}   .04 {txt}{c |}
+  {c |} {res}control 19 {txt}{c |} {res}   .02 {txt}{c |}
+  {c |} {res}control 10 {txt}{c |} {res}   .02 {txt}{c |}
+  {c BLC}{hline 12}{c BT}{hline 8}{c BRC}
+
+{com}. 
+. capture log close
+{smcl}
+{com}{sf}{ul off}

@@ -15,7 +15,7 @@ do quadprog.mata
 mata:
 mata mlib create ldisco, replace
 
-// Add each function defined in disco_utils.mata
+// Add each function you defined in disco_utils.mata
 mata mlib add ldisco CI_out()
 mata mlib add ldisco iter_out()
 mata mlib add ldisco boot_out()

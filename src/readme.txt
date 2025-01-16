@@ -51,8 +51,9 @@ File list:
 	22.	quadprog.mata
 	23.	readme.txt
 	24.	stata.toc
-	25.	test_disco.do
-	26.	test_quadprog.ado
+	25.	test_quadprog.ado
+    26. build_disco_mlib.scml
+    27. disco_testing_suite.scml
 
 Notes:
 This package implements distributional synthetic controls, extending synthetic control methods to entire outcome distributions.

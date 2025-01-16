@@ -4,6 +4,8 @@
 clear all
 mata: mata clear
 
+capture log using disco_testing_suite, replace
+
 net install disco, from("https://raw.githubusercontent.com/Davidvandijcke/DiSCos_stata/main/src/") replace
 
 ************************************************************
@@ -273,6 +275,8 @@ disco_estat summary
 disco_plot
 disco_weight id str_id
 disco_weight id str_id, n(10) round(0.01)
+
+capture log close
 
 
 
