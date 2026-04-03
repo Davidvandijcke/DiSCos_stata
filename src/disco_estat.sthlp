@@ -7,7 +7,7 @@
 {viewerjumpto "Examples" "disco_estat##examples"}{...}
 {viewerjumpto "Stored results" "disco_estat##results"}{...}
 
-{title:Title}
+{title:disco_estat}
 
 {phang}
 {bf:disco_estat} {hline 2} Post-estimation statistics for DiSCo (Distributional Synthetic Controls)
@@ -33,11 +33,11 @@ confidence intervals across different time periods.
 {title:Examples}
 
 {pstd}Display summary statistics after running disco with quantile differences:{p_end}
-{phang2}{cmd:. disco y id time, idtarget(1) t0(3) agg(quantileDiff)}{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(3) agg("quantileDiff")}{p_end}
 {phang2}{cmd:. disco_estat summary}{p_end}
 
 {pstd}Display summary statistics for CDF differences:{p_end}
-{phang2}{cmd:. disco y id time, idtarget(1) t0(3) agg(cdfDiff)}{p_end}
+{phang2}{cmd:. disco y id time, idtarget(1) t0(3) agg("cdfDiff")}{p_end}
 {phang2}{cmd:. disco_estat summary}{p_end}
 
 {marker results}

@@ -13,6 +13,7 @@
 #define OPUNIX		2
 #define APPLEMAC	3
 #define STWIN32		4
+#define LINUX		5
 
 #ifndef SYSTEM
 #define SYSTEM		STWIN32

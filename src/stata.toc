@@ -11,3 +11,4 @@ d
 p disco Estimate distributional synthetic controls
 p disco_estat Post-estimation statistics for DiSCo
 p disco_plot Visualization tools for DiSCo results
+P disco_weight Match weights to string names and display largest weights

@@ -18,8 +18,8 @@ Required input:
     t0:         First treatment period
 
 Options:
-    M(integer):         Number of quantile points (default: 100)
-    G(integer):         Number of grid points (default: 100)
+	M(integer): 		Number of quantile samples to use in estimation for approximating the integral (default: 1000).
+    G(integer):         Number of grid points to evaluate quantile function/cdf (default: 100)
     CI:                 Compute confidence intervals
     BOOTS(integer):     Number of bootstrap replications (default: 300)
     CL(real):          Confidence level (default: 0.95)
@@ -31,9 +31,8 @@ Options:
     SEED(integer):     Set random seed
     NOUNIFORM:         Don't use uniform confidence bands
     AGG(string):       Type of aggregation for summary statistics
-                       ("quantile", "cdf", "quantileDiff", "cdfDiff")
+                       ("quantile", "cdf", "quantileDiff", "cdfDiff"). 
     SAMPLES(numlist):  Quantile points for summary statistics
-    GRAPH:             Generate plots of results
 
 Stored results:
     e(weights):        Synthetic control weights
@@ -59,6 +58,8 @@ Date: December 2024
 
 program define disco, eclass
     version 18.0
+	
+
     
     // Syntax parsing
     syntax varlist(min=3 max=3) [if] [in], ///
@@ -77,8 +78,7 @@ program define disco, eclass
         SEED(integer -1) ///
         NOUNIForm ///
         AGG(string) ///
-        SAMPles(numlist) ///
-        GRaph]
+        SAMPles(numlist)]
     
 	
     // Input validation
@@ -86,6 +86,9 @@ program define disco, eclass
         di as error "agg() must be one of: quantile, cdf, quantileDiff, cdfDiff"
         exit 198
     }
+	
+// 	// load mata objects
+// 	mata mata mlib index
     
     // Mark the estimation sample
     marksample touse, novarlist
@@ -100,7 +103,7 @@ program define disco, eclass
     markout `touse' `id_col', strok
     
     // Initialize optional arguments
-    if ("`m'"=="") local m = 100
+	if ("`m'"=="") local m = 100
     if ("`g'"=="") local g = 100
     if ("`boots'"=="") local boots = 300
     if ("`cl'"=="") local cl = 0.95
@@ -124,13 +127,14 @@ program define disco, eclass
     local mixture_flag = 0
     local permutation_flag = 0
     local doci = 0
-    local uniform_flag = 0
+    local uniform_flag = 1
 
     if "`nosimplex'" != "" local simplex_flag = 0
     if "`mixture'" != "" local mixture_flag = 1
     if "`permutation'" != "" local permutation_flag = 1
     if "`ci'" != "" local doci = 1
     if "`nouniform'" != "" local uniform_flag = 0
+	
     
     // Additional validation checks
     if `m' < 1 {
@@ -145,6 +149,14 @@ program define disco, eclass
         di as err "q_min must be >=0 and q_max <=1"
         exit 198
     }
+	if `cl' < 0 | `cl' > 1 {
+		di as err "cl must be >=0 and <=1"
+        exit 198
+	}
+	// Preserve dataset before Mata operations
+    tempname base
+    preserve
+    quietly: keep if `touse'
     
     // Identify time range in data
     quietly levelsof `time_col', local(times)
@@ -154,16 +166,13 @@ program define disco, eclass
     local t_max = `max_time' - `min_time' + 1
     local t0_col = `t0' - `min_time' + 1
     
-    // Preserve dataset before Mata operations
-    tempname base
-    preserve
-    quietly: keep if `touse'
+
     
     //************************
     // Main analysis in Mata
     mata {
         // Store options in Mata variables
-        M = `m'
+		M = `m'
         G = `g'
         T0 = `t0_col'
         T_max = `t_max'
@@ -181,12 +190,14 @@ program define disco, eclass
         tt = st_data(.,"t_col")
         target_id = `idtarget'
         
+		
         // Run main DiSCo analysis
+			
         rc = disco_wrapper(y, id, tt, target_id, T0, T_max, M, G, q_min, q_max, simplex, mixture)
         
         // Permutation test if requested
         if (`permutation_flag'==1) {
-            pval = disco_permutation_test(y,id,tt,target_id,T0,T_max,M,G,q_min,q_max,simplex,mixture)
+            pval = disco_permutation_test(y,id,tt,target_id,T0,T_max, M, G,q_min,q_max,simplex,mixture)
             st_local("pval", strofreal(pval))
         };
         
@@ -194,7 +205,7 @@ program define disco, eclass
         if (`doci'==1) {
             rc2 = disco_ci_wrapper(y, id, tt, target_id, T0, T_max, M, G,
                                 q_min, q_max, simplex, mixture,
-                                nboots, cl, uniform)
+                                nboots, cl, uniform, st_matrix("quantile_diff"), st_matrix("cdf_diff"))
             st_local("rc2", strofreal(rc2))
         };
         
@@ -208,19 +219,39 @@ program define disco, eclass
             sample_points = strtoreal(tokens(samples_str))
 			quantile_diff_mata = st_matrix("quantile_diff")
 			cdf_diff_mata = st_matrix("cdf_diff")
-           
+			           
             rc3 = compute_summary_stats("`agg'", sample_points, T0, T_max, quantile_diff_mata,
 			cdf_diff_mata, `doci', cl)
         };
     }
 	//************************
 
-	
-	// Generate plots if requested
-    if "`graph'" != "" & "`agg'" != "" {
-        quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl')
-    }
-    
+//	
+// 	// Generate plots if requested
+//     if "`graph'" != "" & "`agg'" != "" {
+//         tempname qd qt qs cd cs qdl qdu cdl cdu 
+//         matrix `qd' = quantile_diff
+//         matrix `qt' = quantile_t
+//         matrix `qs' = quantile_synth
+//         matrix `cd' = cdf_diff
+//         matrix `cs' = cdf_synth
+//
+// 		local amin = amin
+// 		local amax = amax
+//        
+//         if `doci' == 1 {
+//             matrix `qdl' = qdiff_lower
+//             matrix `qdu' = qdiff_upper
+//             matrix `cdl' = cdiff_lower
+//             matrix `cdu' = cdiff_upper
+//         }
+//         quietly: disco_plot, agg("`agg'") m(`m') g(`g') t_max(`t_max') doci(`doci') cl(`cl') ///
+//             quantile_diff(`qd') quantile_t(`qt') quantile_synth(`qs') ///
+//             cdf_diff(`cd') cdf_synth(`cs') cdf_t(cdf_t) ///
+//             qdiff_lower(`qdl') qdiff_upper(`qdu') cdiff_lower(`cdl') cdiff_upper(`cdu') ///
+//             xmin(`amin') xmax(`amax') `options'
+//     }
+//	
     // Store results
     if `doci' == 1 {
         ereturn matrix qdiff_lower = qdiff_lower
@@ -229,21 +260,19 @@ program define disco, eclass
         ereturn matrix cdiff_upper = cdiff_upper
     }
     
-    ereturn matrix weights = weights
     ereturn matrix quantile_diff = quantile_diff
     ereturn matrix cdf_diff = cdf_diff
     ereturn matrix quantile_synth = quantile_synth
     ereturn matrix quantile_t = quantile_t
     ereturn matrix cdf_synth = cdf_synth
     ereturn matrix cdf_t = cdf_t
-	ereturn matrix cids = cids // to match weights back to treated units
 	ereturn scalar amin = amin
 	ereturn scalar amax = amax
-    
-    if "`agg'" != "" & !inlist("`agg'", "quantile", "cdf") {
-        ereturn matrix summary_stats = summary_stats
-		disco_estat summary
-    }
+
+	if !inlist("`agg'", "quantile", "cdf") & "`agg'" != "" {
+		ereturn matrix summary_stats = summary_stats
+	}
+
     
     // Store metadata
     ereturn local cmd "disco"
@@ -251,11 +280,25 @@ program define disco, eclass
     ereturn local agg "`agg'"
     ereturn local cl = `cl'
     ereturn local t0 = `t0'
+	ereturn scalar m = `m'
+	ereturn scalar g = `g'
+	ereturn scalar t_max = `t_max'
+	ereturn local doci = `doci'
     ereturn scalar N = _N
     
 
     // Display permutation test results if requested
     if `permutation_flag' {
         di _n as txt "Permutation test p-value: " as res %5.3f `pval'
-    }
+		ereturn scalar pval = `pval'
+    } 
+	else {
+		ereturn scalar pval = .
+	}
+	
+	ereturn matrix weights = weights
+	ereturn matrix cids = cids
+
+	
+
 end

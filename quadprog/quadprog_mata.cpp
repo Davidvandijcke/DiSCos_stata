@@ -4,6 +4,7 @@
 #include "Array.hh"      // Must come before QuadProg++.hh
 #include "QuadProg++.hh"
 #include "stplugin.h"
+#include <string>
 
 using namespace quadprogpp;
 
@@ -20,7 +21,8 @@ STDLL stata_call(int argc, char *argv[])
 {
     // We expect 7 arguments: G g0 CE ce0 CI ci0 results
     if (argc < 7) {
-        SF_error("Not enough arguments provided.\n");
+        std::string error_message = "Not enough arguments provided.";
+        SF_error(const_cast<char*>(error_message.c_str()));
         return(198);
     }
 
@@ -36,11 +38,13 @@ STDLL stata_call(int argc, char *argv[])
     ST_int n_vars = SF_row(argv[0]);
     ST_int n_vars2 = SF_col(argv[0]);
     if (n_vars == 0 || n_vars2 == 0) {
-        SF_error("Matrix G not found or invalid.\n");
+        std::string error_message = "Matrix G not found or invalid.\n";
+        SF_error(const_cast<char*>(error_message.c_str()));
         return(198);
     }
     if (n_vars != n_vars2) {
-        SF_error("G must be a square matrix.\n");
+        std::string error_message = "G must be a square matrix.\n";
+        SF_error(const_cast<char*>(error_message.c_str()));
         return(198);
     }
 
@@ -48,7 +52,8 @@ STDLL stata_call(int argc, char *argv[])
     ST_int g0_rows = SF_row(argv[1]);
     ST_int g0_cols = SF_col(argv[1]);
     if (g0_rows != n_vars || g0_cols != 1) {
-        SF_error("g0 must be an n x 1 vector.\n");
+        std::string error_message = "g0 must be an n x 1 vector.\n";
+        SF_error(const_cast<char*>(error_message.c_str()));
         return(198);
     }
 
@@ -56,7 +61,8 @@ STDLL stata_call(int argc, char *argv[])
     ST_int CE_rows = SF_row(argv[2]);
     ST_int CE_cols = SF_col(argv[2]);
     if (CE_rows != n_vars) {
-        SF_error("CE must have same number of rows as G.\n");
+        std::string error_message = "CE must have same number of rows as G.\n";
+        SF_error(const_cast<char*>(error_message.c_str()));
         return(198);
     }
 
@@ -64,7 +70,8 @@ STDLL stata_call(int argc, char *argv[])
     ST_int ce0_rows = SF_row(argv[3]);
     ST_int ce0_cols = SF_col(argv[3]);
     if (ce0_rows != CE_cols || ce0_cols != 1) {
-        SF_error("ce0 must be p x 1, where p = number of equality constraints.\n");
+        std::string error_message = "ce0 must be p x 1, where p = number of equality constraints.\n";
+        SF_error(const_cast<char*>(error_message.c_str()));
         return(198);
     }
     ST_int n_eq_constraints = CE_cols;
@@ -73,7 +80,8 @@ STDLL stata_call(int argc, char *argv[])
     ST_int CI_rows = SF_row(argv[4]);
     ST_int CI_cols = SF_col(argv[4]);
     if (CI_rows != n_vars) {
-        SF_error("CI must have same number of rows as G.\n");
+        std::string error_message = "CI must have same number of rows as G.\n";
+        SF_error(const_cast<char*>(error_message.c_str()));
         return(198);
     }
 
@@ -81,7 +89,8 @@ STDLL stata_call(int argc, char *argv[])
     ST_int ci0_rows = SF_row(argv[5]);
     ST_int ci0_cols = SF_col(argv[5]);
     if (ci0_rows != CI_cols || ci0_cols != 1) {
-        SF_error("ci0 must be m x 1, where m = number of inequality constraints.\n");
+        std::string error_message = "ci0 must be m x 1, where m = number of inequality constraints.\n";
+        SF_error(const_cast<char*>(error_message.c_str()));
         return(198);
     }
     ST_int n_ineq_constraints = CI_cols;
@@ -90,7 +99,8 @@ STDLL stata_call(int argc, char *argv[])
     ST_int res_rows = SF_row(argv[6]);
     ST_int res_cols = SF_col(argv[6]);
     if (res_rows < 1 || res_cols < n_vars + 1) {
-        SF_error("results matrix must have at least 1 row and (n_vars+1) columns.\n");
+        std::string error_message = "results matrix must have at least 1 row and (n_vars+1) columns.\n";
+        SF_error(const_cast<char*>(error_message.c_str()));
         return(198);
     }
 
@@ -109,7 +119,8 @@ STDLL stata_call(int argc, char *argv[])
         for (int i = 1; i <= n_vars; i++) {
             for (int j = 1; j <= n_vars; j++) {
                 if (SF_mat_el(argv[0], i, j, &val)) {
-                    SF_error("Error reading G.\n");
+                    std::string error_message = "Error reading G.\n";
+                    SF_error(const_cast<char*>(error_message.c_str()));
                     return(198);
                 }
                 G_data[(i-1)*n_vars + (j-1)] = val;
@@ -119,7 +130,8 @@ STDLL stata_call(int argc, char *argv[])
         // Read g0
         for (int i = 1; i <= n_vars; i++) {
             if (SF_mat_el(argv[1], i, 1, &val)) {
-                SF_error("Error reading g0.\n");
+                std::string error_message = "Error reading g0.\n";
+                SF_error(const_cast<char*>(error_message.c_str()));
                 return(198);
             }
             g0_data[i-1] = val;
@@ -129,7 +141,8 @@ STDLL stata_call(int argc, char *argv[])
         for (int i = 1; i <= n_vars; i++) {
             for (int j = 1; j <= n_eq_constraints; j++) {
                 if (SF_mat_el(argv[2], i, j, &val)) {
-                    SF_error("Error reading CE.\n");
+                    std::string error_message = "Error reading CE.\n";
+                    SF_error(const_cast<char*>(error_message.c_str()));
                     return(198);
                 }
                 CE_data[(i-1)*n_eq_constraints + (j-1)] = val;
@@ -139,7 +152,8 @@ STDLL stata_call(int argc, char *argv[])
         // Read ce0
         for (int i = 1; i <= n_eq_constraints; i++) {
             if (SF_mat_el(argv[3], i, 1, &val)) {
-                SF_error("Error reading ce0.\n");
+                std::string error_message = "Error reading ce0.\n";
+                SF_error(const_cast<char*>(error_message.c_str()));
                 return(198);
             }
             ce0_data[i-1] = val;
@@ -149,7 +163,8 @@ STDLL stata_call(int argc, char *argv[])
         for (int i = 1; i <= n_vars; i++) {
             for (int j = 1; j <= n_ineq_constraints; j++) {
                 if (SF_mat_el(argv[4], i, j, &val)) {
-                    SF_error("Error reading CI.\n");
+                    std::string error_message = "Error reading CI.\n";
+                    SF_error(const_cast<char*>(error_message.c_str()));
                     return(198);
                 }
                 CI_data[(i-1)*n_ineq_constraints + (j-1)] = val;
@@ -159,7 +174,8 @@ STDLL stata_call(int argc, char *argv[])
         // Read ci0
         for (int i = 1; i <= n_ineq_constraints; i++) {
             if (SF_mat_el(argv[5], i, 1, &val)) {
-                SF_error("Error reading ci0.\n");
+                std::string error_message = "Error reading ci0.\n";
+                SF_error(const_cast<char*>(error_message.c_str()));
                 return(198);
             }
             ci0_data[i-1] = val;
@@ -207,13 +223,15 @@ STDLL stata_call(int argc, char *argv[])
         // Store results: x and then cost
         for (int i = 0; i < n_vars; i++) {
             if (SF_mat_store(argv[6], 1, i+1, x[i])) {
-                SF_error("Error storing solution in results.\n");
+                std::string error_message = "Error storing solution in results.\n";
+                SF_error(const_cast<char*>(error_message.c_str()));
                 return(198);
             }
         }
 
         if (SF_mat_store(argv[6], 1, n_vars+1, result)) {
-            SF_error("Error storing cost in results.\n");
+            std::string error_message = "Error storing cost in results.\n";
+            SF_error(const_cast<char*>(error_message.c_str()));
             return(198);
         }
 
@@ -224,3 +242,4 @@ STDLL stata_call(int argc, char *argv[])
         return(198);
     }
 }
+

@@ -1,6 +1,5 @@
-// quadprog.ado
 program define quadprog, rclass
-    version 14.0
+    version 18.0
     args mG mg0 mCE mce0 mCI mci0 mresults
     
     // Remove matrix prefix if present
@@ -19,7 +18,43 @@ program define quadprog, rclass
     local results = subinstr("`mresults'", "matrix(", "", .)
     local results = subinstr("`results'", ")", "", .)
     
-    plugin call quadprog_mata, `G' `g0' `CE' `ce0' `CI' `ci0' `results'
+    // Determine operating system and load appropriate plugin
+    local os = c(os)
+    local machine = c(machine_type)
+    if "`os'" == "Windows" {
+        local plugin "quadprog_mata_win"
+    }
+    else if "`os'" == "MacOSX" | strpos("`machine'", "Mac") > 0 {
+		if "`machine'" == "Macintosh (Intel 64-bit)" {
+			local plugin "quadprog_mata_mac_intel"
+		}
+		else {
+			local plugin "quadprog_mata_mac"
+		}
+    }
+    else if "`os'" == "Unix" {
+        local plugin "quadprog_mata_linux"
+    }
+    
+    plugin call `plugin', `G' `g0' `CE' `ce0' `CI' `ci0' `results'
 end
 
-program quadprog_mata, plugin
+// Determine operating system and load appropriate plugin
+local os = c(os)
+local machine = c(machine_type)
+if "`os'" == "Windows" {
+	local plugin "quadprog_mata_win"
+}
+else if "`os'" == "MacOSX" | strpos("`machine'", "Mac") > 0 {
+	if "`machine'" == "Macintosh (Intel 64-bit)" {
+		local plugin "quadprog_mata_mac_intel"
+	}
+	else {
+		local plugin "quadprog_mata_mac"
+	}
+}
+else if "`os'" == "Unix" {
+	local plugin "quadprog_mata_linux"
+}
+
+program `plugin', plugin
