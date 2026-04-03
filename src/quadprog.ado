@@ -20,11 +20,11 @@ program define quadprog, rclass
     
     // Determine operating system and load appropriate plugin
     local os = c(os)
+    local machine = c(machine_type)
     if "`os'" == "Windows" {
         local plugin "quadprog_mata_win"
     }
-    else if "`os'" == "MacOSX" {
-		local machine = c(machine_type)
+    else if "`os'" == "MacOSX" | strpos("`machine'", "Mac") > 0 {
 		if "`machine'" == "Macintosh (Intel 64-bit)" {
 			local plugin "quadprog_mata_mac_intel"
 		}
@@ -41,11 +41,11 @@ end
 
 // Determine operating system and load appropriate plugin
 local os = c(os)
+local machine = c(machine_type)
 if "`os'" == "Windows" {
 	local plugin "quadprog_mata_win"
 }
-else if "`os'" == "MacOSX" {
-	local machine = c(machine_type)
+else if "`os'" == "MacOSX" | strpos("`machine'", "Mac") > 0 {
 	if "`machine'" == "Macintosh (Intel 64-bit)" {
 		local plugin "quadprog_mata_mac_intel"
 	}
