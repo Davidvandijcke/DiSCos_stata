@@ -8,11 +8,11 @@
 
 ## 🚀 Features
 
-- 📊 Match entire outcome distributions, not just means
-- 🎯 Estimate distributional treatment effects
-- 📈 Generate ~~beautiful~~ visualizations
-- 🔄 Bootstrap inference and permutation tests
-- 🎨 Flexible estimation approaches (quantile-based or CDF-based)
+- Match entire outcome distributions, not just means
+- Estimate distributional treatment effects
+- Generate ~~beautiful~~ visualizations
+- Bootstrap inference and permutation tests
+- Flexible estimation approaches (quantile-based or CDF-based)
 
 ## 💿 Installation
 
@@ -85,12 +85,12 @@ If you use this package, please cite:
   pages={1105--1117},
   year={2023}
 }
-@article{van2024return,
+@article{van2026return,
   title={Return to Office and the Tenure Distribution},
-  author={Van Dijcke, David and Gunsilius, Florian and Wright, Austin L},
-  journal={University of Chicago, Becker Friedman Institute for Economics Working Paper},
-  number={2024-56},
-  year={2024}
+  author={Van Dijcke, David and Gunsilius, Florian and Wright, Austin},
+  journal={Review of Economics \& Statistics},
+  year={2026},
+  note = {Conditionally Accepted}
 }
 
 ```
@@ -104,4 +104,4 @@ Because averages are so yesterday! If you're feeling like doing the robot (you'r
 This project is licensed under the MIT License.
 
 ---
-Made with 🕺 and 💃 by [David Van Dijcke](https://www.davidvandijcke.com/), with a stamp of approval from [Florian Gunsilius](https://www.floriangunsilius.com/)
+Made with 🕺 and 💃 by [David Van Dijcke](https://www.davidvandijcke.com/) and his boogy partner [Florian Gunsilius](https://www.floriangunsilius.com/)
