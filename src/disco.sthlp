@@ -1,5 +1,5 @@
 {smcl}
-{* *! version 1.0.0 19dec2024}{...}
+{* *! version 1.1.0 26jun2026}{...}
 {vieweralsosee "[ST] synth_runner" "help synth_runner"}{...}
 {viewerjumpto "Syntax" "disco##syntax"}{...}
 {viewerjumpto "Description" "disco##description"}{...}
@@ -80,7 +80,11 @@ Please cite Gunsilius (2023) and Van Dijcke, Gunsilius, and Wright (2024) when u
 {dlgtab:Optional}
 
 {phang}
-{opt g(integer)} number of grid points for quantile cdf estimation. default is 1000.
+{opt m(integer)} number of grid points used to approximate the integral in the
+weight-estimation step (see {help disco##method:Method}). default is 1000.
+
+{phang}
+{opt g(integer)} number of grid points for quantile/cdf estimation. default is 100.
 
 {phang}
 {opt ci} compute bootstrap confidence intervals for distributional effects.
@@ -129,8 +133,12 @@ See {help "disco##related":Additional commands}.
 {phang}
 {opt samples(numlist)} specify quantile or cdf points for summary statistics. for quantiles, these are in [0,1]. 
 for cdfs, these are values of the outcome variable. If not specified, the default is to partition the support 
-(either [0,1] or the range of the outcome variable) into 4 equally spaced points and aggregate the treatment effects within 
+(either [0,1] or the range of the outcome variable) into 4 equally spaced points and aggregate the treatment effects within
 those intervals.
+
+{phang}
+{opt graph} draw the default {help disco_plot:disco_plot} graph immediately after estimation;
+the plot type adapts to {opt agg()}. Equivalent to running {cmd:disco_plot} with no options.
 
 
 {marker examples}
@@ -281,5 +289,5 @@ University of Michigan, Ann Arbor{break}
 {title:Version}
 
 {pstd}
-1.0.0 (December 2024)
+1.1.0 (June 2026)
 {p_end}

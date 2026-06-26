@@ -51,8 +51,8 @@ Stored results:
     e(cdiff_upper):    Upper bound for CDF differences
 
 Author: David Van Dijcke
-Version: 1.0.0
-Date: December 2024
+Version: 1.1.0
+Date: June 2026
 */
 
 
@@ -65,7 +65,7 @@ program define disco, eclass
     syntax varlist(min=3 max=3) [if] [in], ///
         idtarget(integer) ///
         T0(integer) ///
-        [M(integer 100) ///
+        [M(integer 1000) ///
         G(integer 100) ///
         CI ///
         BOOTS(integer 300) ///
@@ -78,7 +78,8 @@ program define disco, eclass
         SEED(integer -1) ///
         NOUNIForm ///
         AGG(string) ///
-        SAMPles(numlist)]
+        SAMPles(numlist) ///
+        GRAPH]
     
 	
     // Input validation
@@ -103,7 +104,7 @@ program define disco, eclass
     markout `touse' `id_col', strok
     
     // Initialize optional arguments
-	if ("`m'"=="") local m = 100
+	if ("`m'"=="") local m = 1000
     if ("`g'"=="") local g = 100
     if ("`boots'"=="") local boots = 300
     if ("`cl'"=="") local cl = 0.95
@@ -298,6 +299,12 @@ program define disco, eclass
 	
 	ereturn matrix weights = weights
 	ereturn matrix cids = cids
+
+	// Generate plot if the graph option was specified (calls disco_plot,
+	// which reads the results just stored in e()).
+	if "`graph'" != "" {
+		disco_plot
+	}
 
 	
 

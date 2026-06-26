@@ -29,35 +29,43 @@ program define disco_estat, rclass
         // Get number of rows
         local nr = rowsof(`stats')
         
-        // Display header
+        // Confidence level as a percentage (e.g., 0.95 -> 95)
+        local clpct = round(real("`e(cl)'")*100)
+
+        // Display header (column anchors are shared with the data rows below)
         di _n as txt "Summary of `agtxt' effects"
-        di as txt "{hline 80}"
-        di as txt "Time period   Range                    Effect     Std. Err.    [`e(cl)'% Conf. Interval]"
-        di as txt "{hline 80}"
-        
+        di as txt "{hline 72}"
+        di as txt _col(1) %9s "Period" _col(12) "Range" ///
+                  _col(28) %9s "Effect" _col(39) %10s "Std. Err." ///
+                  _col(52) "[`clpct'% Conf. Interval]"
+        di as txt "{hline 72}"
+
         // Display results
         forvalues i = 1/`nr' {
-            local t = `stats'[`i',1]
+            local t      = `stats'[`i',1]
             local qstart = `stats'[`i',2]
-            local qend = `stats'[`i',3]
+            local qend   = `stats'[`i',3]
             local effect = `stats'[`i',4]
-            local se = `stats'[`i',5]
-            local ci_l = `stats'[`i',6]
-            local ci_u = `stats'[`i',7]
-            
-            // Check if significant (CI doesn't include 0)
-            local sig = (`ci_l' > 0 | `ci_u' < 0) * "*"
-            
-            di as txt %9.0g `t' "    " ///
-               as txt `fmt' `qstart' "-" `fmt' `qend' "    " ///
-               as res %9.3f `effect' "    " ///
-               as res %9.3f `se' "    " ///
-               as res %9.3f `ci_l' "  " %9.3f `ci_u' ///
-               as txt "`sig'"
+            local se     = `stats'[`i',5]
+            local ci_l   = `stats'[`i',6]
+            local ci_u   = `stats'[`i',7]
+
+            // Significance marker: confidence interval excludes 0
+            local sig = cond(!missing(`ci_l', `ci_u') & (`ci_l' > 0 | `ci_u' < 0), "*", "")
+
+            // Compact range label, e.g. "0.00-0.25"
+            local range = trim(string(`qstart', "`fmt'")) + "-" + trim(string(`qend', "`fmt'"))
+
+            di as txt _col(1) %9.0g `t' ///
+                      _col(12) "`range'" ///
+               as res _col(28) %9.3f `effect' ///
+                      _col(39) %10.3f `se' ///
+                      _col(52) %9.3f `ci_l' _col(63) %9.3f `ci_u' ///
+               as txt _col(72) "`sig'"
         }
-        
-        di as txt "{hline 80}"
-        di as txt "* denotes significance at `e(cl)'% confidence level"
+
+        di as txt "{hline 72}"
+        di as txt "* denotes significance at the `clpct'% confidence level"
     }
     else {
         di as error "unknown subcommand"
