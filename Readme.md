@@ -37,7 +37,7 @@ use mydata.dta, clear
 disco outcome unit time, idtarget(1) t0(10) graph 
 
 * Get summary statistics
-disco_estat
+disco_estat summary
 ```
 
 ## 📚 Documentation

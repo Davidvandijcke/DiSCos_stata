@@ -191,7 +191,7 @@ program define disco_plot, eclass
                 
                 // Create categorical bar plot with CIs
                 twoway (bar cdf_diff category, color(`color1') barwidth(0.8)) ///
-                       (rcap cdiff_upper cdiff_lower category, color(navy)), ///
+                       (rcap cdiff_upper cdiff_lower category, color(`cicolor')), ///
                        `hline_opt' `vline_opt' ///
                        `xrange_opt' `yrange_opt' ///
                        by(time, note("") title("`title'") `byopts') ///

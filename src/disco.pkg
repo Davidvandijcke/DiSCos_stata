@@ -1,10 +1,10 @@
-v 1.0.0
+v 1.1.0
 d 'DISCO': Distributional Synthetic Controls
 d
 d Author: David Van Dijcke
 d University of Michigan, Ann Arbor
 d dvdijcke@umich.edu
-d Distribution-Date: 19dec2024
+d Distribution-Date: 26jun2026
 
 Main command files
 f disco.ado
